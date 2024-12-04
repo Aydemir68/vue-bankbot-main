@@ -1,5 +1,5 @@
 <template>
-    <div class="overflow-scroll h-full w-full">
+    <div class="overflow-scroll h-full">
       <div class="messages">
         <div v-for="message in messages" :key="message.id" class="message" :class="{'user-message': message.isUser, 'bot-message': !message.isUser}">
           {{ message.text }}
@@ -10,10 +10,10 @@
           type="text"
           v-model="newMessage"
           @keyup.enter="sendMessage"
-          class="input"
+          class="input border-round h-3rem w-full"
           placeholder="Сообщение..."
         />
-        <button @click="sendMessage" class="">
+        <button @click="sendMessage" class="ml-2 bg-primary hover:bg-primary-800 border-round active:bg-primary-600">
           <i class="pi pi-send"></i>
         </button>
       </div>
@@ -47,4 +47,7 @@
   </script>
   
 <style>
+
+
+
 </style>

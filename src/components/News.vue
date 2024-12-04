@@ -1,12 +1,12 @@
 <template>
   <div class="overflow-scroll">
     <h1 class="news-title">Новости</h1>
-    <div v-for="(news, index) in newsItems" :key="index" class="news-item">
-      <div class="news-content">
+    <div v-for="(news, index) in newsItems" :key="index" class="news-item text-gray-100 text-xl">
+      <div class="news-content border-round-xl m-2 p-1 pb-4">
         <h2 class="news-header">{{ news.title }}</h2>
-        <img :src="news.image" :alt="news.title" class="align-items-center justify-content-center h-6rem border-round" />
+        <img :src="news.image" :alt="news.title" class="image align-items-center justify-content-center border-round" />
         <p class="news-description">{{ news.description }}</p>
-        <button class="bg-primary hover:bg-primary-800 active:bg-primary-600">Запланировать</button>
+        <button class="text-white hover:bg-primary-800 active:bg-primary-600">Запланировать</button>
       </div>
     </div>
   </div>
@@ -37,5 +37,17 @@
 
 <style scoped>
 
+
+.image{
+  height: 28vh;
+}
+
+.news-content {
+  background-color: rgb(66, 115, 195);
+}
+
+button {
+  background-color: rgb(46, 76, 124);
+}
 
 </style>

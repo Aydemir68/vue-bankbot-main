@@ -1,11 +1,11 @@
 <template>
-  <div class="user-profile flex flex-column justify-content-center">
+  <div class="user-profile flex flex-column justify-content-center border-round-2xl mb-2 pt-4">
     <!-- Блок с фото профиля и кнопкой -->
     <div class="profile-container align-items-center">
       <img class="profile-photo" :src="user.photoUrl" alt="Фото профиля" />
       <!-- Кнопка редактирования профиля под фото -->
       <div class="edit-profile mt-2">
-        <button @click="editProfile" class="bg-primary hover:bg-primary-800 active:bg-primary-600">Редактировать профиль</button>
+        <button @click="editProfile" class="text-white hover:bg-primary-800 active:bg-primary-600">Редактировать профиль</button>
       </div>
     </div>
 
@@ -19,8 +19,8 @@
   </div>
 
   <!-- Выпадающий список для выбора категории -->
-  <div class="dropdown">
-    <select v-model="selectedCategory" id="category">
+  <div class="dropdown border-round-2xl">
+    <select v-model="selectedCategory" id="category" class="border-round bg-primary-100 h-2rem">
       <option value="events">Запланированные мероприятия</option>
       <option value="statistics">Статистика тестов</option>
       <option value="topics">Темы для изучения</option>
@@ -28,7 +28,7 @@
   </div>
 
   <!-- Контент в зависимости от выбранной категории -->
-  <div v-if="selectedCategory === 'events'" class="events">
+  <div v-if="selectedCategory === 'events'" class="events border-round-xl mt-3 p-1">
         <h3>Запланированные мероприятия</h3>
         <ul>
           <li>15.12.2024 - Вебинар по финансовой грамотности</li>
@@ -37,13 +37,13 @@
         </ul>
   </div>
 
-  <div v-if="selectedCategory === 'statistics'" class="statistics">
+  <div v-if="selectedCategory === 'statistics'" class="statistics border-round-xl mt-3 p-1">
     <p>Завершено тестов: 10</p>
     <p>Средний балл: 85%</p>
     <p>Ожидаемые результаты: 90%</p>
   </div>
 
-  <div v-if="selectedCategory === 'topics'" class="topics">
+  <div v-if="selectedCategory === 'topics'" class="topics border-round-xl mt-3 p-1">
     <ul>
       <li>1. Основы финансов</li>
       <li>2. Экономика и анализ</li>
@@ -93,6 +93,19 @@ export default {
 
 .profile-photo {
   border-radius: 50%;
+}
+
+.user-profile {
+  background-color: rgb(66, 115, 195);
+}
+
+
+button{
+  background-color: rgb(46, 76, 124);
+}
+
+.events{
+  background-color: rgb(66, 115, 195);
 }
 
 </style>

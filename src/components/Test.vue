@@ -88,7 +88,7 @@ export default {
 </script>
 
 <template>
-  <div class="file-list">
+  <div class="file-list h-full">
     <h2 class="file-list-title">Список тестов</h2>
 
     <!-- Поле для поиска -->
@@ -96,17 +96,17 @@ export default {
         type="text"
         v-model="searchQuery"
         placeholder="Поиск по имени..."
-        class="search-bar"
+        class="search-bar border-round p-2 m-1"
     />
 
     <!-- Кнопки сортировки -->
     <div class="sort-buttons">
-      <button @click="sortBy('name')">Сортировать по имени</button>
-      <button @click="sortBy('date')">Сортировать по дате</button>
+      <button @click="sortBy('name')" class="text-white hover:bg-primary-800 active:bg-primary-600 m-1">Сортировать по имени</button>
+      <button @click="sortBy('date')" class="text-white hover:bg-primary-800 active:bg-primary-600 m-1">Сортировать по дате</button>
     </div>
 
     <!-- Список файлов -->
-    <ul class="file-items">
+    <ul class="file-items border-round-xl m-2">
       <li
           v-for="file in filteredFiles"
           :key="file.name"
@@ -125,7 +125,7 @@ export default {
           <p><strong>Процент правильных ответов:</strong> {{ file.correctPercentage }}%</p>
           <p><strong>Количество попыток:</strong> {{ file.attempts }}</p>
 
-          <button class="start-test-button" @click.stop="$emit('startOpros')">Пройти<RouterLink :to="this.link" class="flex px-4 py-2 items-center cursor-pointer hover:text-white
+          <button class="start-test-button text-white hover:bg-primary-800 active:bg-primary-600 m-1" @click.stop="$emit('startOpros')">Пройти<RouterLink :to="this.link" class="flex px-4 py-2 items-center cursor-pointer hover:text-white
                           active:bg-black-alpha-10 text-gray-900 no-underline">
             </RouterLink>
           </button>
@@ -136,4 +136,16 @@ export default {
 </template>
 
 <style scoped>
+
+button{
+  background-color: rgb(46, 76, 124);
+}
+
+
+.file-items {
+  background-color: rgb(66, 115, 195);
+}
+
+
+
 </style>
