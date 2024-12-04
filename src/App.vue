@@ -68,4 +68,9 @@ export default {
 </template>
 
 <style scoped>
+
+* {
+  user-select: none;
+}
+
 </style>
