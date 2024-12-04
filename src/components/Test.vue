@@ -125,7 +125,7 @@ export default {
           <p><strong>Процент правильных ответов:</strong> {{ file.correctPercentage }}%</p>
           <p><strong>Количество попыток:</strong> {{ file.attempts }}</p>
 
-          <button class="start-test-button text-white hover:bg-primary-800 active:bg-primary-600 m-1" @click.stop="$emit('startOpros')">Пройти<RouterLink :to="this.link" class="flex px-4 py-2 items-center cursor-pointer hover:text-white
+          <button class="start-test-button text-white hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem" @click.stop="$emit('startOpros')">Пройти<RouterLink :to="this.link" class="flex px-4 py-2 items-center cursor-pointer hover:text-white
                           active:bg-black-alpha-10 text-gray-900 no-underline">
             </RouterLink>
           </button>
