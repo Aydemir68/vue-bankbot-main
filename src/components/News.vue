@@ -37,7 +37,6 @@
 
 <style scoped>
 
-
 .image{
   height: 28vh;
 }
@@ -56,6 +55,7 @@
 
 button {
   background-color: rgb(46, 76, 124);
+  outline: none;
 }
 
 </style>

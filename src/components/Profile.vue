@@ -116,6 +116,7 @@ export default {
 
 button{
   background-color: rgb(46, 76, 124);
+  outline: none;
 }
 
 .events, .statistics, .topics{
