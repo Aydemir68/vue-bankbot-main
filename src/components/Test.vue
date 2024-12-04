@@ -88,8 +88,8 @@ export default {
 </script>
 
 <template>
-  <div class="file-list h-full">
-    <h2 class="file-list-title">Список тестов</h2>
+  <div class="file-list">
+    <!-- <h2 class="file-list-title">Список тестов</h2> -->
 
     <!-- Поле для поиска -->
     <input
@@ -101,8 +101,8 @@ export default {
 
     <!-- Кнопки сортировки -->
     <div class="sort-buttons">
-      <button @click="sortBy('name')" class="text-white hover:bg-primary-800 active:bg-primary-600 m-1">Сортировать по имени</button>
-      <button @click="sortBy('date')" class="text-white hover:bg-primary-800 active:bg-primary-600 m-1">Сортировать по дате</button>
+      <button @click="sortBy('name')" class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2 m-2">Сортировать по имени</button>
+      <button @click="sortBy('date')" class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2">Сортировать по дате</button>
     </div>
 
     <!-- Список файлов -->
@@ -139,6 +139,10 @@ export default {
 
 button{
   background-color: rgb(46, 76, 124);
+}
+
+.file-list{
+  height: 94vh;
 }
 
 

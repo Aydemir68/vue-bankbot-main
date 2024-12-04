@@ -1,8 +1,8 @@
 <template>
-  <div class="overflow-scroll">
-    <h1 class="news-title">Новости</h1>
+  <div class="">
+    <!-- <h1 class="news-title">Новости</h1> -->
     <div v-for="(news, index) in newsItems" :key="index" class="news-item text-gray-100 text-xl">
-      <div class="news-content border-round-xl m-2 p-1 pb-4">
+      <div class="news-content border-round-xl m-2 p-1 pb-2">
         <h2 class="news-header">{{ news.title }}</h2>
         <img :src="news.image" :alt="news.title" class="image align-items-center justify-content-center border-round" />
         <p class="news-description">{{ news.description }}</p>
@@ -44,6 +44,11 @@
 
 .news-content {
   background-color: rgb(66, 115, 195);
+}
+
+.news-description {
+  font-size: large;
+
 }
 
 button {
