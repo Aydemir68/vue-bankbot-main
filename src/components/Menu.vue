@@ -61,17 +61,17 @@ export default {
   <div class="flex-row">
     <ButtonGroup class="">
       <Button
-          class="flex-button custom-button"
+          class="custom-button"
           :class="{ active: activeTab === 'help' }"
           @click="selectTab('news')"
       >
-        <div class="button-content">
+        <div class="">
           <i class="pi pi-book"></i>
           <span class="button-label">Новости</span>
         </div>
       </Button>
       <Button
-          class="flex-button custom-button"
+          class="custom-button"
           :class="{ active: activeTab === 'help' }"
           @click="selectTab('help')"
       >
@@ -81,17 +81,17 @@ export default {
         </div>
       </Button>
       <Button
-          class="flex-button custom-button"
+          class="custom-button"
           :class="{ active: activeTab === 'docs' }"
           @click="selectTab('docs')"
       >
-        <div class="button-content">
+        <div class="">
           <i class="pi pi-file-check"></i>
           <span class="button-label">Опросы</span>
         </div>
       </Button>
       <Button
-          class="flex-button custom-button"
+          class="custom-button"
           :class="{ active: activeTab === 'profile' }"
           @click="selectTab('profile')"
       >

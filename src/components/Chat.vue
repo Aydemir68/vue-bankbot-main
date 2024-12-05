@@ -1,13 +1,13 @@
 <template>
-  <div class="overflow-scroll h-full bg-primary-100 border-round-2xl">
-    <div class="overflow-auto">
-      <div class="messages">
-        <div v-for="message in messages" :key="message.id" class="message" :class="{'user-message': message.isUser, 'bot-message': !message.isUser}">
-          {{ message.text }}
-        </div>
+  <div class="main-container flex flex-column w-full">
+      <div class="flex flex-column h-full overflow-y-scroll mx-1">
+          <div v-for="message in messages" :key="message.id">
+            <div class="max-w-14rem bg-primary-500 p-1 border-round-lg" :class="{'flex user-message my-2': message.isUser, 'flex bot-message': !message.isUser}">
+              {{ message.text }}
+            </div>
+          </div>
       </div>
-    </div>
-    <div class="input-container flex align-items-center p-3">
+    <div class="input-container flex align-items-end p-3 h-fit">
       <input
         type="text"
         v-model="newMessage"
@@ -50,9 +50,22 @@
   
 <style>
 
-.input-container {
+.main-container{
   height: 94vh;
-  width: 46dvh;
+  background-color: #2A3F4F;;
 }
 
+.user-message {
+  background-color: #009688; /* Цвет для сообщений пользователя */
+  color: white;
+  margin-left: auto; /* Выравнивание вправо */
+  font-size: medium;
+}
+
+.bot-message {
+  background-color: #3A4F5F; /* Цвет для ответов бота */
+  color: white;
+  margin-right: auto; /* Выравнивание влево */
+  font-size: medium;
+}
 </style>

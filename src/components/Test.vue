@@ -110,7 +110,7 @@ export default {
       <li
           v-for="file in filteredFiles"
           :key="file.name"
-          class="file-item"
+          class="file-item p-1"
           @click="selectTest(file)"
       >
         <i class="pi pi-file" /> <!-- Иконка файла -->
@@ -120,15 +120,14 @@ export default {
         </div>
 
         <!-- Информация о выбранном тесте (отображается только если выбран тест) -->
-        <div v-if="selectedFile === file" class="test-details">
+        <div v-if="selectedFile === file" class="test-details p-1">
           <p><strong>Статус:</strong> {{ file.isPassed ? 'Пройден' : 'Не пройден' }}</p>
           <p><strong>Процент правильных ответов:</strong> {{ file.correctPercentage }}%</p>
           <p><strong>Количество попыток:</strong> {{ file.attempts }}</p>
 
-          <button class="start-test-button text-white hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem" @click.stop="$emit('startOpros')">Пройти<RouterLink :to="this.link" class="flex px-4 py-2 items-center cursor-pointer hover:text-white
-                          active:bg-black-alpha-10 text-gray-900 no-underline">
-            </RouterLink>
-          </button>
+          <RouterLink :to="this.link" class="start-test-button border-round-lg text-white bg-gray-800 p-2 m-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
+            Пройти
+          </RouterLink>
         </div>
       </li>
     </ul>

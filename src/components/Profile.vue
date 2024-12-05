@@ -29,7 +29,7 @@
     </div>
 
     <!-- Контент в зависимости от выбранной категории -->
-    <div v-if="selectedCategory === 'events'" class="events border-round-xl mt-3 h-18rem p-1 m-2 overflow-scroll">
+    <div v-if="selectedCategory === 'events'" class="events border-round-xl mt-3 p-1 m-2 overflow-scroll">
           <h3>Запланированные мероприятия:</h3>
           <ul>
             <li>15.12.2024 - Вебинар по финансовой грамотности</li>
@@ -38,7 +38,7 @@
           </ul>
     </div>
 
-    <div v-if="selectedCategory === 'statistics'" class="statistics border-round-xl mt-3 h-18rem  p-1 m-2 overflow-scroll">
+    <div v-if="selectedCategory === 'statistics'" class="statistics border-round-xl mt-3 p-1 m-2 overflow-scroll">
       <h3>Ваша статистика прохождения тестов за все время:</h3>
       <ul>
         <li>Завершено тестов: 10</li>
@@ -47,7 +47,7 @@
       </ul>
     </div>
 
-    <div v-if="selectedCategory === 'topics'" class="topics border-round-xl mt-3 h-18rem  p-1 m-2 overflow-scroll">
+    <div v-if="selectedCategory === 'topics'" class="topics border-round-xl mt-3 p-1 m-2 overflow-scroll">
       <h3>Для изучения вам рекомедованы следующие темы:</h3>
       <ul>
         <li>1. Основы финансов</li>
@@ -99,8 +99,6 @@ export default {
 };
 </script>
 <style scoped>
-
-
 .user-profile-full {
   height: 94vh;
 }
@@ -110,17 +108,18 @@ export default {
 }
 
 .user-profile {
-  background-color: rgb(66, 115, 195);
+  background-color: #2A3F4F;
 
 }
 
 button{
-  background-color: rgb(46, 76, 124);
+  background-color: #2A3F4F;
   outline: none;
 }
 
 .events, .statistics, .topics{
-  background-color: rgb(66, 115, 195);
+  background-color: #2A3F4F;
+  height: 28%;
 }
 
 </style>
