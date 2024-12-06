@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import questions from './Vhod.json';
+import questions from './Vihod.json';
 import {ref} from "vue";
 
 export default {
