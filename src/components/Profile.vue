@@ -6,7 +6,7 @@
         <img class="profile-photo" :src="user.photoUrl" alt="Фото профиля" />
         <!-- Кнопка редактирования профиля под фото -->
         <div class="edit-profile mt-2">
-          <button @click="this.visible = true" class="text-white hover:bg-primary-800 active:bg-primary-600">Редактировать профиль</button>
+          <button @click="this.visible = true" class="text-white bg-primary-400 hover:bg-primary-800 active:bg-primary-600">Редактировать профиль</button>
         </div>
         <Dialog v-model:visible="visible" modal header="Редактировать профиль" :style="{ width: '24rem' }">
           <span class="text-surface-500 dark:text-surface-400 block mb-2">Обновите информацию о себе..</span>
