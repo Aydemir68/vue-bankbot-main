@@ -180,18 +180,7 @@ input[type="checkbox"] {
   font-size: 14px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
   width: 45%;
-}
-
-.custom-button:hover {
-  background-color: #172026;
-  color: #d3e9f9;
-}
-
-.custom-button:focus {
-  outline: none;
-  box-shadow: none;
 }
 
 /* Стиль для текстового поля */

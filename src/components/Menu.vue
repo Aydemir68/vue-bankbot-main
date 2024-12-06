@@ -95,7 +95,7 @@ export default {
           :class="{ active: activeTab === 'profile' }"
           @click="selectTab('profile')"
       >
-        <div class="button-content">
+        <div class="flex">
           <i class="pi pi-user"></i>
           <span class="button-label">Профиль</span>
         </div>
@@ -105,4 +105,8 @@ export default {
 </template>
 
 <style>
+* {
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: gray;
+}
 </style>

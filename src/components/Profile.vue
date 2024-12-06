@@ -1,5 +1,5 @@
 <template>
-  <div class="user-profile-full">
+  <div class="h-full">
     <div class="user-profile flex flex-column justify-content-center border-round-2xl m-2 pt-4">
       <!-- Блок с фото профиля и кнопкой -->
       <div class="profile-container align-items-center">
@@ -99,9 +99,7 @@ export default {
 };
 </script>
 <style scoped>
-.user-profile-full {
-  height: 94vh;
-}
+
 
 .profile-photo {
   border-radius: 50%;

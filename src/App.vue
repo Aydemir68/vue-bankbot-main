@@ -59,7 +59,7 @@ export default {
     <div class="flex justify-content-center align-items-center">
       <div v-for="i in items" :key="i" class="w-full hover:bg-primary-800 border-round h-3rem p-1">
         <RouterLink :to="i.link" class="text-gray-100">
-          <span :class="i.icon" class="flex flex-column align-items-center mx-2 hover:white" />
+          <span :class="i.icon" class="flex flex-column align-items-center mx-2" />
           <span class="label-class text-gray-100 mt-1">{{ i.label }}</span>
         </RouterLink>
       </div>
@@ -68,9 +68,4 @@ export default {
 </template>
 
 <style scoped>
-
-* {
-  user-select: none;
-}
-
 </style>

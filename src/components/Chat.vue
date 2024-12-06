@@ -1,13 +1,13 @@
 <template>
-  <div class="main-container flex flex-column w-full">
+  <div class="main-container flex flex-column w-screen">
       <div class="flex flex-column h-full overflow-y-scroll mx-1">
           <div v-for="message in messages" :key="message.id">
-            <div class="max-w-14rem bg-primary-500 p-1 border-round-lg" :class="{'flex user-message my-2': message.isUser, 'flex bot-message': !message.isUser}">
+            <div class="max-w-10rem bg-primary-500 p-1 border-round-lg" :class="{'flex user-message my-2': message.isUser, 'flex bot-message': !message.isUser}">
               {{ message.text }}
             </div>
           </div>
       </div>
-    <div class="input-container flex align-items-end p-3 h-fit">
+    <div class="input-container flex align-items-end p-3 h-5rem">
       <input
         type="text"
         v-model="newMessage"
