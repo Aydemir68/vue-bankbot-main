@@ -6,14 +6,44 @@
         <img class="profile-photo" :src="user.photoUrl" alt="Фото профиля" />
         <!-- Кнопка редактирования профиля под фото -->
         <div class="edit-profile mt-2">
-          <button @click="editProfile" class="text-white hover:bg-primary-800 active:bg-primary-600">Редактировать профиль</button>
+          <button @click="this.visible = true" class="text-white hover:bg-primary-800 active:bg-primary-600">Редактировать профиль</button>
         </div>
+        <Dialog v-model:visible="visible" modal header="Редактировать профиль" :style="{ width: '24rem' }">
+          <span class="text-surface-500 dark:text-surface-400 block mb-2">Обновите информацию о себе..</span>
+          <div class="flex items-center gap-4 mb-2">
+            <label class="font-semibold w-24 justify-content-center" >Фамилия</label>
+            <InputText id="username" class="flex-auto w-10rem" autocomplete="off" v-model="user_update.surname" />
+          </div>
+          <div class="flex items-center gap-4 mb-2">
+            <label class="font-semibold w-24 justify-content-center">Имя</label>
+            <InputText id="username" class="flex-auto" autocomplete="off" v-model="user_update.name"/>
+          </div>
+          <div class="flex items-center gap-4 mb-2">
+            <label class="font-semibold w-24 justify-content-center">Отчество</label>
+            <InputText id="username" class="flex-auto" autocomplete="off" v-model="user_update.patronymic"/>
+          </div>
+          <div class="flex items-center gap-4 mb-2">
+            <label class="font-semibold w-24 justify-content-center">Возраст</label>
+            <InputNumber v-model="user_update.age" inputId="integeronly" class="flex-auto" fluid />
+          </div>
+          <div class="flex items-center gap-4 mb-2">
+            <label class="font-semibold w-24 justify-content-center w-16rem">Регион</label>
+            <Select v-model="user_update.region" :options="cities" optionLabel="name" placeholder="Выберите регион"
+                    class="w-full md:w-56"/>
+          </div>
+
+
+          <div class="flex justify-end pt-2 gap-2">
+            <Button type="button" class="text-white" label="Отмена" severity="secondary" @click="cancel"></Button>
+            <Button type="button" class="text-white" label="Сохранить" @click="save"></Button>
+          </div>
+        </Dialog>
       </div>
 
       <!-- Информация о пользователе -->
       <div class="user-info mt-2 m">
-        <p><strong>ФИО:</strong> {{ user.fullName }}</p>
-        <p><strong>Имя пользователя:</strong> {{ username }}</p>
+        <p><strong>ФИО:</strong> {{ user.surname + ' ' + user.name + ' ' + user.patronymic }}</p>
+        <p><strong>Имя пользователя:</strong> {{ user.userName }}</p>
         <p><strong>Возраст:</strong> {{ user.age }}</p>
         <p><strong>Регион:</strong> {{ user.region }}</p>
       </div>
@@ -65,25 +95,61 @@
 
 <script>
 import instance from "../Api/instance.js";
+import Dialog from 'primevue/dialog';
+import InputText from 'primevue/inputtext'
+import InputNumber from 'primevue/inputnumber'
+import Select from 'primevue/select';
+import Button from "primevue/button";
 export default {
   data() {
     return {
       username: null,
+      visible: false,
       user: {
-        fullName: 'Иванов Иван Иванович',
+        surname: 'Иванов',
+        name: 'Иван',
+        patronymic: 'Иванович',
         userName: 'ivanov123',
         age: 30,
         region: 'Москва',
         photoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s' // Ссылка на фото профиля
       },
-      selectedCategory: 'events' // Начальная выбранная категория
+      user_update: {
+        surname: 'Иванов',
+        name: 'Иван',
+        patronymic: 'Иванович',
+        userName: 'ivanov123',
+        age: 30,
+        region: 'Москва',
+        photoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s' // Ссылка на фото профиля
+      },
+      selectedCategory: 'events', // Начальная выбранная категория
+      selectedCity: null,
+      cities: [
+        { name: 'Москва', code: 'MSC' },
+        { name: 'РД', code: 'RD' },
+        { name: 'КБР', code: 'KBR' },
+        { name: 'КЧР', code: 'KCHR' },
+        { name: 'ЧР', code: 'CHR' }
+      ]
     };
   },
-
+  components: {
+    Dialog,
+    InputText,
+    InputNumber,
+    Select,
+    Button
+  },
   methods: {
-    editProfile() {
-      // Логика редактирования профиля
-      console.log("Редактировать профиль");
+    save() {
+      this.user = this.user_update;
+      this.user.region = this.user_update.region.name;
+      this.visible = false;
+    },
+    cancel() {
+      this.user_update = this.user;
+      this.visible = false;
     },
     post_User_data: function() {
       let tg = window.Telegram.WebApp;
