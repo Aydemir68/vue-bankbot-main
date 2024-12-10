@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full">
+  <div class="">
     <div class="user-profile flex flex-column justify-content-center border-round-2xl m-2 pt-4">
       <!-- Блок с фото профиля и кнопкой -->
       <div class="profile-container align-items-center">
@@ -164,7 +164,9 @@ export default {
   },
 };
 </script>
+
 <style scoped>
+
 
 
 .profile-photo {

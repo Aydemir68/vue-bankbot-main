@@ -88,13 +88,13 @@ export default {
         type="text"
         v-model="searchQuery"
         placeholder="Поиск по имени..."
-        class="search-bar border-round p-2 m-1"
+        class="search-bar border-round p-3 m-2 mt-3 w-20rem"
     />
 
     <!-- Кнопки сортировки -->
     <div class="sort-buttons">
-      <button @click="sortBy('name')" class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2 m-2">Сортировать по имени</button>
-      <button @click="sortBy('date')" class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2">Сортировать по дате</button>
+      <button @click="sortBy('name')" class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2 m-2 w-10rem">Сортировать по имени</button>
+      <button @click="sortBy('date')" class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2 m-2 w-10rem">Сортировать по дате</button>
     </div>
 
     <!-- Список файлов -->
@@ -105,7 +105,7 @@ export default {
           class="file-item p-1"
           @click="selectTest(file)"
       >
-        <i class="pi pi-file" /> <!-- Иконка файла -->
+        <i class="pi pi-file mr-5" /> <!-- Иконка файла -->
         <div>
           <span class="file-name">{{ file.name }}</span>
           <small class="file-info">({{ file.date }})</small>
@@ -124,12 +124,12 @@ export default {
           </div>
 
           <div v-if="file.id === '1'">
-            <RouterLink :to="this.link1" class="start-test-button border-round-lg text-white bg-gray-800 p-2 m-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
+            <RouterLink :to="this.link1" class="start-test-button border-round-lg text-white bg-gray-800 pl-3 pr-3 p-2 mr-5 mb-1 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
               Пройти
             </RouterLink>
           </div>
           <div v-if="file.id === '2'">
-            <RouterLink :to="this.link2" class="start-test-button border-round-lg text-white bg-gray-800 p-2 m-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
+            <RouterLink :to="this.link2" class="start-test-button border-round-lg text-white bg-gray-800 pl-3 pr-3 p-2 mr-5 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
               Пройти
             </RouterLink>
           </div>
@@ -155,7 +155,6 @@ button{
 .file-items {
   background-color: rgb(66, 115, 195);
 }
-
 
 
 </style>

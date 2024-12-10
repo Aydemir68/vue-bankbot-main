@@ -1,10 +1,10 @@
 <template>
-  <div class="quiz-container overflow-scroll">
+  <div class="quiz-container h-full overflow-sroll p-2 w-full">
     <!-- Основной блок викторины -->
-    <div v-if="currentQuestionIndex < questions.length" class="question-container">
-      <h2>{{ questions[currentQuestionIndex].question }}</h2>
+    <div v-if="currentQuestionIndex < questions.length" class="question-container border-round-2xl p-3 min-w-full">
+      <div class="header text-lg font-bold text-justify mt-2">{{ questions[currentQuestionIndex].question }}</div>
 
-      <div class="answers">
+      <div class="answers mt-3">
         <div v-if="Array.isArray(questions[currentQuestionIndex].correct_answer)">
           <div
               v-for="(answer, index) in questions[currentQuestionIndex].answers"
@@ -46,7 +46,7 @@
               type="text"
               v-model="selectedAnswers[currentQuestionIndex]"
               placeholder="Введите ваш ответ"
-              class="text-input"
+              class="text-input border-round border-none p-2 w-16rem"
           />
         </div>
       </div>
@@ -64,17 +64,17 @@
     </div>
 
     <!-- Кнопки управления -->
-    <div class="button-container">
+    <div class="button-container mt-3">
       <button
-          class="custom-button"
+          class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800 mr-8"
           @click="goBack"
           :disabled="currentQuestionIndex === 0"
       >
         Назад
       </button>
       <button
-          class="custom-button"
-          @click="goNext"
+          class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
+          @click="goNext"А
       >
         {{ currentQuestionIndex === questions.length - 1 ? "Завершить" : "Вперед" }}
       </button>
@@ -118,80 +118,32 @@ export default {
 
 <style scoped>
 /* Основной контейнер викторины */
-.quiz-container {
-  height: 94dvh;
-  width: 46dvh;
-
-  background-color: #2a3f4f;
+.question-container {
+  height: 82vh;
+  width: 50vh;
+  /*background-color: #2a3f4f; */
+  background-color: rgb(66, 115, 195);
   color: #fff;
-  border-radius: 8px;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+  overflow: scroll;
 
-/* Заголовки */
-h2 {
-  font-size: 1.25rem;
-  text-align: center;
 }
-
 
 .answer {
-  margin-bottom: 10px;
+  text-align: left;
 }
 
 input[type="radio"] {
-  margin-right: 10px;
+  margin-right: 1vh;
 }
 
 input[type="checkbox"] {
-
   border-radius: 0;
   background-color: transparent;
 }
 
-
-/* Результаты */
-.results {
-  text-align: center;
-}
-
-.results ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-/* Кнопки управления викториной */
-.button-container {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 400px;
-}
-
-.custom-button {
-  background-color: #1b2934;
-  color: rgba(228, 228, 228, 0.865);
-  border: none;
-  padding: 10px 20px;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 45%;
-}
-
-/* Стиль для текстового поля */
-.text-input {
-  width: 100%;
-  padding: 8px;
-  margin-top: 10px;
-  font-size: 1rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
 input[type="checkbox"] {
   margin-right: 10px;
   width: 20px;
