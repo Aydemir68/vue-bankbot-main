@@ -9,6 +9,7 @@ import '/node_modules/primeflex/primeflex.css'
 import 'primeflex/themes/primeone-light.css'
 import 'primeicons/primeicons.css'
 import router from './router/index.js'
+import store from './store.js';
 
 const app = createApp(App);
 app.use(PrimeVue, {
@@ -22,4 +23,5 @@ app.use(PrimeVue, {
     }
 });
 app.use(router);
+app.use(store)
 app.mount('#app');
