@@ -104,7 +104,7 @@ export default {
   </div>
 </template>
 
-<style>
+<style scoped>
 * {
   -webkit-user-select: none;
   -webkit-tap-highlight-color: gray;

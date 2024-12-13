@@ -51,7 +51,7 @@ export default {
 };
 </script>
 
-<template>
+<template class="h-auto overflow-hidden">
   <div class="text-gray-100">
     <div class="flex flex-column">
       <RouterView />
@@ -68,4 +68,7 @@ export default {
 </template>
 
 <style scoped>
+* {
+  -webkit-tap-highlight-color: transparent;
+}
 </style>

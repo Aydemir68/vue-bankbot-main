@@ -2,7 +2,7 @@
   <div class="main-container flex flex-column w-screen">
       <div class="flex flex-column h-full overflow-y-scroll mx-1">
           <div v-for="message in messages" :key="message.id">
-            <div class="max-w-10rem bg-primary-500 p-1 border-round-lg" :class="{'flex user-message my-2': message.isUser, 'flex bot-message': !message.isUser}">
+            <div class="bg-primary-500 p-2 border-round-lg" :class="{'flex user-message my-2 max-w-16rem': message.isUser, 'flex bot-message max-w-16rem ': !message.isUser}">
               {{ message.text }}
             </div>
           </div>
@@ -23,6 +23,7 @@
 </template>
 
   <script>
+  import axios from "axios";
   export default {
     data() {
       return {
@@ -32,16 +33,61 @@
       };
     },
     methods: {
-      sendMessage() {
+      async sendMessage() {
         if (this.newMessage.trim()) {
-          // Сохраняем сообщение пользователя
+          // Сохраняем сообщение пользователя в список сообщений
           this.messages.push({ id: this.messageId++, text: this.newMessage, isUser: true });
+
+          // Сохраняем текст сообщения перед очисткой
+          const userMessage = this.newMessage;
           this.newMessage = '';
-  
-          // Отправляем ответ
-          setTimeout(() => {
-            this.messages.push({ id: this.messageId++, text: 'Отправлено', isUser: false });
-          }, 500); // Имитация задержки перед ответом
+
+          try {
+            // Отправляем сообщение пользователя на сервер через POST-запрос
+            await axios.post("http://127.0.0.1:8000/api/v1/chat/generation?chat_id=c1d08391-8545-4676-abe8-8a92f52ec88c&use_rag=true&extract_keywords=true&stream=true\n", {
+              role: "user",
+              content: userMessage,
+              params: {
+                chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c",
+                use_rag: true,
+                extract_keywords: true,
+                stream: true,
+              },
+            });
+
+            // Отправляем запрос на получение списка сообщений
+            const response = await axios.get("http://127.0.0.1:8000/api/v1/chat/message/list", {
+              params: { chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c" },
+            });
+
+            // Ищем первое сообщение от ассистента
+            if (Array.isArray(response.data) && response.data.length > 0) {
+              const assistantMessage = response.data.find(msg => msg.role === "assistant");
+
+              if (assistantMessage) {
+                this.messages.push({
+                  id: this.messageId++,
+                  text: assistantMessage.content, // Добавляем поле content из ответа
+                  isUser: false,
+                });
+              } else {
+                this.messages.push({
+                  id: this.messageId++,
+                  text: "Ответ от ассистента не найден.",
+                  isUser: false,
+                });
+              }
+            } else {
+              this.messages.push({
+                id: this.messageId++,
+                text: "Ответ пуст или неверный.",
+                isUser: false,
+              });
+            }
+          } catch (error) {
+            console.error("Ошибка при отправке сообщения:", error);
+            this.messages.push({ id: this.messageId++, text: "Произшола ошибка. Пожалуйста, попробуйте позже", isUser: false });
+          }
         }
       },
     },
@@ -52,14 +98,17 @@
 
 .main-container{
   height: 94vh;
-  background-color: #2A3F4F;;
+  background-color: #2A3F4F;
+  overflow: auto;
 }
 
 .user-message {
-  background-color: #009688; /* Цвет для сообщений пользователя */
+  background-color: #009688; /* Цвет для сообщений пользователя */ 
   color: white;
   margin-left: auto; /* Выравнивание вправо */
   font-size: medium;
+  text-align: justify;
+  margin-top: 0.5rem;
 }
 
 .bot-message {
@@ -67,5 +116,8 @@
   color: white;
   margin-right: auto; /* Выравнивание влево */
   font-size: medium;
+  text-align: justify;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 </style>
