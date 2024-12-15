@@ -66,17 +66,29 @@
     <!-- Кнопки управления -->
     <div class="button-container mt-3">
       <button
-          class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800 mr-8"
+          class="custom-button bg-gray-900 border-round text-white active:bg-primary-600 hover:bg-primary-800 mr-8"
           @click="goBack"
           :disabled="currentQuestionIndex === 0"
       >
         Назад
       </button>
+
       <button
+      v-if="currentQuestionIndex === questions.length - 1"
+      :to="link"
+      class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
+        <router-link :to="link" class="text-white no-underline">
+          Завершить
+        </router-link>
+      </button>
+      
+      
+      <button
+          v-else
           class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
-          @click="goNext"А
+          @click="goNext"
       >
-        {{ currentQuestionIndex === questions.length - 1 ? "Завершить" : "Вперед" }}
+        Вперед
       </button>
     </div>
   </div>
@@ -93,6 +105,7 @@ export default {
       selectedAnswers: [],
       test: null,
       questions: questions.questions, // Подключаем вопросы из JSON
+      link: '/test'
     };
   },
   setup(){
@@ -133,6 +146,10 @@ export default {
 
 .answer {
   text-align: left;
+}
+
+.custom-button {
+  height: 3rem;
 }
 
 input[type="radio"] {

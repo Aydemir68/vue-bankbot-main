@@ -86,7 +86,7 @@
             }
           } catch (error) {
             console.error("Ошибка при отправке сообщения:", error);
-            this.messages.push({ id: this.messageId++, text: "Произшола ошибка. Пожалуйста, попробуйте позже", isUser: false });
+            this.messages.push({ id: this.messageId++, text: "Произошла ошибка. Пожалуйста, попробуйте позже", isUser: false });
           }
         }
       },
