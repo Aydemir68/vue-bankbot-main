@@ -73,8 +73,7 @@
         Назад
       </button>
 
-      <Toast />
-      <button @click=""
+      <button @click="notify"
       v-if="currentQuestionIndex === questions.length - 1"
       :to="link"
       class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
@@ -91,6 +90,7 @@
       >
         Вперед
       </button>
+
     </div>
   </div>
 </template>
@@ -99,6 +99,9 @@
 import questions from './Vhod.json';
 import {ref} from "vue";
 import {useToast} from "primevue";
+import { Zoom } from 'vue3-toastify';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
   data() {
@@ -111,14 +114,23 @@ export default {
     };
   },
   setup(){
-    const checked = ref([])
-    const toast = useToast();
+    //const checked = ref([])
+    //const toast = useToast();
 
-    const show = () => {
-      toast.add({ severity: 'info', summary: 'Спасибо!', detail: 'Спасибо за прохожджение опроса! Ваш ответ отправлен!', life: 5000 });
-    };
-    return { checked, show }
+    //const show = () => {
+    //  toast.add({ severity: 'info', summary: 'Спасибо!', detail: 'Спасибо за прохожджение опроса! Ваш ответ отправлен!', life: 5000 });
+    //};
+    //return { checked, show }
+
+    const notify = () => {
+      toast('Отправлено!',{ life: 2000 });
+    }
+    return { notify };
+
   },
+
+  
+
   methods: {
     goNext() {
       if (this.currentQuestionIndex < this.questions.length - 1) {

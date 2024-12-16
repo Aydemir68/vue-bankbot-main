@@ -1,7 +1,7 @@
 <template>
   <div class="news overflow-auto">
     <!-- <h1 class="news-title">Новости</h1> -->
-    <div v-for="(news, index) in newsItems" :key="index" class="news-item text-gray-100 text-xl">
+    <div v-for="(news, index) in newsItems" :key="index" class="news-item text-gray-100 text-l">
       <div class="news-content border-round-xl m-2 p-1 pb-2">
         <h2 class="news-header">{{ news.title }}</h2>
         <img :src="news.image" :alt="news.title" class="image align-items-center justify-content-center border-round" />
