@@ -8,6 +8,7 @@ import './style.css'
 import '/node_modules/primeflex/primeflex.css'
 import 'primeflex/themes/primeone-light.css'
 import 'primeicons/primeicons.css'
+import ToastService from 'primevue/toastservice';
 import router from './router/index.js'
 import store from './store.js';
 
@@ -23,5 +24,6 @@ app.use(PrimeVue, {
     }
 });
 app.use(router);
-app.use(store)
+app.use(store);
+app.use(ToastService);
 app.mount('#app');

@@ -5,6 +5,7 @@ import Test from "./components/Test.vue";
 import News from "./components/News.vue";
 import Chat from "./components/Chat.vue";
 import Opros_vhod from "./components/Opros_vhod.vue";
+import Toast from 'primevue/toast';
 export default {
 
   components: {
@@ -13,7 +14,8 @@ export default {
     Test,
     News,
     Chat,
-    Opros_vhod
+    Toast,
+    Opros_vhod,
   },
   data() {
     return {

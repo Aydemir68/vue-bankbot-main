@@ -73,7 +73,8 @@
         Назад
       </button>
 
-      <button
+      <Toast />
+      <button @click=""
       v-if="currentQuestionIndex === questions.length - 1"
       :to="link"
       class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
@@ -97,6 +98,7 @@
 <script>
 import questions from './Vhod.json';
 import {ref} from "vue";
+import {useToast} from "primevue";
 
 export default {
   data() {
@@ -110,7 +112,12 @@ export default {
   },
   setup(){
     const checked = ref([])
-    return { checked }
+    const toast = useToast();
+
+    const show = () => {
+      toast.add({ severity: 'info', summary: 'Спасибо!', detail: 'Спасибо за прохожджение опроса! Ваш ответ отправлен!', life: 5000 });
+    };
+    return { checked, show }
   },
   methods: {
     goNext() {
