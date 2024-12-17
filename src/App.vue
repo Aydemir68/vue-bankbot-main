@@ -53,18 +53,16 @@ export default {
 };
 </script>
 
-<template class="h-auto overflow-hidden">
-  <div class="text-gray-100">
-    <div class="flex flex-column">
-      <RouterView />
-    </div>
-    <div class="flex justify-content-center align-items-center">
-      <div v-for="i in items" :key="i" class="w-full hover:bg-primary-800 border-round h-3rem p-1">
-        <RouterLink :to="i.link" class="text-gray-100">
-          <span :class="i.icon" class="flex flex-column align-items-center mx-2" />
-          <span class="label-class text-gray-100 mt-1">{{ i.label }}</span>
-        </RouterLink>
-      </div>
+<template class="flex h-screen max-h-screen overflow-auto max-w-450px">
+  <div class="flex flex-column text-gray-100 w-full max-w-450px">
+    <RouterView />
+  </div>
+  <div class="flex justify-content-center align-items-center w-full max-w-450px">
+    <div v-for="i in items" :key="i" class="w-full hover:bg-primary-800 h-3rem pt-1">
+      <RouterLink :to="i.link" class="text-gray-100 w-full h-full">
+        <span :class="i.icon" class="flex flex-column align-items-center mx-2" />
+        <span class="label-class text-gray-100">{{ i.label }}</span>
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -72,5 +70,10 @@ export default {
 <style scoped>
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+.max-w-450px {
+  max-width: 450px;
+  width: 100%;
 }
 </style>

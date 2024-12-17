@@ -80,9 +80,7 @@ export default {
 </script>
 
 <template>
-  <div class="file-list">
-    <!-- <h2 class="file-list-title">Список тестов</h2> -->
-
+  <div class="file-list w-full">
     <!-- Поле для поиска -->
     <input
         type="text"
