@@ -5,6 +5,7 @@
       <div class="header text-lg font-bold text-justify mt-2">{{ questions[currentQuestionIndex].question }}</div>
 
       <div class="answers mt-3">
+
         <div v-if="Array.isArray(questions[currentQuestionIndex].correct_answer)">
           <div
               v-for="(answer, index) in questions[currentQuestionIndex].answers"
@@ -41,7 +42,7 @@
         </div>
 
         <!-- Если вариантов ответов нет, отображаем поле для ввода текста -->
-        <div v-else>
+        <div v-else-if="questions[currentQuestionIndex].correct_answer != 'без ответа'" >
           <input
               type="text"
               v-model="selectedAnswers[currentQuestionIndex]"
@@ -73,10 +74,11 @@
         Назад
       </button>
 
-      <button @click="notify"
+      <button @click="show()"
       v-if="currentQuestionIndex === questions.length - 1"
       :to="link"
-      class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
+      class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
+      >
         <router-link :to="link" class="text-white no-underline">
           Завершить
         </router-link>
@@ -92,8 +94,6 @@
 
       <Toast />
 
-      <button @click="show()"></button>
-
     </div>
   </div>
 </template>
@@ -103,6 +103,7 @@ import questions from './Vhod.json';
 import {ref} from "vue";
 import Toast from 'primevue/toast';
 import { useToast } from "primevue/usetoast";
+import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
 export default {
@@ -119,10 +120,9 @@ export default {
     Toast,
   },
   setup(){
-
+  
     const toast = useToast();
     const checked = ref([])
-
     const show = () => {
      toast.add({ severity: 'info', summary: 'Спасибо!', detail: 'Спасибо за прохожджение опроса! Ваш ответ отправлен!', life: 5000 });
     };
