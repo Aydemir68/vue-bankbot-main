@@ -81,8 +81,7 @@
           Завершить
         </router-link>
       </button>
-      
-      
+
       <button
           v-else
           class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
@@ -91,6 +90,10 @@
         Вперед
       </button>
 
+      <Toast />
+
+      <button @click="show()"></button>
+
     </div>
   </div>
 </template>
@@ -98,9 +101,8 @@
 <script>
 import questions from './Vhod.json';
 import {ref} from "vue";
-import {useToast} from "primevue";
-import { Zoom } from 'vue3-toastify';
-import { toast } from 'vue3-toastify';
+import Toast from 'primevue/toast';
+import { useToast } from "primevue/usetoast";
 import 'vue3-toastify/dist/index.css';
 
 export default {
@@ -113,23 +115,20 @@ export default {
       link: '/test'
     };
   },
+  components: {
+    Toast,
+  },
   setup(){
-    //const checked = ref([])
-    //const toast = useToast();
 
-    //const show = () => {
-    //  toast.add({ severity: 'info', summary: 'Спасибо!', detail: 'Спасибо за прохожджение опроса! Ваш ответ отправлен!', life: 5000 });
-    //};
-    //return { checked, show }
+    const toast = useToast();
+    const checked = ref([])
 
-    const notify = () => {
-      toast('Отправлено!',{ life: 2000 });
-    }
-    return { notify };
-
+    const show = () => {
+     toast.add({ severity: 'info', summary: 'Спасибо!', detail: 'Спасибо за прохожджение опроса! Ваш ответ отправлен!', life: 5000 });
+    };
+    return { checked, show }
   },
 
-  
 
   methods: {
     goNext() {
@@ -163,6 +162,18 @@ export default {
 
 }
 
+.Vue-Toastification__toast--default.my-custom-toast-class {
+  background-color: blue;
+}
+
+.Vue-Toastification__toast-body.custom-class-1 {
+  font-size: 30px;
+}
+
+.Vue-Toastification__toast-component-body.custom-class-2 {
+  width: 100%;
+}
+
 .answer {
   text-align: left;
 }
@@ -188,5 +199,6 @@ input[type="checkbox"] {
   border: 2px solid #fff;
   background-color: transparent;
 }
+
 
 </style>
