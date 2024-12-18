@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     goToOpros() {
-      this.$router.push('/opros');
+      this.$router.push('/test/test');
     },
     // Меняем поле и порядок сортировки
     sortBy(field) {
@@ -127,6 +127,7 @@ export default {
           <p><strong>Процент правильных ответов:</strong> {{ file.correctPercentage }}%</p>
           <p><strong>Количество попыток:</strong> {{ file.attempts }}</p>
 
+<<<<<<< Updated upstream
           <div v-if="file.id === '1'">
             <RouterLink :to="this.link1" class="start-test-button border-round-lg text-white bg-gray-800 pl-3 pr-3 p-2 mr-5 mb-1 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
               Пройти
@@ -142,6 +143,16 @@ export default {
               Пройти
             </RouterLink>
           </div>
+=======
+            <button
+                class="flex px-4 py-2 items-center cursor-pointer hover:text-white
+                            active:bg-black-alpha-10 text-gray-900 no-underline"
+                @click="goToOpros"
+            >
+              Пройти
+            </button>
+
+>>>>>>> Stashed changes
         </div>
       </li>
     </ul>
