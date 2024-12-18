@@ -58,7 +58,7 @@ export default {
   </div>
   <div class="flex justify-content-center align-items-center w-screen">
     <div v-for="i in items" :key="i" class="w-full hover:bg-primary-800 h-3rem pt-1">
-      <RouterLink :to="i.link" class="flex flex-column text-gray-100 w-full h-full justify-content-center mx-1">
+      <RouterLink :to="i.link" class="flex flex-column text-gray-100 w-full h-full justify-content-center">
         <span :class="i.icon" class="w-full align-items-center mt-1" />
         <span class="label-class text-gray-100">{{ i.label }}</span>
       </RouterLink>
