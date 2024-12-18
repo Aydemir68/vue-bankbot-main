@@ -1,16 +1,29 @@
 <template>
-  <div class="quiz-container w-screen p-2">
+<<<<<<< Updated upstream
+  <div class="quiz-container h-full overflow-sroll p-2 w-full">
     <!-- Основной блок викторины -->
-    <div v-if="currentQuestionIndex < questions.length" class="question-container border-round-2xl p-3 h-full w-full overflow-y-scroll">
+    <div v-if="currentQuestionIndex < questions.length" class="question-container border-round-2xl p-3 min-w-full">
       <div class="header text-lg font-bold text-justify mt-2">{{ questions[currentQuestionIndex].question }}</div>
 
       <div class="answers mt-3">
+
         <div v-if="Array.isArray(questions[currentQuestionIndex].correct_answer)">
+=======
+  <div class="quiz-container">
+    <!-- Основной блок викторины -->
+    <div v-if="currentQuestionIndex < questions.length" class="question-container">
+      <h2>{{ questions[currentQuestionIndex].question }}</h2>
+
+      <div class="answers">
+        <!-- Если вопрос позволяет несколько правильных ответов, используем чекбоксы -->
+        <div v-if="questions[currentQuestionIndex].multiple">
+>>>>>>> Stashed changes
           <div
               v-for="(answer, index) in questions[currentQuestionIndex].answers"
               :key="index"
               class="answer"
           >
+<<<<<<< Updated upstream
             <input
                 type="checkbox"
                 :id="'answer-' + currentQuestionIndex + '-' + index"
@@ -24,6 +37,20 @@
         </div>
         <!-- Если вопрос не позволяет несколько правильных ответов, используем радиокнопки -->
         <div v-else-if="questions[currentQuestionIndex].answers && questions[currentQuestionIndex].answers.length > 0">
+=======
+
+            <Checkbox
+                :input-id="'answer-' + index"
+                :value="answer"
+                v-model="selectedAnswers[currentQuestionIndex]"
+            />
+            <label :for="'answer-' + index">{{ answer }}</label>
+          </div>
+        </div>
+
+        <!-- Если вопрос не позволяет несколько правильных ответов, используем радиокнопки -->
+        <div v-else>
+>>>>>>> Stashed changes
           <div
               v-for="(answer, index) in questions[currentQuestionIndex].answers"
               :key="index"
@@ -41,12 +68,20 @@
         </div>
 
         <!-- Если вариантов ответов нет, отображаем поле для ввода текста -->
-        <div v-else>
+<<<<<<< Updated upstream
+        <div v-else-if="questions[currentQuestionIndex].correct_answer != 'без ответа'" >
+=======
+        <div v-if="!questions[currentQuestionIndex].answers || questions[currentQuestionIndex].answers.length === 0">
+>>>>>>> Stashed changes
           <input
               type="text"
               v-model="selectedAnswers[currentQuestionIndex]"
               placeholder="Введите ваш ответ"
+<<<<<<< Updated upstream
               class="text-input border-round border-none p-2 w-16rem"
+=======
+              class="text-input"
+>>>>>>> Stashed changes
           />
         </div>
       </div>
@@ -64,20 +99,30 @@
     </div>
 
     <!-- Кнопки управления -->
+<<<<<<< Updated upstream
     <div class="button-container mt-3">
       <button
           class="custom-button bg-gray-900 border-round text-white active:bg-primary-600 hover:bg-primary-800 mr-8"
+=======
+    <div class="button-container">
+      <button
+          class="custom-button"
+>>>>>>> Stashed changes
           @click="goBack"
           :disabled="currentQuestionIndex === 0"
       >
         Назад
       </button>
+<<<<<<< Updated upstream
 
-      <Toast />
-      <button @click="complete"
-              v-if="currentQuestionIndex === questions.length - 1"
-              class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
-        Завершить
+      <button @click="show()"
+      v-if="currentQuestionIndex === questions.length - 1"
+      :to="link"
+      class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
+      >
+        <router-link :to="link" class="text-white no-underline">
+          Завершить
+        </router-link>
       </button>
 
       <button
@@ -87,32 +132,61 @@
       >
         Вперед
       </button>
+
+      <Toast />
+
+=======
+      <button
+          class="custom-button"
+          @click="goNext"
+      >
+        {{ currentQuestionIndex === questions.length - 1 ? "Завершить" : "Вперед" }}
+      </button>
+>>>>>>> Stashed changes
     </div>
   </div>
 </template>
 
 <script>
+<<<<<<< Updated upstream
 import questions from './Vhod.json';
 import {ref} from "vue";
 import Toast from 'primevue/toast';
+import { useToast } from "primevue/usetoast";
+import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+=======
+// Импортируем JSON с вопросами
+import Checkbox from 'primevue/checkbox';
+
+import questions from './questions.json';
+>>>>>>> Stashed changes
 
 export default {
   data() {
     return {
       currentQuestionIndex: 0,
       selectedAnswers: [],
+<<<<<<< Updated upstream
       test: null,
       questions: questions.questions, // Подключаем вопросы из JSON
       link: '/test'
+=======
+      questions: questions.questions, // Подключаем вопросы из JSON
+>>>>>>> Stashed changes
     };
   },
   components: {
     Toast,
   },
-  setup() {
+  setup(){
+  
+    const toast = useToast();
     const checked = ref([])
-    return { checked };
+    const show = () => {
+     toast.add({ severity: 'info', summary: 'Спасибо!', detail: 'Спасибо за прохожджение опроса! Ваш ответ отправлен!', life: 5000 });
+    };
+    return { checked, show }
   },
 
 
@@ -129,34 +203,36 @@ export default {
         this.currentQuestionIndex--;
       }
     },
-    complete() {
-
-      this.$router.push('/test');
-
-    }
   },
 };
 </script>
 
 <style scoped>
-.quiz-container {
-  height: 94vh;
-  background-color: #2a3f4f;
-  color: #fff;
-  border-radius: 8px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 /* Основной контейнер викторины */
+<<<<<<< Updated upstream
 .question-container {
+  height: 82vh;
+  width: 50vh;
+  /*background-color: #2a3f4f; */
   background-color: rgb(66, 115, 195);
   color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: scroll;
+
+}
+
+.Vue-Toastification__toast--default.my-custom-toast-class {
+  background-color: blue;
+}
+
+.Vue-Toastification__toast-body.custom-class-1 {
+  font-size: 30px;
+}
+
+.Vue-Toastification__toast-component-body.custom-class-2 {
+  width: 100%;
 }
 
 .answer {
@@ -174,6 +250,41 @@ input[type="radio"] {
 input[type="checkbox"] {
   border-radius: 0;
   background-color: transparent;
+=======
+.quiz-container {
+  height: 90vh;
+  width: 46dvh;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #2a3f4f;
+  color: #fff;
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Заголовки */
+h2 {
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Ответы */
+.answers {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.answer {
+  margin-bottom: 10px;
+}
+
+input[type="radio"] {
+  margin-right: 10px;
+>>>>>>> Stashed changes
 }
 
 input[type="checkbox"] {
@@ -185,5 +296,74 @@ input[type="checkbox"] {
   background-color: transparent;
 }
 
+<<<<<<< Updated upstream
+=======
+label {
+  font-size: 1rem;
+}
+
+/* Результаты */
+.results {
+  text-align: center;
+}
+
+.results ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.results li {
+  margin-bottom: 10px;
+}
+
+/* Кнопки управления викториной */
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 400px;
+}
+
+.custom-button {
+  background-color: #1b2934;
+  color: rgba(228, 228, 228, 0.865);
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  width: 45%;
+}
+
+.custom-button:hover {
+  background-color: #172026;
+  color: #d3e9f9;
+}
+
+.custom-button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Стиль для текстового поля */
+.text-input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+input[type="checkbox"] {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 0;
+  border: 2px solid #fff;
+  background-color: transparent;
+}
+>>>>>>> Stashed changes
 
 </style>
