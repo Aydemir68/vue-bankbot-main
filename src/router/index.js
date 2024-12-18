@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Test from "../components/Test.vue";
 import Opros_vhod from "../components/Opros_vhod.vue";
 import Opros_vihod from "../components/Opros_vihod.vue";
-import third_opros from "../components/Third_opros.vue";
 import News from "../components/News.vue";
 import Chat from "../components/Chat.vue";
 import Profile from "../components/Profile.vue";
@@ -17,7 +16,6 @@ const routes = [
     { path: '/user', component: Profile },
     { path: '/test/test1', component: Opros_vhod},
     { path: '/test/test2', component: Opros_vihod},
-    { path: '/test/test3', component: third_opros},
 ];
 
 const router = createRouter({

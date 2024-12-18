@@ -64,7 +64,6 @@
     </div>
 
     <!-- Кнопки управления -->
-    <!-- Кнопки управления -->
     <div class="button-container">
       <button
           class="custom-button"
@@ -72,12 +71,6 @@
           :disabled="currentQuestionIndex === 0"
       >
         Назад
-      </button>
-      <button
-          class="custom-button"
-          @click="askAI"
-      >
-        Спросить у ИИ
       </button>
       <button
           class="custom-button"
