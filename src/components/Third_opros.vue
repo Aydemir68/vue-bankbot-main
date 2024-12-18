@@ -64,7 +64,6 @@
     </div>
 
     <!-- Кнопки управления -->
-    <!-- Кнопки управления -->
     <div class="button-container">
       <button
           class="custom-button"
@@ -75,10 +74,14 @@
       </button>
       <button
           class="custom-button"
-          @click="askAI"
+          @click="showModal"
       >
         Спросить у ИИ
       </button>
+      <modal
+          :isVisible="isModalVisible"
+          @close="closeModal"
+      />
       <button
           class="custom-button"
           @click="goNext"
@@ -86,25 +89,29 @@
         {{ currentQuestionIndex === questions.length - 1 ? "Завершить" : "Вперед" }}
       </button>
     </div>
+
   </div>
 </template>
 
 <script>
-import questions from './Vihod.json';
+import questions from './questions.json';
 import {ref} from "vue";
+import modal from "./modal.vue";
 
 export default {
+  components: {modal},
   data() {
     return {
+      isModalVisible: false,
       currentQuestionIndex: 0,
       selectedAnswers: [],
       test: null,
       questions: questions.questions, // Подключаем вопросы из JSON
     };
   },
-  setup(){
+  setup() {
     const checked = ref([])
-    return { checked }
+    return {checked}
   },
   methods: {
     goNext() {
@@ -119,6 +126,12 @@ export default {
         this.currentQuestionIndex--;
       }
     },
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+    }
   },
 };
 </script>
@@ -199,6 +212,7 @@ input[type="checkbox"] {
   border-radius: 4px;
   border: 1px solid #ccc;
 }
+
 input[type="checkbox"] {
   margin-right: 10px;
   width: 20px;

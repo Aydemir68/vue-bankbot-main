@@ -1,13 +1,18 @@
 <script>
 import Opros_vhod from "./Opros_vhod.vue";
+import Opros_vihod from "./Opros_vihod.vue";
+import third_opros from "./Third_opros.vue";
 export default {
   components: {
     Opros_vhod,
+    Opros_vihod,
+    third_opros
   },
   data() {
     return {
       link1: "/test/test1",
       link2: "/test/test2",
+      link3: "/test/test3",
       searchQuery: "", // Переменная для поиска
       sortByField: "name", // Поле для сортировки (по умолчанию "name")
       sortOrder: 1, // Порядок сортировки: 1 для возрастания, -1 для убывания
@@ -30,8 +35,15 @@ export default {
           correctPercentage: 0,
           attempts: 1,
           json: "./Vihod.json",
+        },        {
+          id: '3',
+          name: "Исследование инфляции и финансовой грамотности",
+          date: "12.11.2024",
+          isPassed: false,
+          correctPercentage: 0,
+          attempts: 1,
+          json: ".questions.json",
         },
-
       ],
     };
   },
@@ -115,12 +127,6 @@ export default {
           <p><strong>Процент правильных ответов:</strong> {{ file.correctPercentage }}%</p>
           <p><strong>Количество попыток:</strong> {{ file.attempts }}</p>
 
-          <div v-if="file.id === 1">
-            <RouterLink :to="this.link(file.id)" class="start-test-button border-round-lg text-white bg-gray-800 p-2 m-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
-              Пройти
-            </RouterLink>
-          </div>
-
           <div v-if="file.id === '1'">
             <RouterLink :to="this.link1" class="start-test-button border-round-lg text-white bg-gray-800 pl-3 pr-3 p-2 mr-5 mb-1 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
               Пройти
@@ -131,7 +137,11 @@ export default {
               Пройти
             </RouterLink>
           </div>
-
+          <div v-if="file.id === '3'">
+            <RouterLink :to="this.link3" class="start-test-button border-round-lg text-white bg-gray-800 pl-3 pr-3 p-2 mr-5 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
+              Пройти
+            </RouterLink>
+          </div>
         </div>
       </li>
     </ul>
