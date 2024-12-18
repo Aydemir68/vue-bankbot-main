@@ -119,8 +119,8 @@ export default {
 <style scoped>
 /* Основной контейнер викторины */
 .quiz-container {
-  height: 94dvh;
-  width: 46dvh;
+  height: 94vh;
+  width: 100%;
 
   background-color: #2a3f4f;
   color: #fff;

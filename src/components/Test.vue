@@ -1,9 +1,6 @@
 <script>
-import Opros_vhod from "./Opros_vhod.vue";
+
 export default {
-  components: {
-    Opros_vhod,
-  },
   data() {
     return {
       link1: "/test/test1",
@@ -54,9 +51,6 @@ export default {
     },
   },
   methods: {
-    goToOpros() {
-      this.$router.push('/opros');
-    },
     // Меняем поле и порядок сортировки
     sortBy(field) {
       if (this.sortByField === field) {
@@ -114,13 +108,6 @@ export default {
           <p><strong>Статус:</strong> {{ file.isPassed ? 'Пройден' : 'Не пройден' }}</p>
           <p><strong>Процент правильных ответов:</strong> {{ file.correctPercentage }}%</p>
           <p><strong>Количество попыток:</strong> {{ file.attempts }}</p>
-
-          <div v-if="file.id === 1">
-            <RouterLink :to="this.link(file.id)" class="start-test-button border-round-lg text-white bg-gray-800 p-2 m-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
-              Пройти
-            </RouterLink>
-          </div>
-
           <div v-if="file.id === '1'">
             <RouterLink :to="this.link1" class="start-test-button border-round-lg text-white bg-gray-800 pl-3 pr-3 p-2 mr-5 mb-1 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
               Пройти

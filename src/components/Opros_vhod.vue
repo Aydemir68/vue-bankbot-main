@@ -1,7 +1,7 @@
 <template>
-  <div class="quiz-container h-full overflow-sroll p-2 w-full">
+  <div class="quiz-container w-screen p-2">
     <!-- Основной блок викторины -->
-    <div v-if="currentQuestionIndex < questions.length" class="question-container border-round-2xl p-3 min-w-full">
+    <div v-if="currentQuestionIndex < questions.length" class="question-container border-round-2xl p-3 h-full w-full overflow-y-scroll">
       <div class="header text-lg font-bold text-justify mt-2">{{ questions[currentQuestionIndex].question }}</div>
 
       <div class="answers mt-3">
@@ -73,13 +73,11 @@
         Назад
       </button>
 
-      <button @click="notify"
-      v-if="currentQuestionIndex === questions.length - 1"
-      :to="link"
-      class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
-        <router-link :to="link" class="text-white no-underline">
-          Завершить
-        </router-link>
+      <Toast />
+      <button @click="complete"
+              v-if="currentQuestionIndex === questions.length - 1"
+              class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
+        Завершить
       </button>
 
       <button
@@ -89,11 +87,6 @@
       >
         Вперед
       </button>
-
-      <Toast />
-
-      <button @click="show()"></button>
-
     </div>
   </div>
 </template>
@@ -102,7 +95,6 @@
 import questions from './Vhod.json';
 import {ref} from "vue";
 import Toast from 'primevue/toast';
-import { useToast } from "primevue/usetoast";
 import 'vue3-toastify/dist/index.css';
 
 export default {
@@ -118,15 +110,9 @@ export default {
   components: {
     Toast,
   },
-  setup(){
-
-    const toast = useToast();
+  setup() {
     const checked = ref([])
-
-    const show = () => {
-     toast.add({ severity: 'info', summary: 'Спасибо!', detail: 'Спасибо за прохожджение опроса! Ваш ответ отправлен!', life: 5000 });
-    };
-    return { checked, show }
+    return { checked };
   },
 
 
@@ -143,35 +129,34 @@ export default {
         this.currentQuestionIndex--;
       }
     },
+    complete() {
+
+      this.$router.push('/test');
+
+    }
   },
 };
 </script>
 
 <style scoped>
+.quiz-container {
+  height: 94vh;
+  background-color: #2a3f4f;
+  color: #fff;
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* Основной контейнер викторины */
 .question-container {
-  height: 82vh;
-  width: 50vh;
-  /*background-color: #2a3f4f; */
   background-color: rgb(66, 115, 195);
   color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: scroll;
-
-}
-
-.Vue-Toastification__toast--default.my-custom-toast-class {
-  background-color: blue;
-}
-
-.Vue-Toastification__toast-body.custom-class-1 {
-  font-size: 30px;
-}
-
-.Vue-Toastification__toast-component-body.custom-class-2 {
-  width: 100%;
 }
 
 .answer {

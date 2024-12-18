@@ -7,7 +7,6 @@ import Chat from "./components/Chat.vue";
 import Opros_vhod from "./components/Opros_vhod.vue";
 import Toast from 'primevue/toast';
 export default {
-
   components: {
     Menu,
     Profile,
@@ -53,14 +52,14 @@ export default {
 };
 </script>
 
-<template class="flex h-screen max-h-screen overflow-auto max-w-450px">
-  <div class="flex flex-column text-gray-100 w-full max-w-450px">
+<template class="flex h-screen max-h-screen w-screen">
+  <div class="flex flex-column text-gray-100 w-full h-full">
     <RouterView />
   </div>
-  <div class="flex justify-content-center align-items-center w-full max-w-450px">
+  <div class="flex justify-content-center align-items-center w-screen">
     <div v-for="i in items" :key="i" class="w-full hover:bg-primary-800 h-3rem pt-1">
-      <RouterLink :to="i.link" class="text-gray-100 w-full h-full">
-        <span :class="i.icon" class="flex flex-column align-items-center mx-2" />
+      <RouterLink :to="i.link" class="flex flex-column text-gray-100 w-full h-full justify-content-center mx-1">
+        <span :class="i.icon" class="w-full align-items-center mt-1" />
         <span class="label-class text-gray-100">{{ i.label }}</span>
       </RouterLink>
     </div>
@@ -70,10 +69,7 @@ export default {
 <style scoped>
 * {
   -webkit-tap-highlight-color: transparent;
-}
-
-.max-w-450px {
-  max-width: 450px;
-  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 </style>
