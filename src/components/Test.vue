@@ -90,42 +90,47 @@ export default {
     </div>
 
     <!-- Список файлов -->
-    <ul class="file-items border-round-xl m-2">
-      <li
+    <div class="file-items flex flex-column justify-content-center align-items-center border-round-xl m-2">
+      <div
           v-for="file in filteredFiles"
           :key="file.name"
-          class="file-item p-1"
-          @click="selectTest(file)"
-      >
-        <i class="pi pi-file mr-5" /> <!-- Иконка файла -->
+          class="p-1"
+          @click="selectTest(file)">
+
+        <i class="pi pi-file" /> <!-- Иконка файла -->
         <div>
           <span class="file-name">{{ file.name }}</span>
           <small class="file-info">({{ file.date }})</small>
         </div>
 
         <!-- Информация о выбранном тесте (отображается только если выбран тест) -->
-        <div v-if="selectedFile === file" class="test-details p-1">
+        <div v-if="selectedFile === file" class="p-1">
           <p><strong>Статус:</strong> {{ file.isPassed ? 'Пройден' : 'Не пройден' }}</p>
           <p><strong>Процент правильных ответов:</strong> {{ file.correctPercentage }}%</p>
           <p><strong>Количество попыток:</strong> {{ file.attempts }}</p>
           <div v-if="file.id === '1'">
-            <RouterLink :to="this.link1" class="start-test-button border-round-lg text-white bg-gray-800 pl-3 pr-3 p-2 mr-5 mb-1 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
+            <RouterLink :to="this.link1" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
               Пройти
             </RouterLink>
           </div>
           <div v-if="file.id === '2'">
-            <RouterLink :to="this.link2" class="start-test-button border-round-lg text-white bg-gray-800 pl-3 pr-3 p-2 mr-5 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
+            <RouterLink :to="this.link2" class="start-test-button border-round-lg text-white bg-gray-800 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
               Пройти
             </RouterLink>
           </div>
 
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+
+* {
+  margin: 0;
+  padding: 0;
+}
 
 button{
   background-color: rgb(46, 76, 124);

@@ -70,7 +70,10 @@
         Назад
       </button>
 
-      <Button icon="pi pi-microchip-ai" severity="info" rounded class="m-1 bg-primary-400" />
+      <Button icon="pi pi-microchip-ai" severity="info" rounded class="m-1 bg-primary-400" @click="this.visible = true"/>
+      <Dialog v-model:visible="visible" modal header="Помощь Интеллектуального Ассистента" :style="{ width: '25rem' }">
+        <span class="text-surface-500 dark:text-surface-400 block mb-8">Ваш запрос отправлен в нейросеть!</span>
+      </Dialog>
 
       <Toast />
       <button @click="complete"
@@ -95,6 +98,8 @@ import {ref} from "vue";
 import Button from "primevue/button";
 import Toast from 'primevue/toast';
 import 'vue3-toastify/dist/index.css';
+import Dialog from 'primevue/dialog';
+
 
 export default {
   data() {
@@ -102,13 +107,15 @@ export default {
       currentQuestionIndex: 0,
       selectedAnswers: [],
       test: null,
+      visible: false,
       questions: questions.questions, // Подключаем вопросы из JSON
       link: '/test'
     };
   },
   components: {
     Toast,
-    Button
+    Button,
+    Dialog
   },
   setup() {
     const checked = ref([])
