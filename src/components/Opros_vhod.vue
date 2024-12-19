@@ -1,24 +1,24 @@
 <template>
   <div class="quiz-container w-screen p-2">
     <!-- Основной блок викторины -->
-    <div v-if="currentQuestionIndex < questions.length" class="question-container border-round-2xl p-3 h-full w-full overflow-y-scroll">
-      <div class="header text-lg font-bold text-justify mt-2">{{ questions[currentQuestionIndex].question }}</div>
+    <div v-if="currentQuestionIndex < questions.length" class="question-container border-round-xl p-2 h-full w-full overflow-y-scroll">
+      <div class="header w-full border-round-xl text-gray-300 text-lg font-bold text-left p-2 bg-primary-800">{{ questions[currentQuestionIndex].question }}</div>
 
       <div class="answers mt-3">
+
+
         <div v-if="Array.isArray(questions[currentQuestionIndex].correct_answer)">
           <div
               v-for="(answer, index) in questions[currentQuestionIndex].answers"
               :key="index"
-              class="answer"
-          >
+              class="answer">
             <input
                 type="checkbox"
                 :id="'answer-' + currentQuestionIndex + '-' + index"
                 :name="'question-' + currentQuestionIndex"
                 :value="answer"
                 v-model="this.checked"
-                class="checkbox-input"
-            />
+                class="checkbox-input"/>
             <label :for="'answer-' + currentQuestionIndex + '-' + index">{{ answer }}</label>
           </div>
         </div>
@@ -27,27 +27,25 @@
           <div
               v-for="(answer, index) in questions[currentQuestionIndex].answers"
               :key="index"
-              class="answer"
-          >
+              class="answer">
             <input
                 type="radio"
                 :id="'answer-' + index"
                 :name="'question-' + currentQuestionIndex"
                 :value="answer"
-                v-model="selectedAnswers[currentQuestionIndex]"
-            />
+                v-model="selectedAnswers[currentQuestionIndex]"/>
             <label :for="'answer-' + index">{{ answer }}</label>
           </div>
         </div>
 
+        <div v-else-if="questions[currentQuestionIndex].correct_answer === 'без ответа'"></div>
         <!-- Если вариантов ответов нет, отображаем поле для ввода текста -->
         <div v-else>
           <input
               type="text"
               v-model="selectedAnswers[currentQuestionIndex]"
               placeholder="Введите ваш ответ"
-              class="text-input border-round border-none p-2 w-16rem"
-          />
+              class="text-input border-round border-none p-2 w-16rem"/>
         </div>
       </div>
     </div>
@@ -64,27 +62,27 @@
     </div>
 
     <!-- Кнопки управления -->
-    <div class="button-container mt-3">
+    <div class="flex w-full justify-content-between mt-3">
       <button
-          class="custom-button bg-gray-900 border-round text-white active:bg-primary-600 hover:bg-primary-800 mr-8"
+          class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 border-round text-white active:bg-primary-600 hover:bg-primary-800"
           @click="goBack"
-          :disabled="currentQuestionIndex === 0"
-      >
+          :disabled="currentQuestionIndex === 0">
         Назад
       </button>
+
+      <Button icon="pi pi-microchip-ai" severity="info" rounded class="m-1 bg-primary-400" />
 
       <Toast />
       <button @click="complete"
               v-if="currentQuestionIndex === questions.length - 1"
-              class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
+              class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
         Завершить
       </button>
 
       <button
           v-else
-          class="custom-button bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
-          @click="goNext"
-      >
+          class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
+          @click="goNext">
         Вперед
       </button>
     </div>
@@ -94,6 +92,7 @@
 <script>
 import questions from './Vhod.json';
 import {ref} from "vue";
+import Button from "primevue/button";
 import Toast from 'primevue/toast';
 import 'vue3-toastify/dist/index.css';
 
@@ -109,6 +108,7 @@ export default {
   },
   components: {
     Toast,
+    Button
   },
   setup() {
     const checked = ref([])

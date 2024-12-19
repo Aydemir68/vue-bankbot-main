@@ -8,7 +8,7 @@
         <div class="edit-profile">
           <button @click="this.visible = true" class="text-white bg-primary-400 hover:bg-primary-800 active:bg-primary-600">Редактировать профиль</button>
         </div>
-        <Dialog v-model:visible="visible" modal header="Редактировать профиль" class="flex flex-column" :style="{ width: '20rem' }">
+        <Dialog v-model:visible="visible" modal header="Редактировать профиль" class="flex flex-column" :style="{ width: '22rem' }">
           <span class="text-surface-500 dark:text-surface-400 block mb-2">Обновите информацию о себе.</span>
           <div class="flex items-center gap-4 mb-2">
             <label class="font-semibold justify-content-center w-5" >Фамилия</label>

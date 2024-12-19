@@ -1,24 +1,24 @@
 <template>
-  <div class="quiz-container overflow-scroll">
+  <div class="quiz-container w-screen p-2">
     <!-- Основной блок викторины -->
-    <div v-if="currentQuestionIndex < questions.length" class="question-container">
-      <h2>{{ questions[currentQuestionIndex].question }}</h2>
+    <div v-if="currentQuestionIndex < questions.length" class="question-container border-round-xl p-2 h-full w-full overflow-y-scroll">
+      <div class="header w-full border-round-xl text-gray-300 text-lg font-bold text-left p-2 bg-primary-800">{{ questions[currentQuestionIndex].question }}</div>
 
-      <div class="answers">
+      <div class="answers mt-3">
+
+
         <div v-if="Array.isArray(questions[currentQuestionIndex].correct_answer)">
           <div
               v-for="(answer, index) in questions[currentQuestionIndex].answers"
               :key="index"
-              class="answer"
-          >
+              class="answer">
             <input
                 type="checkbox"
                 :id="'answer-' + currentQuestionIndex + '-' + index"
                 :name="'question-' + currentQuestionIndex"
                 :value="answer"
                 v-model="this.checked"
-                class="checkbox-input"
-            />
+                class="checkbox-input"/>
             <label :for="'answer-' + currentQuestionIndex + '-' + index">{{ answer }}</label>
           </div>
         </div>
@@ -27,27 +27,25 @@
           <div
               v-for="(answer, index) in questions[currentQuestionIndex].answers"
               :key="index"
-              class="answer"
-          >
+              class="answer">
             <input
                 type="radio"
                 :id="'answer-' + index"
                 :name="'question-' + currentQuestionIndex"
                 :value="answer"
-                v-model="selectedAnswers[currentQuestionIndex]"
-            />
+                v-model="selectedAnswers[currentQuestionIndex]"/>
             <label :for="'answer-' + index">{{ answer }}</label>
           </div>
         </div>
 
+        <div v-else-if="questions[currentQuestionIndex].correct_answer === 'без ответа'"></div>
         <!-- Если вариантов ответов нет, отображаем поле для ввода текста -->
         <div v-else>
           <input
               type="text"
               v-model="selectedAnswers[currentQuestionIndex]"
               placeholder="Введите ваш ответ"
-              class="text-input"
-          />
+              class="text-input border-round border-none p-2 w-16rem"/>
         </div>
       </div>
     </div>
@@ -64,19 +62,28 @@
     </div>
 
     <!-- Кнопки управления -->
-    <div class="button-container">
+    <div class="flex w-full justify-content-between mt-3">
       <button
-          class="custom-button"
+          class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 border-round text-white active:bg-primary-600 hover:bg-primary-800"
           @click="goBack"
-          :disabled="currentQuestionIndex === 0"
-      >
+          :disabled="currentQuestionIndex === 0">
         Назад
       </button>
+
+      <Button icon="pi pi-microchip-ai" severity="info" rounded class="m-1 bg-primary-400" />
+
+      <Toast />
+      <button @click="complete"
+              v-if="currentQuestionIndex === questions.length - 1"
+              class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
+        Завершить
+      </button>
+
       <button
-          class="custom-button"
-          @click="goNext"
-      >
-        {{ currentQuestionIndex === questions.length - 1 ? "Завершить" : "Вперед" }}
+          v-else
+          class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
+          @click="goNext">
+        Вперед
       </button>
     </div>
   </div>
@@ -85,6 +92,9 @@
 <script>
 import questions from './Vihod.json';
 import {ref} from "vue";
+import Button from "primevue/button";
+import Toast from 'primevue/toast';
+import 'vue3-toastify/dist/index.css';
 
 export default {
   data() {
@@ -93,12 +103,19 @@ export default {
       selectedAnswers: [],
       test: null,
       questions: questions.questions, // Подключаем вопросы из JSON
+      link: '/test'
     };
   },
-  setup(){
-    const checked = ref([])
-    return { checked }
+  components: {
+    Toast,
+    Button
   },
+  setup() {
+    const checked = ref([])
+    return { checked };
+  },
+
+
   methods: {
     goNext() {
       if (this.currentQuestionIndex < this.questions.length - 1) {
@@ -112,16 +129,18 @@ export default {
         this.currentQuestionIndex--;
       }
     },
+    complete() {
+
+      this.$router.push('/test');
+
+    }
   },
 };
 </script>
 
 <style scoped>
-/* Основной контейнер викторины */
 .quiz-container {
   height: 94vh;
-  width: 100%;
-
   background-color: #2a3f4f;
   color: #fff;
   border-radius: 8px;
@@ -131,67 +150,32 @@ export default {
   align-items: center;
 }
 
-/* Заголовки */
-h2 {
-  font-size: 1.25rem;
-  text-align: center;
+/* Основной контейнер викторины */
+.question-container {
+  background-color: rgb(66, 115, 195);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-
 .answer {
-  margin-bottom: 10px;
+  text-align: left;
+}
+
+.custom-button {
+  height: 3rem;
 }
 
 input[type="radio"] {
-  margin-right: 10px;
+  margin-right: 1vh;
 }
 
 input[type="checkbox"] {
-
   border-radius: 0;
   background-color: transparent;
 }
 
-
-/* Результаты */
-.results {
-  text-align: center;
-}
-
-.results ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-/* Кнопки управления викториной */
-.button-container {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 400px;
-}
-
-.custom-button {
-  background-color: #1b2934;
-  color: rgba(228, 228, 228, 0.865);
-  border: none;
-  padding: 10px 20px;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 45%;
-}
-
-/* Стиль для текстового поля */
-.text-input {
-  width: 100%;
-  padding: 8px;
-  margin-top: 10px;
-  font-size: 1rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
 input[type="checkbox"] {
   margin-right: 10px;
   width: 20px;
@@ -200,5 +184,6 @@ input[type="checkbox"] {
   border: 2px solid #fff;
   background-color: transparent;
 }
+
 
 </style>
