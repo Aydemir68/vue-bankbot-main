@@ -75,22 +75,19 @@
         <span class="text-surface-500 dark:text-surface-400 block mb-8">{{responseMessage}}</span>
       </Dialog>
 
-      <Toast />
       <div v-if="currentQuestionIndex === questions.length - 1">
-        <ConfirmPopup group="headless"
-                      class="lex w-20rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
-          <template #container="{ message, acceptCallback, rejectCallback }">
-            <div class="rounded p-4">
-              <span>{{ message.message }}</span>
-              <div class="flex items-center gap-2 mt-4">
-                <Button label="Подтвердить" @click="acceptCallback" size="small"></Button>
-                <Button label="Отмена" outlined @click="rejectCallback" severity="secondary" size="small" text></Button>
-              </div>
-            </div>
-          </template>
-        </ConfirmPopup>
-        <Button @click="requireConfirmation($event)" class="flex w-8rem justify-content-center custom-button
-        align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800 border-none" label="Завершить"></Button>
+        <Button @click="this.visibleConfirm = true" class="flex w-8rem justify-content-center custom-button
+                align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800 border-none" label="Завершить"></Button>
+        <Dialog v-model:visible="visibleConfirm" modal class="bg-gray-200" header="Вы действительно хотите завершить опрос?" :style="{ width: '25rem' }">
+          <div class="flex justify-end gap-2">
+            <Button type="button" label="Отмена" severity="secondary" @click="this.visibleConfirm = false"></Button>
+            <Button type="button" label="Завершить" @click="this.complete"></Button>
+          </div>
+        </Dialog>
+        <Dialog v-model:visible="visibleComplete" modal class="bg-gray-200" :style="{ width: '25rem' }">
+          <p>Cпасибо за прохождение опроса!</p>
+          <p>Ваш результат отправлен!</p>
+        </Dialog>
       </div>
 
 
@@ -112,9 +109,6 @@ import Toast from 'primevue/toast';
 import 'vue3-toastify/dist/index.css';
 import Dialog from 'primevue/dialog';
 import axios from "axios";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
-import ConfirmPopup from 'primevue/confirmpopup';
 
 
 
@@ -126,6 +120,8 @@ export default {
       selectedAnswers: [],
       test: null,
       visible: false,
+      visibleConfirm: false,
+      visibleComplete: false,
       questions: questions.questions, // Подключаем вопросы из JSON
       link: '/test',
       responseMessage: ""
@@ -135,27 +131,10 @@ export default {
     Toast,
     Button,
     Dialog,
-    ConfirmPopup
   },
   setup() {
     const checked = ref([])
-    const confirm = useConfirm();
-    const toast = useToast();
-
-    const requireConfirmation = (event) => {
-      confirm.require({
-        target: event.currentTarget,
-        group: 'headless',
-        message: 'Save your current process?',
-        accept: () => {
-          toast.add({severity:'info', summary:'Confirmed', detail:'You have accepted', life: 3000});
-        },
-        reject: () => {
-          toast.add({severity:'error', summary:'Rejected', detail:'You have rejected', life: 3000});
-        }
-      });
-    }
-    return { checked, requireConfirmation };
+    return { checked };
   },
 
 
@@ -163,6 +142,15 @@ export default {
     openDialog() {
       this.visible = true;
       this.sendMessage();
+    },
+    complete() {
+      this.visibleConfirm = false;
+      this.visibleComplete = true;
+      setTimeout(this.closeDialog, 3000);
+    },
+    closeDialog() {
+      this.visibleComplete = false;
+      this.$router.push('/test');
     },
     goNext() {
       if (this.currentQuestionIndex < this.questions.length - 1) {
@@ -177,9 +165,6 @@ export default {
         this.currentQuestionIndex--;
       }
       this.responseMessage = "";
-    },
-    complete() {
-      this.$router.push('/test');
     },
     async sendMessage() {
       if (this.responseMessage.trim()) {

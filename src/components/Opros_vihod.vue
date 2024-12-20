@@ -75,19 +75,28 @@
         <span class="text-surface-500 dark:text-surface-400 block mb-8">{{responseMessage}}</span>
       </Dialog>
 
-      <Toast />
-      <button @click="complete"
-              v-if="currentQuestionIndex === questions.length - 1"
-              class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
-        Завершить
-      </button>
+      <div v-if="currentQuestionIndex === questions.length - 1">
+        <Button @click="this.visibleConfirm = true" class="flex w-8rem justify-content-center custom-button
+                align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800 border-none" label="Завершить"></Button>
+        <Dialog v-model:visible="visibleConfirm" modal class="bg-gray-200" header="Вы действительно хотите завершить опрос?" :style="{ width: '25rem' }">
+          <div class="flex justify-end gap-2">
+            <Button type="button" label="Отмена" severity="secondary" @click="this.visibleConfirm = false"></Button>
+            <Button type="button" label="Завершить" @click="this.complete"></Button>
+          </div>
+        </Dialog>
+        <Dialog v-model:visible="visibleComplete" modal class="bg-gray-200" :style="{ width: '25rem' }">
+          <p>Cпасибо за прохождение опроса!</p>
+          <p>Ваш результат отправлен!</p>
+        </Dialog>
+      </div>
 
-      <button
-          v-else
-          class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
-          @click="goNext">
-        Вперед
-      </button>
+
+      <div v-else>
+        <button class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
+                @click="goNext">
+          Вперед
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -102,6 +111,8 @@ import Dialog from 'primevue/dialog';
 import axios from "axios";
 
 
+
+
 export default {
   data() {
     return {
@@ -109,6 +120,8 @@ export default {
       selectedAnswers: [],
       test: null,
       visible: false,
+      visibleConfirm: false,
+      visibleComplete: false,
       questions: questions.questions, // Подключаем вопросы из JSON
       link: '/test',
       responseMessage: ""
@@ -117,7 +130,7 @@ export default {
   components: {
     Toast,
     Button,
-    Dialog
+    Dialog,
   },
   setup() {
     const checked = ref([])
@@ -129,6 +142,15 @@ export default {
     openDialog() {
       this.visible = true;
       this.sendMessage();
+    },
+    complete() {
+      this.visibleConfirm = false;
+      this.visibleComplete = true;
+      setTimeout(this.closeDialog, 3000);
+    },
+    closeDialog() {
+      this.visibleComplete = false;
+      this.$router.push('/test');
     },
     goNext() {
       if (this.currentQuestionIndex < this.questions.length - 1) {
@@ -143,9 +165,6 @@ export default {
         this.currentQuestionIndex--;
       }
       this.responseMessage = "";
-    },
-    complete() {
-      this.$router.push('/test');
     },
     async sendMessage() {
       if (this.responseMessage.trim()) {

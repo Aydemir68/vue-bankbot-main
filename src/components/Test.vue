@@ -31,7 +31,7 @@ export default {
         },
         {
           id: '3',
-          name: "Опрос финансовой грамотности и потребительских настроений",
+          name: "Опрос финансовой грамотности и потребительских настроений ",
           date: "12.11.2024",
           isPassed: false,
           correctPercentage: 0,
@@ -117,8 +117,8 @@ export default {
         <div v-if="selectedFile === file" class="p-1">
           <p><strong>Статус:</strong> {{ file.isPassed ? 'Пройден' : 'Не пройден' }}</p>
           <p><strong>Процент правильных ответов:</strong> {{ file.correctPercentage }}%</p>
-          <p><strong>Количество попыток:</strong> {{ file.attempts }}</p>
-          <div v-if="file.id === '1'">
+          <p class="mb-3"><strong>Количество попыток:</strong> {{ file.attempts }}</p>
+          <div v-if="file.id === '1'" class="">
             <RouterLink :to="this.link1" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
               Пройти
             </RouterLink>

@@ -5,22 +5,29 @@
       <div class="header w-full border-round-xl text-gray-300 text-lg font-bold text-left p-2 bg-primary-800">{{ questions[currentQuestionIndex].question }}</div>
 
       <div class="answers mt-3">
-        <!-- Обработка правильных ответов -->
+
+
         <div v-if="Array.isArray(questions[currentQuestionIndex].correct_answer)">
-          <div v-for="(answer, index) in questions[currentQuestionIndex].answers" :key="index" class="answer">
+          <div
+              v-for="(answer, index) in questions[currentQuestionIndex].answers"
+              :key="index"
+              class="answer">
             <input
                 type="checkbox"
                 :id="'answer-' + currentQuestionIndex + '-' + index"
                 :name="'question-' + currentQuestionIndex"
                 :value="answer"
-                v-model="checked[currentQuestionIndex]"
+                v-model="this.checked"
                 class="checkbox-input"/>
             <label :for="'answer-' + currentQuestionIndex + '-' + index">{{ answer }}</label>
           </div>
         </div>
-
+        <!-- Если вопрос не позволяет несколько правильных ответов, используем радиокнопки -->
         <div v-else-if="questions[currentQuestionIndex].answers && questions[currentQuestionIndex].answers.length > 0">
-          <div v-for="(answer, index) in questions[currentQuestionIndex].answers" :key="index" class="answer">
+          <div
+              v-for="(answer, index) in questions[currentQuestionIndex].answers"
+              :key="index"
+              class="answer">
             <input
                 type="radio"
                 :id="'answer-' + index"
@@ -32,7 +39,7 @@
         </div>
 
         <div v-else-if="questions[currentQuestionIndex].correct_answer === 'без ответа'"></div>
-
+        <!-- Если вариантов ответов нет, отображаем поле для ввода текста -->
         <div v-else>
           <input
               type="text"
@@ -43,6 +50,7 @@
       </div>
     </div>
 
+    <!-- Блок с результатами -->
     <div v-else class="results">
       <h2>Тест завершен!</h2>
       <p>Ваши ответы:</p>
@@ -53,6 +61,7 @@
       </ul>
     </div>
 
+    <!-- Кнопки управления -->
     <div class="flex w-full justify-content-between mt-3">
       <button
           class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 border-round text-white active:bg-primary-600 hover:bg-primary-800"
@@ -61,56 +70,87 @@
         Назад
       </button>
 
-      <Button icon="pi pi-microchip-ai" severity="info" rounded class="m-1 bg-primary-400" @click="openDialog" />
+      <Button icon="pi pi-microchip-ai" severity="info" rounded class="m-1 bg-primary-400" @click="openDialog"/>
       <Dialog v-model:visible="visible" modal header="Помощь Интеллектуального Ассистента" :style="{ width: '25rem' }">
-        <span class="text-surface-500 dark:text-surface-400 block mb-8">{{ responseMessage }}</span>
+        <span class="text-surface-500 dark:text-surface-400 block mb-8">{{responseMessage}}</span>
       </Dialog>
 
-      <Toast />
-      <button @click="complete"
-              v-if="currentQuestionIndex === questions.length - 1"
-              class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
-        Завершить
-      </button>
+      <div v-if="currentQuestionIndex === questions.length - 1">
+        <Button @click="this.visibleConfirm = true" class="flex w-8rem justify-content-center custom-button
+                align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800 border-none" label="Завершить"></Button>
+        <Dialog v-model:visible="visibleConfirm" modal class="bg-gray-200" header="Вы действительно хотите завершить опрос?" :style="{ width: '25rem' }">
+          <div class="flex justify-end gap-2">
+            <Button type="button" label="Отмена" severity="secondary" @click="this.visibleConfirm = false"></Button>
+            <Button type="button" label="Завершить" @click="this.complete"></Button>
+          </div>
+        </Dialog>
+        <Dialog v-model:visible="visibleComplete" modal class="bg-gray-200" :style="{ width: '25rem' }">
+          <p>Cпасибо за прохождение опроса!</p>
+          <p>Ваш результат отправлен!</p>
+        </Dialog>
+      </div>
 
-      <button
-          v-else
-          class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
-          @click="goNext">
-        Вперед
-      </button>
+
+      <div v-else>
+        <button class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
+                @click="goNext">
+          Вперед
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import questions from './questions.json';
-import { ref } from "vue";
+import {ref} from "vue";
 import Button from "primevue/button";
 import Toast from 'primevue/toast';
+import 'vue3-toastify/dist/index.css';
 import Dialog from 'primevue/dialog';
+import axios from "axios";
+
+
+
 
 export default {
   data() {
     return {
       currentQuestionIndex: 0,
       selectedAnswers: [],
+      test: null,
       visible: false,
+      visibleConfirm: false,
+      visibleComplete: false,
       questions: questions.questions, // Подключаем вопросы из JSON
-      responseMessage: "",
-      checked: [],  // Для чекбоксов
+      link: '/test',
+      responseMessage: ""
     };
   },
   components: {
     Toast,
     Button,
-    Dialog
+    Dialog,
   },
+  setup() {
+    const checked = ref([])
+    return { checked };
+  },
+
+
   methods: {
     openDialog() {
       this.visible = true;
       this.sendMessage();
+    },
+    complete() {
+      this.visibleConfirm = false;
+      this.visibleComplete = true;
+      setTimeout(this.closeDialog, 3000);
+    },
+    closeDialog() {
+      this.visibleComplete = false;
+      this.$router.push('/test');
     },
     goNext() {
       if (this.currentQuestionIndex < this.questions.length - 1) {
@@ -126,9 +166,6 @@ export default {
       }
       this.responseMessage = "";
     },
-    complete() {
-      this.$router.push('/test');
-    },
     async sendMessage() {
       if (this.responseMessage.trim()) {
         console.log(this.responseMessage);
@@ -141,7 +178,7 @@ export default {
 
       try {
 
-        await axios.post("http://127.0.0.1:8000/api/v1/chat/generation?chat_id=c1d08391-8545-4676-abe8-8a92f52ec88c&use_rag=true&extract_keywords=true&stream=true\n", {
+        await axios.post("http://127.0.0.1:8000/api/v1/chat/generation?chat_id=c1d08391-8545-4676-abe8-8a92f52ec88c&use_rag=true&extract_keywords=true&stream=true", {
           role: "user",
           content: requestMessage,
           params: {
@@ -154,7 +191,7 @@ export default {
 
         // Получаем ответ от ассистента
         const response = await axios.get("http://127.0.0.1:8000/api/v1/chat/message/list", {
-          params: { chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c" },
+          params: {chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c"},
         });
 
         // Ищем первое сообщение от ассистента
@@ -177,7 +214,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .quiz-container {
