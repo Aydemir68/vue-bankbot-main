@@ -70,9 +70,9 @@
         Назад
       </button>
 
-      <Button icon="pi pi-microchip-ai" severity="info" rounded class="m-1 bg-primary-400" @click="this.visible = true"/>
+      <Button icon="pi pi-microchip-ai" severity="info" rounded class="m-1 bg-primary-400" @click="openDialog"/>
       <Dialog v-model:visible="visible" modal header="Помощь Интеллектуального Ассистента" :style="{ width: '25rem' }">
-        <span class="text-surface-500 dark:text-surface-400 block mb-8">Ваш запрос отправлен в нейросеть!</span>
+        <span class="text-surface-500 dark:text-surface-400 block mb-8">{{responseMessage}}</span>
       </Dialog>
 
       <Toast />
@@ -99,6 +99,7 @@ import Button from "primevue/button";
 import Toast from 'primevue/toast';
 import 'vue3-toastify/dist/index.css';
 import Dialog from 'primevue/dialog';
+import axios from "axios";
 
 
 export default {
@@ -109,7 +110,8 @@ export default {
       test: null,
       visible: false,
       questions: questions.questions, // Подключаем вопросы из JSON
-      link: '/test'
+      link: '/test',
+      responseMessage: ""
     };
   },
   components: {
@@ -124,24 +126,73 @@ export default {
 
 
   methods: {
+    openDialog() {
+      this.visible = true;
+      this.sendMessage();
+    },
     goNext() {
       if (this.currentQuestionIndex < this.questions.length - 1) {
         this.currentQuestionIndex++;
       } else {
         console.log("Тест завершен!");
       }
+      this.responseMessage = "";
     },
     goBack() {
       if (this.currentQuestionIndex > 0) {
         this.currentQuestionIndex--;
       }
+      this.responseMessage = "";
     },
     complete() {
-
       this.$router.push('/test');
+    },
+    async sendMessage() {
+      if (this.responseMessage.trim()) {
+        console.log(this.responseMessage);
+        return;
+      }
+      const user_question = this.questions[this.currentQuestionIndex].question;
+      const requestMessage = `Ты не мог бы мне разъяснить следующий вопрос: ${user_question}`; // Формируем строку с вопросом
+      console.log(requestMessage);
+      this.responseMessage = '';
 
+      try {
+
+        await axios.post("http://127.0.0.1:8000/api/v1/chat/generation?chat_id=c1d08391-8545-4676-abe8-8a92f52ec88c&use_rag=true&extract_keywords=true&stream=true", {
+          role: "user",
+          content: requestMessage,
+          params: {
+            chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c",
+            use_rag: true,
+            extract_keywords: true,
+            stream: true,
+          }
+        });
+
+        // Получаем ответ от ассистента
+        const response = await axios.get("http://127.0.0.1:8000/api/v1/chat/message/list", {
+          params: { chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c" },
+        });
+
+        // Ищем первое сообщение от ассистента
+        if (Array.isArray(response.data) && response.data.length > 0) {
+          const assistantMessage = response.data.reverse().find(msg => msg.role === "assistant");
+
+          if (assistantMessage) {
+            this.responseMessage = assistantMessage.content;
+          } else {
+            this.responseMessage = "Ответ от ассистента не найден.";
+          }
+        } else {
+          this.responseMessage = "Ответ пуст или неверный.";
+        }
+      } catch (error) {
+        console.error("Ошибка при отправке сообщения:", error);
+        this.responseMessage = "Произошла ошибка. Пожалуйста, попробуйте позже";
+      }
     }
-  },
+  }
 };
 </script>
 

@@ -5,6 +5,7 @@ export default {
     return {
       link1: "/test/test1",
       link2: "/test/test2",
+      link3: "/test/test3",
       searchQuery: "", // Переменная для поиска
       sortByField: "name", // Поле для сортировки (по умолчанию "name")
       sortOrder: 1, // Порядок сортировки: 1 для возрастания, -1 для убывания
@@ -22,6 +23,15 @@ export default {
         {
           id: '2',
           name: "Финансовый навигатор. Завершающий опрос 2024 ",
+          date: "12.11.2024",
+          isPassed: false,
+          correctPercentage: 0,
+          attempts: 1,
+          json: "./Vihod.json",
+        },
+        {
+          id: '3',
+          name: "Опрос финансовой грамотности и потребительских настроений",
           date: "12.11.2024",
           isPassed: false,
           correctPercentage: 0,
@@ -114,11 +124,15 @@ export default {
             </RouterLink>
           </div>
           <div v-if="file.id === '2'">
-            <RouterLink :to="this.link2" class="start-test-button border-round-lg text-white bg-gray-800 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
+            <RouterLink :to="this.link2" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
               Пройти
             </RouterLink>
           </div>
-
+          <div v-if="file.id === '3'">
+            <RouterLink :to="this.link3" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
+              Пройти
+            </RouterLink>
+          </div>
         </div>
       </div>
     </div>
