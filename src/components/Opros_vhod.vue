@@ -76,18 +76,30 @@
       </Dialog>
 
       <Toast />
-      <button @click="complete"
-              v-if="currentQuestionIndex === questions.length - 1"
-              class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
-        Завершить
-      </button>
+      <div v-if="currentQuestionIndex === questions.length - 1">
+        <ConfirmPopup group="headless"
+                      class="lex w-20rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800">
+          <template #container="{ message, acceptCallback, rejectCallback }">
+            <div class="rounded p-4">
+              <span>{{ message.message }}</span>
+              <div class="flex items-center gap-2 mt-4">
+                <Button label="Подтвердить" @click="acceptCallback" size="small"></Button>
+                <Button label="Отмена" outlined @click="rejectCallback" severity="secondary" size="small" text></Button>
+              </div>
+            </div>
+          </template>
+        </ConfirmPopup>
+        <Button @click="requireConfirmation($event)" class="flex w-8rem justify-content-center custom-button
+        align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800 border-none" label="Завершить"></Button>
+      </div>
 
-      <button
-          v-else
-          class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
-          @click="goNext">
-        Вперед
-      </button>
+
+      <div v-else>
+        <button class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
+                @click="goNext">
+          Вперед
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -100,6 +112,11 @@ import Toast from 'primevue/toast';
 import 'vue3-toastify/dist/index.css';
 import Dialog from 'primevue/dialog';
 import axios from "axios";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+import ConfirmPopup from 'primevue/confirmpopup';
+
+
 
 
 export default {
@@ -117,11 +134,28 @@ export default {
   components: {
     Toast,
     Button,
-    Dialog
+    Dialog,
+    ConfirmPopup
   },
   setup() {
     const checked = ref([])
-    return { checked };
+    const confirm = useConfirm();
+    const toast = useToast();
+
+    const requireConfirmation = (event) => {
+      confirm.require({
+        target: event.currentTarget,
+        group: 'headless',
+        message: 'Save your current process?',
+        accept: () => {
+          toast.add({severity:'info', summary:'Confirmed', detail:'You have accepted', life: 3000});
+        },
+        reject: () => {
+          toast.add({severity:'error', summary:'Rejected', detail:'You have rejected', life: 3000});
+        }
+      });
+    }
+    return { checked, requireConfirmation };
   },
 
 

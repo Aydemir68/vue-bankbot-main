@@ -11,6 +11,7 @@ import 'primeicons/primeicons.css'
 import ToastService from 'primevue/toastservice';
 import router from './router/index.js'
 import store from './store.js';
+import ConfirmationService from 'primevue/confirmationservice';
 
 const app = createApp(App);
 app.use(PrimeVue, {
@@ -24,6 +25,7 @@ app.use(PrimeVue, {
     }
 });
 app.use(router);
+app.use(ConfirmationService);
 app.use(store);
 app.use(ToastService);
 app.mount('#app');
