@@ -52,24 +52,32 @@ export default {
 };
 </script>
 
-<template class="flex h-screen max-h-screen w-screen">
-  <div class="flex flex-column text-gray-100 w-full h-full">
+<template>
+  <div class="flex flex-column text-gray-100 w-screen content-container">
     <RouterView />
   </div>
-  <div class="flex justify-content-center align-items-center w-screen">
-    <div v-for="i in items" :key="i" class="w-full hover:bg-primary-800 h-3rem pt-1">
-      <RouterLink :to="i.link" class="flex flex-column text-gray-100 w-full h-full justify-content-center">
-        <span :class="i.icon" class="w-full align-items-center mt-1" />
-        <span class="label-class text-gray-100">{{ i.label }}</span>
+  <div class="flex justify-content-center align-items-center w-screen bottom-0 menu-container">
+    <div v-for="i in items" :key="i" class="w-full h-full hover:bg-primary-800">
+      <RouterLink :to="i.link" class="flex flex-column w-full h-full justify-content-center text-gray-100">
+        <span :class="i.icon"/>
+        <span>{{ i.label }}</span>
       </RouterLink>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style>
 * {
   -webkit-tap-highlight-color: transparent;
   margin: 0;
   padding: 0;
+}
+
+.menu-container {
+  height: 7vh;
+}
+
+.content-container {
+  height: 93vh;
 }
 </style>

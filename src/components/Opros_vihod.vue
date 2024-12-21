@@ -78,13 +78,14 @@
       <div v-if="currentQuestionIndex === questions.length - 1">
         <Button @click="this.visibleConfirm = true" class="flex w-8rem justify-content-center custom-button
                 align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800 border-none" label="Завершить"></Button>
-        <Dialog v-model:visible="visibleConfirm" modal class="bg-gray-200" header="Вы действительно хотите завершить опрос?" :style="{ width: '25rem' }">
+        <Dialog v-model:visible="visibleConfirm" modal class="bg-gray-200" header="Вы действительно хотите завершить опрос?"
+                :style="{ width: '25rem' }" :closable="false">
           <div class="flex justify-end gap-2">
             <Button type="button" label="Отмена" severity="secondary" @click="this.visibleConfirm = false"></Button>
             <Button type="button" label="Завершить" @click="this.complete"></Button>
           </div>
         </Dialog>
-        <Dialog v-model:visible="visibleComplete" modal class="bg-gray-200" :style="{ width: '25rem' }">
+        <Dialog v-model:visible="visibleComplete" modal class="bg-gray-200" :style="{ width: '25rem' }" :closable="false">
           <p>Cпасибо за прохождение опроса!</p>
           <p>Ваш результат отправлен!</p>
         </Dialog>
@@ -102,7 +103,7 @@
 </template>
 
 <script>
-import questions from './Vihod.json';
+import questions from './Vhod.json';
 import {ref} from "vue";
 import Button from "primevue/button";
 import Toast from 'primevue/toast';

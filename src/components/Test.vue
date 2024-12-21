@@ -152,7 +152,6 @@ button{
 }
 
 .file-list{
-  height: 94vh;
 }
 
 

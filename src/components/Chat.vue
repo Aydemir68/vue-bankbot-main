@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container flex flex-column w-screen">
+  <div class="main-container flex flex-column w-screen h-full">
       <div class="flex flex-column h-full overflow-y-scroll mx-1">
           <div v-for="message in messages" :key="message.id">
             <div class="bg-primary-500 p-2 border-round-lg" :class="{'flex user-message my-2 max-w-16rem': message.isUser, 'flex bot-message max-w-16rem ': !message.isUser}">
@@ -97,7 +97,6 @@
 <style>
 
 .main-container{
-  height: 94vh;
   background-color: #2A3F4F;
   overflow: auto;
 }

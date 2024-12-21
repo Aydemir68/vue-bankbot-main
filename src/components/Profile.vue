@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-container flex flex-column overflow-y-auto w-full">
+  <div class="overflow-y-scroll">
     <div class="user-profile flex flex-column border-round-2xl">
       <!-- Блок с фото профиля и кнопкой -->
       <div class="flex flex-column align-items-center">
@@ -173,11 +173,6 @@ export default {
 </script>
 
 <style scoped>
-.profile-container {
-  height: 94vh;
-  width: 100%;
-}
-
 .profile-photo {
   border-radius: 50%;
   scale: 70%;
