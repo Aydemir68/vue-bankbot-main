@@ -1,6 +1,9 @@
 <template>
   <div class="main-container flex flex-column w-screen h-full">
-      <div class="flex flex-column h-full overflow-y-scroll mx-1">
+    <Button v-if="isVisible" class="scroll-btn flex align-items-center p-3 bg-gray-200 right-0 m-3 border-none active:bg-gray-300" @click="scrollToBottom">
+      <i class="pi pi-chevron-down"></i>
+    </Button>
+      <div ref="messagesContainer" class="flex flex-column h-full overflow-y-scroll mx-1">
           <div v-for="message in messages" :key="message.id">
             <div class="bg-primary-500 p-2 border-round-lg" :class="{'flex user-message my-2 max-w-16rem': message.isUser, 'flex bot-message max-w-16rem ': !message.isUser}">
               {{ message.text }}
@@ -22,77 +25,108 @@
   </div>
 </template>
 
-  <script>
-  import axios from "axios";
-  export default {
-    data() {
-      return {
-        messages: [],
-        newMessage: '',
-        messageId: 0 // Для уникальных идентификаторов сообщений
-      };
-    },
-    methods: {
-      async sendMessage() {
-        if (this.newMessage.trim()) {
-          // Сохраняем сообщение пользователя в список сообщений
-          this.messages.push({ id: this.messageId++, text: this.newMessage, isUser: true });
+<script>
+import axios from "axios";
+export default {
+  data() {
+    return {
+      messages: [],
+      newMessage: "",
+      messageId: 0, // Для уникальных идентификаторов сообщений
+      isVisible: false,
+    };
+  },
+  methods: {
+    async sendMessage() {
+      if (this.newMessage.trim()) {
+        // Сохраняем сообщение пользователя
+        this.messages.push({
+          id: this.messageId++,
+          text: this.newMessage,
+          isUser: true,
+        });
 
-          // Сохраняем текст сообщения перед очисткой
-          const userMessage = this.newMessage;
-          this.newMessage = '';
+        // Сохраняем текст сообщения перед очисткой
+        const userMessage = this.newMessage;
+        this.newMessage = "";
 
-          try {
-            // Отправляем сообщение пользователя на сервер через POST-запрос
-            await axios.post("http://127.0.0.1:8000/api/v1/chat/generation?chat_id=c1d08391-8545-4676-abe8-8a92f52ec88c&use_rag=true&extract_keywords=true&stream=true\n", {
-              role: "user",
-              content: userMessage,
-              params: {
-                chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c",
-                use_rag: true,
-                extract_keywords: true,
-                stream: true,
-              },
-            });
+        this.scrollToBottom();
 
-            // Отправляем запрос на получение списка сообщений
-            const response = await axios.get("http://127.0.0.1:8000/api/v1/chat/message/list", {
-              params: { chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c" },
-            });
-
-            // Ищем первое сообщение от ассистента
-            if (Array.isArray(response.data) && response.data.length > 0) {
-              const assistantMessage = response.data.find(msg => msg.role === "assistant");
-
-              if (assistantMessage) {
-                this.messages.push({
-                  id: this.messageId++,
-                  text: assistantMessage.content, // Добавляем поле content из ответа
-                  isUser: false,
-                });
-              } else {
-                this.messages.push({
-                  id: this.messageId++,
-                  text: "Ответ от ассистента не найден.",
-                  isUser: false,
-                });
+        try {
+          // Отправляем сообщение на сервер
+          await axios.post(
+              "http://127.0.0.1:8000/api/v1/chat/generation?chat_id=c1d08391-8545-4676-abe8-8a92f52ec88c&use_rag=true&extract_keywords=true&stream=true\n",
+              {
+                role: "user",
+                content: userMessage,
+                params: {
+                  chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c",
+                  use_rag: true,
+                  extract_keywords: true,
+                  stream: true,
+                },
               }
-            } else {
-              this.messages.push({
-                id: this.messageId++,
-                text: "Ответ пуст или неверный.",
-                isUser: false,
-              });
-            }
-          } catch (error) {
-            console.error("Ошибка при отправке сообщения:", error);
-            this.messages.push({ id: this.messageId++, text: "Произошла ошибка. Пожалуйста, попробуйте позже", isUser: false });
-          }
+          );
+
+          // Получаем ответ
+          const response = await axios.get(
+              "http://127.0.0.1:8000/api/v1/chat/message/list",
+              {
+                params: { chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c" },
+              }
+          );
+
+          // Добавляем сообщение ассистента
+          const assistantMessage = response.data.find(
+              (msg) => msg.role === "assistant"
+          );
+          this.messages.push({
+            id: this.messageId++,
+            text: assistantMessage?.content || "Ответ не найден.",
+            isUser: false,
+          });
+        } catch (error) {
+          console.error("Ошибка при отправке сообщения:", error);
+          this.messages.push({
+            id: this.messageId++,
+            text: "Произошла ошибка. Попробуйте позже.",
+            isUser: false,
+          });
+        } finally {
+          this.scrollToBottom();
         }
-      },
+      }
     },
-  };
-  </script>
+    scrollToBottom() {
+      this.$nextTick(() => {
+        const container = this.$refs.messagesContainer;
+        if (container) {
+          container.scrollTop = container.scrollHeight;
+        }
+      });
+    },
+    handleScroll() {
+      const container = this.$refs.messagesContainer;
+      if (container) {
+        this.isVisible = container.scrollTop < container.scrollHeight - container.clientHeight - 100;
+      }
+    },
+  },
+  mounted() {
+    const container = this.$refs.messagesContainer;
+    if (container) {
+      container.addEventListener('scroll', this.handleScroll);
+    }
+  },
+  beforeDestroy() {
+    const container = this.$refs.messagesContainer;
+    if (container) {
+      container.removeEventListener('scroll', this.handleScroll);
+    }
+  },
+};
+</script>
+
   
 <style>
 
@@ -118,5 +152,14 @@
   text-align: justify;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+
+.scroll-btn {
+  position: fixed;
+  bottom: 16rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  box-shadow: 0 1rem 2.2rem rgba(0, 0, 0, 0.2);
 }
 </style>
