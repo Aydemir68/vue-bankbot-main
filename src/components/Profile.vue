@@ -3,13 +3,13 @@
     <div class="user-profile flex flex-column border-round-2xl">
       <!-- Блок с фото профиля и кнопкой -->
       <div class="flex flex-column align-items-center">
-        <img class="profile-photo" :src="user.photoUrl" alt="Фото профиля" />
+        <img class="profile-photo" :src="this.url" alt="Фото профиля" />
         <!-- Кнопка редактирования профиля под фото -->
         <div class="edit-profile">
-          <button @click="this.visible = true" class="text-white bg-primary-400 hover:bg-primary-800 active:bg-primary-600">Редактировать профиль</button>
+          <button @click="" class="text-white bg-primary-400 hover:bg-primary-800 active:bg-primary-600">Редактировать профиль</button>
         </div>
-        <Dialog v-model:visible="visible" modal header="Редактировать профиль" class="flex flex-column" :style="{ width: '22rem' }">
-          <span class="text-surface-500 dark:text-surface-400 block mb-2">Обновите информацию о себе.</span>
+        <Dialog v-model:visible="visible" :closable="false" modal header="Зарегистрироваться" class="flex flex-column" :style="{ width: '22rem' }">
+          <span class="text-surface-500 dark:text-surface-400 block mb-2">Заполните информацию о себе.</span>
           <div class="flex items-center gap-4 mb-2">
             <label class="font-semibold justify-content-center w-5" >Фамилия</label>
             <InputText id="username" class="flex w-full" autocomplete="off" v-model="user_update.surname" />
@@ -23,6 +23,10 @@
             <InputText id="username" class="flex w-full" autocomplete="off" v-model="user_update.patronymic"/>
           </div>
           <div class="flex items-center gap-4 mb-2">
+            <label class="font-semibold justify-content-center w-5">Username</label>
+            <InputText id="username" class="flex w-full" autocomplete="off" v-model="user_update.tg_username"/>
+          </div>
+          <div class="flex items-center gap-4 mb-2">
             <label class="font-semibold justify-content-center w-5">Возраст</label>
             <InputNumber v-model="user_update.age" inputId="integeronly" class="flex-auto" fluid />
           </div>
@@ -33,9 +37,8 @@
           </div>
 
 
-          <div class="flex justify-end p-0 m-0 pt-2 gap-2">
-            <Button type="button" class="text-white" label="Отмена" severity="secondary" @click="cancel"></Button>
-            <Button type="button" class="text-white" label="Сохранить" @click="save"></Button>
+          <div class="flex justify-content-end p-0 m-0 pt-2 gap-2">
+            <Button type="button" class="text-white" label="Зарегистрироваться" @click="save"></Button>
           </div>
         </Dialog>
       </div>
@@ -112,23 +115,24 @@ export default {
     return {
       username: null,
       visible: false,
+      url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s',
       user: {
-        surname: 'Иванов',
-        name: 'Иван',
-        patronymic: 'Иванович',
-        userName: 'ivanov123',
-        age: 30,
-        region: 'Москва',
-        photoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s' // Ссылка на фото профиля
+        tg_id: 0,
+        surname: '',
+        name: '',
+        patronymic: '',
+        tg_username: '',
+        age: 0,
+        region: ''
       },
       user_update: {
-        surname: 'Иванов',
-        name: 'Иван',
-        patronymic: 'Иванович',
-        userName: 'ivanov123',
-        age: 30,
-        region: 'Москва',
-        photoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s' // Ссылка на фото профиля
+        tg_id: 0,
+        surname: '',
+        name: '',
+        patronymic: '',
+        tg_username: '',
+        age: 0,
+        region: ''
       },
       selectedCategory: 'events', // Начальная выбранная категория
       selectedCity: null,
@@ -150,18 +154,33 @@ export default {
   },
   methods: {
     save() {
-      this.user = this.user_update;
-      this.user.region = this.user_update.region.name;
-      this.visible = false;
-    },
-    cancel() {
-      this.user_update = this.user;
-      this.visible = false;
+      let tg = window.Telegram.WebApp;
+      instance.post('/auth/registration', {
+        'tg_id': 231,
+        'surname': this.user_update.surname,
+        'name': this.user_update.name,
+        'patronymic': this.user_update.patronymic,
+        'age': this.user_update.age,
+        'region': this.user_update.region,
+        'tg_username': this.user_update.tg_username
+      }).then((res) => {
+        this.visible = false;
+        this.user = this.user_update;
+      }).catch((err) => {
+        console.log(err);
+      })
     },
     post_User_data: function() {
       let tg = window.Telegram.WebApp;
-      instance.post('/user/auth', null,{params:{init_data: tg.initData}}).then(res => {
-        this.username = res.data.username;
+      instance.get('/auth/login', {params:{init_data: tg.initData}}).then(res => {
+        this.user.surname = res.data.surname;
+        this.user.name = res.data.name;
+        this.user.patronymic = res.data.patronymic;
+        this.user.age = res.data.age;
+        this.user.region = res.data.region;
+        this.user.userName = res.data.name;
+      }).catch(err => {
+        this.visible = true;
       })
     },
 

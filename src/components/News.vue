@@ -15,22 +15,10 @@
 export default {
   data() {
     return {
-      // Список новостей
-      newsItems: [
-        {
-          title: "Вебинар по финансовой грамотности",
-          description: "15.12.2024 состоится вебинар по финансовой грамотности",
-          image: "https://www.topol-eco.ru/upload/iblock/13f/635847974891062780-425303270_news.jpg", // Замените на путь к вашему изображению
-        },
-        {
-          title: "Совещание с командой",
-          description: "Совещание пройдет 20 декабря",
-          image: "https://www.topol-eco.ru/upload/iblock/13f/635847974891062780-425303270_news.jpg",
-        },
-        // Добавьте больше новостей по необходимости
-      ],
+      news: null
     };
   },
+
 };
 </script>
 
