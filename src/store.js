@@ -1,16 +1,28 @@
 import { createStore } from 'vuex';
+import instance from "./Api/instance.js";
 
 export default createStore({
   state: {
-    tests: {
-      1: { id: 1, test_name: 'Vhod.json' },
-      2: { id: 2, test_name: 'Vhod.json' },
-    }
+    news: null
   },
 
   getters: {
-    getTestById: (state) => (id) => {
-      return state.tests[id] || null;
+    GET_NEWS: state => {
+      return state.news;
     }
+  },
+
+  mutations: {
+    SET_NEWS(state, payload) {
+      state.news = payload;
+    }
+  },
+
+  actions: {
+    getAllnews: (context) => {
+      instance.get('/news/all').then(response => {
+        context.commit('SET_NEWS', response.data);
+      })
+    },
   }
 });

@@ -23,10 +23,6 @@
             <InputText id="username" class="flex w-full" autocomplete="off" v-model="user_update.patronymic"/>
           </div>
           <div class="flex items-center gap-4 mb-2">
-            <label class="font-semibold justify-content-center w-5">Username</label>
-            <InputText id="username" class="flex w-full" autocomplete="off" v-model="user_update.tg_username"/>
-          </div>
-          <div class="flex items-center gap-4 mb-2">
             <label class="font-semibold justify-content-center w-5">Возраст</label>
             <InputNumber v-model="user_update.age" inputId="integeronly" class="flex-auto" fluid />
           </div>
@@ -155,30 +151,36 @@ export default {
   methods: {
     save() {
       let tg = window.Telegram.WebApp;
+
       instance.post('/auth/registration', {
-        'tg_id': 231,
-        'surname': this.user_update.surname,
-        'name': this.user_update.name,
-        'patronymic': this.user_update.patronymic,
-        'age': this.user_update.age,
-        'region': this.user_update.region,
-        'tg_username': this.user_update.tg_username
+        initData: tg.initData,
+        surname: this.user_update.surname,
+        name: this.user_update.name,
+        patronymic: this.user_update.patronymic,
+        age: this.user_update.age,
+        region: this.user_update.region['name'],
+      }, {headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
       }).then((res) => {
         this.visible = false;
         this.user = this.user_update;
+        this.post_User_data();
       }).catch((err) => {
         console.log(err);
       })
     },
     post_User_data: function() {
       let tg = window.Telegram.WebApp;
+
       instance.get('/auth/login', {params:{init_data: tg.initData}}).then(res => {
         this.user.surname = res.data.surname;
         this.user.name = res.data.name;
         this.user.patronymic = res.data.patronymic;
         this.user.age = res.data.age;
         this.user.region = res.data.region;
-        this.user.userName = res.data.name;
+        this.user.userName = res.data.tg_username;
       }).catch(err => {
         this.visible = true;
       })
