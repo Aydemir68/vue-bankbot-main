@@ -7,6 +7,7 @@ import Inflation from "../components/Inflation.vue";
 import News from "../components/News.vue";
 import Chat from "../components/Chat.vue";
 import Profile from "../components/Profile.vue";
+import Opros_Fin from '../components/Opros_Fin.vue';
 
 
 const routes = [
@@ -18,6 +19,7 @@ const routes = [
     { path: '/test/test1', component: Opros_vhod},
     { path: '/test/test2', component: Opros_vihod},
     { path: '/test/test3', component: Inflation},
+    { path: '/test/test4', component: Opros_Fin},
 ];
 
 const router = createRouter({

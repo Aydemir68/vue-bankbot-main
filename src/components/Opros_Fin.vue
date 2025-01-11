@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import questions from './Vihod.json';
+import questions from './Fin.json';
 import {ref} from "vue";
 import Button from "primevue/button";
 import Toast from 'primevue/toast';
