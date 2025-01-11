@@ -15,11 +15,11 @@
 export default {
   data() {
     return {
-      host: 'http://localhost:8000/',
+      host: 'https://finlit-test.ru/',
     }
   },
   mounted() {
-    this.$store.dispatch("getAllnews");
+    this.$store.dispatch("getAllNews");
     console.log(this.$store.getters["GET_NEWS"]);
   },
   computed: {

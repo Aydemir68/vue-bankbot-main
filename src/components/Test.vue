@@ -11,64 +11,29 @@ export default {
       sortByField: "name", // Поле для сортировки (по умолчанию "name")
       sortOrder: 1, // Порядок сортировки: 1 для возрастания, -1 для убывания
       selectedFile: null, // Выбранный файл (тест)
-      files: [
-        {
-          id: '1',
-          name: "Финансовый навигатор. Входной опрос 2024 ",
-          date: "10.11.2024",
-          isPassed: true,
-          correctPercentage: 85,
-          attempts: 3,
-          json: "./Vhod.json",
-        },
-        {
-          id: '2',
-          name: "Финансовый навигатор. Завершающий опрос 2024 ",
-          date: "12.11.2024",
-          isPassed: false,
-          correctPercentage: 0,
-          attempts: 1,
-          json: "./Vihod.json",
-        },
-        {
-          id: '3',
-          name: "Опрос по финансовой грамотности и потребительских настроений ",
-          date: "12.11.2024",
-          isPassed: false,
-          correctPercentage: 0,
-          attempts: 1,
-          json: "./questions.json",
-        },
-        {
-          id: '4',
-          name: "Анкета по финансовой грамотности",
-          date: "12.11.2024",
-          isPassed: false,
-          correctPercentage: 0,
-          attempts: 1,
-          json: "./Fin.json"
-        },
-
-      ],
+      files: null
     };
   },
   computed: {
     // Фильтруем файлы по имени
     filteredFiles() {
-      return this.files
-          .filter((file) =>
-              file.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-          )
-          .sort((a, b) => {
-            // Сортируем по указанному полю
-            if (a[this.sortByField] > b[this.sortByField]) {
-              return this.sortOrder;
-            } else if (a[this.sortByField] < b[this.sortByField]) {
-              return -this.sortOrder;
-            }
-            return 0;
-          });
+      if (this.files != null)
+        return this.files
+            .filter((file) =>
+                file.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+            )
+            .sort((a, b) => {
+              // Сортируем по указанному полю
+              if (a[this.sortByField] > b[this.sortByField]) {
+                return this.sortOrder;
+              } else if (a[this.sortByField] < b[this.sortByField]) {
+                return -this.sortOrder;
+              }
+              return 0;
+            });
+      else return 0;
     },
+
   },
   methods: {
     // Меняем поле и порядок сортировки
@@ -90,6 +55,10 @@ export default {
       }
     },
   },
+  mounted() {
+    this.$store.dispatch("getAllSurveys");
+    this.files = this.$store.getters["GET_SURVEYS"];
+  }
 };
 </script>
 
@@ -125,9 +94,8 @@ export default {
 
         <!-- Информация о выбранном тесте (отображается только если выбран тест) -->
         <div v-if="selectedFile === file" class="p-1">
-          <p><strong>Статус:</strong> {{ file.isPassed ? 'Пройден' : 'Не пройден' }}</p>
-          <p><strong>Процент правильных ответов:</strong> {{ file.correctPercentage }}%</p>
-          <p class="mb-3"><strong>Количество попыток:</strong> {{ file.attempts }}</p>
+          <p><strong>Процент правильных ответов:</strong> 0%</p>
+          <p class="mb-3"><strong>Количество попыток:</strong> {{ file.number_of_attempts }}</p>
           <div v-if="file.id === '1'" class="">
             <RouterLink :to="this.link1" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
               Пройти
