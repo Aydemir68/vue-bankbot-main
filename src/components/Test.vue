@@ -1,12 +1,7 @@
 <script>
-
 export default {
   data() {
     return {
-      link1: "/test/test1",
-      link2: "/test/test2",
-      link3: "/test/test3",
-      link4: "/test/test4",
       searchQuery: "", // Переменная для поиска
       sortByField: "name", // Поле для сортировки (по умолчанию "name")
       sortOrder: 1, // Порядок сортировки: 1 для возрастания, -1 для убывания
@@ -14,7 +9,7 @@ export default {
       files: [
         {
           id: '1',
-          name: "Финансовый навигатор. Входной опрос 2024 ",
+          name: "Финансовый навигатор. Входной опрос 2024",
           date: "10.11.2024",
           isPassed: true,
           correctPercentage: 85,
@@ -23,7 +18,7 @@ export default {
         },
         {
           id: '2',
-          name: "Финансовый навигатор. Завершающий опрос 2024 ",
+          name: "Финансовый навигатор. Завершающий опрос 2024",
           date: "12.11.2024",
           isPassed: false,
           correctPercentage: 0,
@@ -32,7 +27,7 @@ export default {
         },
         {
           id: '3',
-          name: "Опрос по финансовой грамотности и потребительских настроений ",
+          name: "Опрос по финансовой грамотности и потребительских настроений",
           date: "12.11.2024",
           isPassed: false,
           correctPercentage: 0,
@@ -46,9 +41,8 @@ export default {
           isPassed: false,
           correctPercentage: 0,
           attempts: 1,
-          json: "./Fin.json"
+          json: "./Fin.json",
         },
-
       ],
     };
   },
@@ -56,18 +50,18 @@ export default {
     // Фильтруем файлы по имени
     filteredFiles() {
       return this.files
-          .filter((file) =>
-              file.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-          )
-          .sort((a, b) => {
-            // Сортируем по указанному полю
-            if (a[this.sortByField] > b[this.sortByField]) {
-              return this.sortOrder;
-            } else if (a[this.sortByField] < b[this.sortByField]) {
-              return -this.sortOrder;
-            }
-            return 0;
-          });
+        .filter((file) =>
+          file.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        )
+        .sort((a, b) => {
+          // Сортируем по указанному полю
+          if (a[this.sortByField] > b[this.sortByField]) {
+            return this.sortOrder;
+          } else if (a[this.sortByField] < b[this.sortByField]) {
+            return -this.sortOrder;
+          }
+          return 0;
+        });
     },
   },
   methods: {
@@ -93,61 +87,62 @@ export default {
 };
 </script>
 
+
 <template>
   <div class="file-list w-full">
     <!-- Поле для поиска -->
     <input
-        type="text"
-        v-model="searchQuery"
-        placeholder="Поиск по имени..."
-        class="search-bar border-round p-3 m-2 mt-3 w-20rem"
+      type="text"
+      v-model="searchQuery"
+      placeholder="Поиск по имени..."
+      class="search-bar border-round p-3 m-2 mt-3 w-20rem"
     />
 
     <!-- Кнопки сортировки -->
     <div class="sort-buttons">
-      <button @click="sortBy('name')" class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2 m-2 w-10rem">Сортировать по имени</button>
-      <button @click="sortBy('date')" class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2 m-2 w-10rem">Сортировать по дате</button>
+      <button
+        @click="sortBy('name')"
+        class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2 m-2 w-10rem"
+      >
+        Сортировать по имени
+      </button>
+      <button
+        @click="sortBy('date')"
+        class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2 m-2 w-10rem"
+      >
+        Сортировать по дате
+      </button>
     </div>
 
     <!-- Список файлов -->
-    <div class="file-items flex flex-column justify-content-center align-items-center border-round-xl m-2">
+    <div
+      class="file-items flex flex-column justify-content-center align-items-center border-round-xl m-2"
+    >
       <div
-          v-for="file in filteredFiles"
-          :key="file.name"
-          class="p-1"
-          @click="selectTest(file)">
-
+        v-for="file in filteredFiles"
+        :key="file.id"
+        class="p-1"
+        @click="selectTest(file)"
+      >
         <i class="pi pi-file" /> <!-- Иконка файла -->
         <div>
           <span class="file-name">{{ file.name }}</span>
           <small class="file-info">({{ file.date }})</small>
         </div>
 
-        <!-- Информация о выбранном тесте (отображается только если выбран тест) -->
+        <!-- Информация о выбранном тесте -->
         <div v-if="selectedFile === file" class="p-1">
           <p><strong>Статус:</strong> {{ file.isPassed ? 'Пройден' : 'Не пройден' }}</p>
           <p><strong>Процент правильных ответов:</strong> {{ file.correctPercentage }}%</p>
           <p class="mb-3"><strong>Количество попыток:</strong> {{ file.attempts }}</p>
-          <div v-if="file.id === '1'" class="">
-            <RouterLink :to="this.link1" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
-              Пройти
-            </RouterLink>
-          </div>
-          <div v-if="file.id === '2'">
-            <RouterLink :to="this.link2" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
-              Пройти
-            </RouterLink>
-          </div>
-          <div v-if="file.id === '3'">
-            <RouterLink :to="this.link3" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
-              Пройти
-            </RouterLink>
-          </div>
-          <div v-if="file.id === '4'">
-            <RouterLink :to="this.link4" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
-              Пройти
-            </RouterLink>
-          </div>
+
+          <!-- Кнопка для перехода к тесту -->
+          <RouterLink
+            :to="`/test/${file.id}`"
+            class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem"
+          >
+            Пройти тест
+          </RouterLink>
         </div>
       </div>
     </div>
