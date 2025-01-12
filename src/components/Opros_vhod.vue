@@ -85,14 +85,8 @@
             <Button type="button" label="Завершить" @click="this.complete"></Button>
           </div>
         </Dialog>
-<<<<<<< Updated upstream
         <Dialog v-model:visible="visibleComplete"  header="Cпасибо за прохождение опроса!" modal class="bg-gray-200" :style="{ width: '25rem' }" :closable="false">
           <p>Ваш результат отправлен! Вы будете перенаправлены на страницу с опросами</p>
-=======
-        <Dialog v-model:visible="visibleComplete" modal class="bg-gray-200" :style="{ width: '25rem' }" :closable="false">
-          <p>Cпасибо за прохождение опроса!</p>
-          <p>Ваш результат отправлен!</p>
->>>>>>> Stashed changes
         </Dialog>
       </div>
 
