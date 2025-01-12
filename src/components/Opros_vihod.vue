@@ -156,6 +156,7 @@ export default {
       this.sendMessage();
     },
     async complete() {
+      let tg = window.Telegram.WebApp;
       this.visibleConfirm = false;
       this.visibleComplete = true;
       setTimeout(this.closeDialog, 3000);
