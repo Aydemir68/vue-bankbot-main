@@ -116,13 +116,14 @@ import axios from "axios";
 export default {
   data() {
     return {
+      id: null,
       currentQuestionIndex: 0,
       selectedAnswers: [],
       test: null,
       visible: false,
       visibleConfirm: false,
       visibleComplete: false,
-      questions: questions.questions, // Подключаем вопросы из JSON
+      questions: [],// Подключаем вопросы из JSON
       link: '/test',
       responseMessage: ""
     };
@@ -136,9 +137,21 @@ export default {
     const checked = ref([])
     return { checked };
   },
-
+  beforeMount() {
+    this.id = this.$route.params.id; // Получаем ID из маршрута
+    this.fetchQuestions(); // Загружаем вопросы через API
+  },
 
   methods: {
+    async fetchQuestions() {
+      try {
+        const response = await axios.get(`https://finlit-test.ru/surveys/get_by_id?survey_id=${this.id}`);
+        this.questions = response.data.questions; // Сохраняем полученные вопросы
+        this.loading = false; // Устанавливаем состояние загрузки в false
+      } catch (error) {
+        console.error('Ошибка при загрузке данных:', error);
+      };
+    },
     openDialog() {
       this.visible = true;
       this.sendMessage();

@@ -3,15 +3,11 @@
 export default {
   data() {
     return {
-      link1: "/test/test1",
-      link2: "/test/test2",
-      link3: "/test/test3",
-      link4: "/test/test4",
       searchQuery: "", // Переменная для поиска
       sortByField: "name", // Поле для сортировки (по умолчанию "name")
       sortOrder: 1, // Порядок сортировки: 1 для возрастания, -1 для убывания
       selectedFile: null, // Выбранный файл (тест)
-      files: null
+
     };
   },
   computed: {
@@ -33,7 +29,13 @@ export default {
             });
       else return 0;
     },
-
+    files() {
+      return this.$store.getters["GET_SURVEYS"];
+    }
+  },
+  created() {
+    this.id = this.$route.params.id;
+    console.log('ID из маршрута:', this.id); // Убедитесь, что параметр id существует
   },
   methods: {
     // Меняем поле и порядок сортировки
@@ -54,10 +56,10 @@ export default {
         this.selectedFile = file;
       }
     },
+
   },
   mounted() {
     this.$store.dispatch("getAllSurveys");
-    this.files = this.$store.getters["GET_SURVEYS"];
   }
 };
 </script>
@@ -78,6 +80,15 @@ export default {
       <button @click="sortBy('date')" class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2 m-2 w-10rem">Сортировать по дате</button>
     </div>
 
+
+    <div class="filter-dropdown m-2">
+      <select id="test-filter" v-model="selectedFilter" @change="filterTests" class="filter-select">
+        <option value="all">Все тесты</option>
+        <option value="passed">Пройденные тесты</option>
+        <option value="not-passed">Непройденные тесты</option>
+      </select>
+    </div>
+
     <!-- Список файлов -->
     <div class="file-items flex flex-column justify-content-center align-items-center border-round-xl m-2">
       <div
@@ -96,23 +107,10 @@ export default {
         <div v-if="selectedFile === file" class="p-1">
           <p><strong>Процент правильных ответов:</strong> 0%</p>
           <p class="mb-3"><strong>Количество попыток:</strong> {{ file.number_of_attempts }}</p>
-          <div v-if="file.id === '1'" class="">
-            <RouterLink :to="this.link1" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
-              Пройти
-            </RouterLink>
-          </div>
-          <div v-if="file.id === '2'">
-            <RouterLink :to="this.link2" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
-              Пройти
-            </RouterLink>
-          </div>
-          <div v-if="file.id === '3'">
-            <RouterLink :to="this.link3" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
-              Пройти
-            </RouterLink>
-          </div>
-          <div v-if="file.id === '4'">
-            <RouterLink :to="this.link4" class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
+          <div>
+            <RouterLink
+                :to="`/test/${file.id}`"
+                class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
               Пройти
             </RouterLink>
           </div>
@@ -137,6 +135,23 @@ button{
 .file-items {
   background-color: rgb(66, 115, 195);
 }
+select {
+  background-color: #1d3557; /* Цвет фона, аналогичный кнопкам */
+  color: white; /* Цвет текста */
+  border: 1px solid white; /* Белая граница */
+  border-radius: 4px; /* Закругленные углы */
+  padding: 5px; /* Внутренний отступ */
+  width: 10rem; /* Ширина аналогична кнопкам */
+  margin-top: 10px; /* Отступ сверху */
+}
 
+select:hover {
+  background-color: #457b9d; /* Цвет фона при наведении */
+}
+
+select:focus {
+  outline: none;
+  border: 2px solid #a8dadc; /* Подсветка при фокусе */
+}
 
 </style>
