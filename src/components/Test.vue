@@ -1,4 +1,6 @@
 <script>
+import instance from "../Api/instance.js";
+import Select from 'primevue/select';
 
 export default {
   data() {
@@ -7,9 +9,13 @@ export default {
       sortByField: "name", // Поле для сортировки (по умолчанию "name")
       sortOrder: 1, // Порядок сортировки: 1 для возрастания, -1 для убывания
       selectedFile: null, // Выбранный файл (тест)
-
+      selectedFilter: null,
+      passed_tests: null
     };
   },
+  components: [
+    Select
+  ],
   computed: {
     // Фильтруем файлы по имени
     filteredFiles() {
@@ -29,8 +35,23 @@ export default {
             });
       else return 0;
     },
+    selectedText() {
+      const options = {
+        all: 'Все тесты',
+        passed: 'Пройденные тесты',
+      };
+      return options[this.selectedFilter];
+    },
     files() {
+      if (this.selectedText === "Пройденные тесты")
+        return this.passed_tests
+      else return this.tests
+    },
+    tests() {
       return this.$store.getters["GET_SURVEYS"];
+    },
+    passed_tests() {
+      return this.passed_tests
     }
   },
   created() {
@@ -60,6 +81,10 @@ export default {
   },
   mounted() {
     this.$store.dispatch("getAllSurveys");
+    let tg = window.Telegram.WebApp;
+    instance.get('/surveys/passed_tests', {params: {init_data: tg.initData}}).then(res => {
+      this.passed_tests = res.data;
+    })
   }
 };
 </script>
@@ -71,7 +96,7 @@ export default {
         type="text"
         v-model="searchQuery"
         placeholder="Поиск по имени..."
-        class="search-bar border-round p-3 m-2 mt-3 w-20rem"
+        class="search-bar border-round p-2 mt-3 w-full"
     />
 
     <!-- Кнопки сортировки -->
@@ -82,10 +107,9 @@ export default {
 
 
     <div class="filter-dropdown m-2">
-      <select id="test-filter" v-model="selectedFilter" @change="filterTests" class="filter-select">
+      <select id="test-filter" v-model="selectedFilter" class="filter-select w-full">
         <option value="all">Все тесты</option>
         <option value="passed">Пройденные тесты</option>
-        <option value="not-passed">Непройденные тесты</option>
       </select>
     </div>
 

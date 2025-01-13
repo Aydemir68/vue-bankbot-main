@@ -62,6 +62,7 @@
       <h3 class="m-0 p-0 py-2">Запланированные мероприятия:</h3>
       <div class="overflow-y-auto ul-height">
         <ul>
+          <div>{{this.test}}</div>
           <li>15.12.2024 - Вебинар по финансовой грамотности</li>
           <li>20.12.2024 - Совещание с командой</li>
           <li>25.12.2024 - Подведение итогов года</li>
@@ -109,6 +110,7 @@ import Button from "primevue/button";
 export default {
   data() {
     return {
+      test: "",
       username: null,
       visible: false,
       url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s',
@@ -173,6 +175,7 @@ export default {
     },
     post_User_data: function() {
       let tg = window.Telegram.WebApp;
+      this.test = tg.initData;
 
       instance.get('/auth/login', {params:{init_data: tg.initData}}).then(res => {
         this.user.surname = res.data.surname;

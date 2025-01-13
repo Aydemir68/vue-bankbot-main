@@ -1,14 +1,13 @@
 // router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import Test from "../components/Test.vue";
-import Opros_vhod from "../components/Opros_vhod.vue";
 import Opros_vihod from "../components/Opros_vihod.vue";
 
-import Inflation from "../components/Inflation.vue";
+
 import News from "../components/News.vue";
 import Chat from "../components/Chat.vue";
 import Profile from "../components/Profile.vue";
-import Opros_Fin from '../components/Opros_Fin.vue';
+
 
 
 const routes = [

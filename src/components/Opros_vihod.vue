@@ -87,6 +87,7 @@
         </Dialog>
         <Dialog v-model:visible="visibleComplete"  header="Cпасибо за прохождение опроса!" modal class="bg-gray-200" :style="{ width: '25rem' }" :closable="false">
           <p>Ваш результат отправлен! Вы будете перенаправлены на страницу с опросами</p>
+          <div>{{this.test}}</div>
         </Dialog>
       </div>
 
@@ -102,7 +103,6 @@
 </template>
 
 <script>
-import questions from './Vihod.json';
 import {ref} from "vue";
 import Button from "primevue/button";
 import Toast from 'primevue/toast';
@@ -161,8 +161,10 @@ export default {
       this.visibleComplete = true;
       setTimeout(this.closeDialog, 3000);
       try {
-        const response = await axios.post(`https://finlit-test.ru/surveys/save_result?init_data=${tg.initData}&survey_id=${this.id}`);
+        const response = await axios.post(`https://finlit-test.ru/surveys/save_result`, null,
+            {params: {init_data: tg.initData, survey_id: this.id}}).then(res => {});
         this.loading = false; // Устанавливаем состояние загрузки в false
+
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
       };
