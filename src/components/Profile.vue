@@ -118,7 +118,6 @@ export default {
         surname: '',
         name: '',
         patronymic: '',
-        tg_username: '',
         age: 0,
         region: ''
       },
@@ -127,7 +126,6 @@ export default {
         surname: '',
         name: '',
         patronymic: '',
-        tg_username: '',
         age: 0,
         region: ''
       },
@@ -182,7 +180,6 @@ export default {
         this.user.patronymic = res.data.patronymic;
         this.user.age = res.data.age;
         this.user.region = res.data.region;
-        this.user.userName = res.data.tg_username;
       }).catch(err => {
         this.visible = true;
       })
