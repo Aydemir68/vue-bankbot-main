@@ -6,13 +6,15 @@
 
         <img :src="host + news.image_url" :alt="news.title" class="image align-content-center align-items-center justify-content-center border-round w-full" />
         <p class="py-2">{{ news.description }}</p>
-        <button class="text-white hover:bg-primary-800 active:bg-primary-600">Запланировать</button>
+        <button v-if="news.is_event === false" class="text-white hover:bg-primary-800 active:bg-primary-600">Запланировать</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
