@@ -4,7 +4,7 @@
       <div class="news-content border-round-xl m-2 p-1 pb-2">
         <p class="text-xl font-bold">{{ news.title }}</p>
 
-        <img :src="host + news.image_url" :alt="news.title" class="image align-content-center align-items-center justify-content-center border-round w-full" />
+        <img :src="host + news.image_url" :alt="news.title" class="image border-round-2xl align-content-center align-items-center justify-content-center w-full" />
         <p class="py-2">{{ news.description }}</p>
         <button v-if="news.is_event === false" class="text-white hover:bg-primary-800 active:bg-primary-600">Запланировать</button>
       </div>

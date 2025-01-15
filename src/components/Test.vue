@@ -122,7 +122,7 @@ export default {
           @click="selectTest(file)">
 
         <i class="pi pi-file" /> <!-- Иконка файла -->
-        <div>
+        <div class="m-2">
           <span class="file-name">{{ file.name }}</span>
           <small class="file-info">({{ file.date }})</small>
         </div>
