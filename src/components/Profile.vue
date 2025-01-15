@@ -42,7 +42,6 @@
       <!-- Информация о пользователе -->
       <div class="user-info p-2">
         <p class="m-0 mt-1"><strong>ФИО:</strong> {{ user.surname + ' ' + user.name + ' ' + user.patronymic }}</p>
-        <p class="m-0 mt-1"><strong>Имя пользователя:</strong> {{ user.userName }}</p>
         <p class="m-0 mt-1"><strong>Возраст:</strong> {{ user.age }}</p>
         <p class="m-0 mt-1"><strong>Регион:</strong> {{ user.region }}</p>
       </div>
