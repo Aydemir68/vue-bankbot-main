@@ -5,7 +5,7 @@
       <i class="pi pi-chevron-down"></i>
     </Button>
 
-    <button class="bin-button" @click="clearChat">
+    <button v-if="hasUserMessages" class="bin-button" @click="clearChat">
       <svg
           class="bin-top"
           viewBox="0 0 39 7"
@@ -79,6 +79,11 @@ export default {
       visibleGenMessage: false,
       sendButtonEnabled: false
     };
+  },
+  computed: {
+    hasUserMessages() {
+      return this.messages.some((message) => message.isUser);
+    },
   },
   methods: {
     marked,
@@ -173,10 +178,12 @@ export default {
     },
     clearChat() {
       // Очищаем массив сообщений и сбрасываем счетчик ID
-      this.messages = [];
-      this.messageId = 0;
-      localStorage.removeItem("chatSession");
-      this.scrollToBottom();
+      setTimeout (() => {
+        this.messages = [];
+        this.messageId = 0;
+        localStorage.removeItem("chatSession");
+        this.scrollToBottom();
+      }, 1200);
     },
   },
   mounted() {
@@ -195,7 +202,13 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
+* {
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .gif_size {
   width: 10%;
 }
@@ -239,23 +252,29 @@ mark {
 }
 /* From Uiverse.io by vinodjangid07 */
 .bin-button {
+  position: fixed; /* Фиксированное положение кнопки */
+  top: 10px; /* Отступ сверху */
+  right: 10px; /* Отступ справа */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 55px;
-  height: 55px;
-  border-radius: 15px;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.8rem;
   background-color: rgb(255, 95, 95);
   cursor: pointer;
-  border: 3px solid rgb(255, 201, 201);
-  transition-duration: 0.3s;
+  border: 0.2rem solid rgb(255, 201, 201);
+  transition-duration: 1s;
+  z-index: 1000; /* Чтобы кнопка всегда была поверх остальных элементов */
+  outline: none;
 }
+
 .bin-bottom {
-  width: 15px;
+  width: 0.9rem;
 }
 .bin-top {
-  width: 17px;
+  width: 1.1rem;
   transform-origin: right;
   transition-duration: 0.3s;
 }
@@ -263,7 +282,8 @@ mark {
   transform: rotate(45deg);
 }
 .bin-button:hover {
-  background-color: rgb(255, 0, 0);
+  background-color: rgb(246, 71, 71);
+  outline: none;
 }
 .bin-button:active {
   transform: scale(0.9);
