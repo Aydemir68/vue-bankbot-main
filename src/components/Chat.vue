@@ -6,15 +6,18 @@
     </Button>
     <div ref="messagesContainer" class="flex flex-column h-full overflow-y-scroll mx-1">
       <div v-for="message in messages" :key="message.id">
-        <div class="bg-primary-500 p-2 border-round-lg":class="{'flex user-message my-2 max-w-16rem': message.isUser, 'flex bot-message max-w-16rem': !message.isUser,}">
-          {{ message.text }}
+        <div class="bg-primary-500 p-2 border-round-lg text-left" :class="{'flex user-message my-2 max-w-18rem': message.isUser, 'flex bot-message max-w-18rem': !message.isUser,}">
+          {{ marked(message.text) }}
         </div>
+      </div>
+      <div id="generating" v-show="this.visibleGenMessage">
+        <img class="gif_size" src="../../public/innoit.gif"/>
       </div>
     </div>
     <div class="input-container flex align-items-end p-3 h-5rem">
       <input type="text" v-model="newMessage" @keyup.enter="sendMessage" class="input border-round border-none h-3rem w-20rem p-2" placeholder="Сообщение..."/>
       <button
-        @click="sendMessage" class="ml-2 bg-primary h-3rem hover:bg-primary-800 border-none active:bg-primary-600">
+        v-bind:disabled="this.sendButtonEnabled" @click="sendMessage" class="ml-2 bg-primary h-3rem hover:bg-primary-800 border-none active:bg-primary-600">
         <i class="pi pi-send"></i>
       </button>
     </div>
@@ -23,6 +26,7 @@
 
 <script>
 import axios from "axios";
+import {marked} from "marked";
 
 export default {
   data() {
@@ -31,9 +35,12 @@ export default {
       newMessage: "",
       messageId: 0, // Для уникальных идентификаторов сообщений
       isVisible: false,
+      visibleGenMessage: false,
+      sendButtonEnabled: false
     };
   },
   methods: {
+    marked,
     async sendMessage() {
       if (this.newMessage.trim()) {
         // Сохраняем сообщение пользователя
@@ -53,28 +60,39 @@ export default {
         this.scrollToBottom();
 
         try {
+          this.visibleGenMessage = true;
+          this.sendButtonEnabled = true;
           // Отправляем сообщение на сервер
           await axios.post(
-            "http://127.0.0.1:8000/api/v1/chat/generation",
+            "http://81.94.159.227:1203/api/v1/chat/generation",
             {
               role: "user",
               content: userMessage,
-              params: {
-                chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c",
-                use_rag: true,
-                extract_keywords: true,
-                stream: true,
-              },
-            }
+            }, {
+                params: {
+                  chat_id: "1ca42f7e-0f47-4ffe-ae96-41988848997a",
+                  use_rag: true,
+                  extract_keywords: true,
+                  stream: true,}
+              }
           );
 
           // Получаем ответ
           const response = await axios.get(
-            "http://127.0.0.1:8000/api/v1/chat/message/list",
+            "http://81.94.159.227:1203/api/v1/chat/message/list",
             {
-              params: { chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c" },
+              params: { chat_id: "1ca42f7e-0f47-4ffe-ae96-41988848997a" },
             }
-          );
+          ).then().finally(this.visibleGenMessage = true);
+          await axios.post(
+              "http://81.94.159.227:1203/api/v1/chat/message/clear",null,
+              {
+                params: {
+                  chat_id: "1ca42f7e-0f47-4ffe-ae96-41988848997a",
+                }
+              }
+          )
+
 
           // Добавляем сообщение ассистента
           const assistantMessage = response.data.find(
@@ -97,6 +115,8 @@ export default {
           this.saveSession();
         } finally {
           this.scrollToBottom();
+          this.visibleGenMessage = false;
+          this.sendButtonEnabled = false;
         }
       }
     },
@@ -128,7 +148,7 @@ export default {
       } else {
         this.messages.push({
           id: this.messageId++,
-          text: "Привет! Это AI-бот, чем могу помочь?",
+          text: "Приветствую!  Это раздел, в котором Вы можете получить ответы на различные вопросы по направлению финансовой грамотности. Для этого напишите Ваш вопрос ниже",
           isUser: false,
         });
       }
@@ -151,6 +171,15 @@ export default {
 </script>
 
 <style>
+.gif_size {
+  width: 10%;
+}
+
+mark {
+  background-color: transparent;
+  color: white;
+}
+
 .main-container {
   background-color: #2a3f4f;
   overflow: auto;

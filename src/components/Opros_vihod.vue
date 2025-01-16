@@ -199,21 +199,27 @@ export default {
 
       try {
 
-        await axios.post("http://127.0.0.1:8000/api/v1/chat/generation?chat_id=c1d08391-8545-4676-abe8-8a92f52ec88c&use_rag=true&extract_keywords=true&stream=true", {
-          role: "user",
-          content: requestMessage,
-          params: {
-            chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c",
-            use_rag: true,
-            extract_keywords: true,
-            stream: true,
-          }
-        });
+        await axios.post(
+            "http://81.94.159.227:1203/api/v1/chat/generation",
+            {
+              role: "user",
+              content: requestMessage,
+            }, {
+              params: {
+                chat_id: "1ca42f7e-0f47-4ffe-ae96-41988848997a",
+                use_rag: true,
+                extract_keywords: true,
+                stream: true,}
+            }
+        );
 
-        // Получаем ответ от ассистента
-        const response = await axios.get("http://127.0.0.1:8000/api/v1/chat/message/list", {
-          params: { chat_id: "c1d08391-8545-4676-abe8-8a92f52ec88c" },
-        });
+        // Получаем ответ
+        const response = await axios.get(
+            "http://81.94.159.227:1203/api/v1/chat/message/list",
+            {
+              params: { chat_id: "1ca42f7e-0f47-4ffe-ae96-41988848997a" },
+            }
+        );
 
         // Ищем первое сообщение от ассистента
         if (Array.isArray(response.data) && response.data.length > 0) {
@@ -227,6 +233,15 @@ export default {
         } else {
           this.responseMessage = "Ответ пуст или неверный.";
         }
+
+        await axios.post(
+            "http://81.94.159.227:1203/api/v1/chat/message/clear",null,
+            {
+              params: {
+                chat_id: "1ca42f7e-0f47-4ffe-ae96-41988848997a",
+              }
+            }
+        )
       } catch (error) {
         console.error("Ошибка при отправке сообщения:", error);
         this.responseMessage = "Произошла ошибка. Пожалуйста, попробуйте позже";
