@@ -1,51 +1,39 @@
 <template>
-  <div class="quiz-container w-screen p-2">
+  <div class="flex flex-column h-full w-full p-2">
     <!-- Основной блок викторины -->
-    <div v-if="currentQuestionIndex < questions.length" class="question-container border-round-xl p-2 h-full w-full overflow-y-scroll">
-      <div class="header w-full border-round-xl text-gray-300 text-lg font-bold text-left p-2 bg-primary-800">{{ questions[currentQuestionIndex].question }}</div>
+    <div v-if="currentQuestionIndex < questions.length" class="border-round-xl h-full w-full p-1 overflow-y-scroll">
+      <div class="header w-full border-round-xl bg-black-alpha-30 p-3 text-gray-300 text-lg font-semibold text-center">
+        {{ questions[currentQuestionIndex].question }}
+      </div>
 
-      <div class="answers mt-3">
+      <div class="mt-3">
 
-
-        <div v-if="Array.isArray(questions[currentQuestionIndex].correct_answer)">
-          <div
-              v-for="(answer, index) in questions[currentQuestionIndex].answers"
-              :key="index"
-              class="answer">
-            <input
-                type="checkbox"
-                :id="'answer-' + currentQuestionIndex + '-' + index"
-                :name="'question-' + currentQuestionIndex"
-                :value="answer"
-                v-model="this.checked"
-                class="checkbox-input"/>
-            <label :for="'answer-' + currentQuestionIndex + '-' + index">{{ answer }}</label>
+        <div v-if="Array.isArray(questions[currentQuestionIndex].correct_answer)" class="flex flex-column gap-2">
+          <div v-for="(answer, index) in questions[currentQuestionIndex].answers" :key="index"
+               class="flex w-full bg-black-alpha-20 p-3 border-round gap-3">
+            <input type="checkbox" :id="'answer-' + currentQuestionIndex + '-' + index"
+                   :name="'question-' + currentQuestionIndex" :value="answer" v-model="this.checked"
+                   class="flex"/>
+            <label :for="'answer-' + currentQuestionIndex + '-' + index" class="flex text-left">{{ answer }}</label>
           </div>
         </div>
+
         <!-- Если вопрос не позволяет несколько правильных ответов, используем радиокнопки -->
-        <div v-else-if="questions[currentQuestionIndex].answers && questions[currentQuestionIndex].answers.length > 0">
-          <div
-              v-for="(answer, index) in questions[currentQuestionIndex].answers"
-              :key="index"
-              class="answer">
-            <input
-                type="radio"
-                :id="'answer-' + index"
-                :name="'question-' + currentQuestionIndex"
-                :value="answer"
-                v-model="selectedAnswers[currentQuestionIndex]"/>
-            <label :for="'answer-' + index">{{ answer }}</label>
+        <div v-else-if="questions[currentQuestionIndex].answers && questions[currentQuestionIndex].answers.length > 0"
+             class="flex flex-column gap-2">
+          <div v-for="(answer, index) in questions[currentQuestionIndex].answers" :key="index"
+               class="flex w-full bg-black-alpha-20 p-3 border-round gap-3">
+            <input type="radio" :id="'answer-' + index" :name="'question-' + currentQuestionIndex" :value="answer"
+                   v-model="selectedAnswers[currentQuestionIndex]" class="flex"/>
+            <label :for="'answer-' + index" class="flex text-left">{{ answer }}</label>
           </div>
         </div>
 
         <div v-else-if="questions[currentQuestionIndex].correct_answer === 'без ответа'"></div>
         <!-- Если вариантов ответов нет, отображаем поле для ввода текста -->
         <div v-else>
-          <input
-              type="text"
-              v-model="selectedAnswers[currentQuestionIndex]"
-              placeholder="Введите ваш ответ"
-              class="text-input border-round border-none p-2 w-16rem"/>
+          <input type="text" v-model="selectedAnswers[currentQuestionIndex]" placeholder="Введите ваш ответ"
+                 class="border-round border-none p-3 w-full"/>
         </div>
       </div>
     </div>
@@ -64,7 +52,8 @@
     <!-- Кнопки управления -->
     <div class="flex w-full justify-content-between mt-3">
       <button
-          class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 border-round text-white active:bg-primary-600 hover:bg-primary-800"
+          class="flex w-8rem justify-content-center custom-button align-items-center bg-black-alpha-30 border-round
+                 text-white hover:bg-primary-800"
           @click="goBack"
           :disabled="currentQuestionIndex === 0">
         Назад
@@ -77,12 +66,15 @@
 
       <div v-if="currentQuestionIndex === questions.length - 1">
         <Button @click="this.visibleConfirm = true" class="flex w-8rem justify-content-center custom-button
-                align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800 border-none" label="Завершить"></Button>
+                align-items-center bg-black-alpha-30 border-round
+                text-white hover:bg-primary-800" label="Завершить"></Button>
         <Dialog v-model:visible="visibleConfirm" modal class="bg-gray-200" header="Вы действительно хотите завершить опрос?"
                 :style="{ width: '25rem' }" :closable="false">
           <div class="flex justify-end gap-2">
-            <Button type="button" label="Отмена" severity="secondary" @click="this.visibleConfirm = false"></Button>
-            <Button type="button" label="Завершить" @click="this.complete"></Button>
+            <Button type="button" label="Отмена" severity="secondary" @click="this.visibleConfirm = false"
+                    class="border-1 border-black-alpha-50"></Button>
+            <Button type="button" label="Завершить" @click="this.complete"
+                    class="border-1 border-black-alpha-50"></Button>
           </div>
         </Dialog>
         <Dialog v-model:visible="visibleComplete"  header="Cпасибо за прохождение опроса!" modal class="bg-gray-200" :style="{ width: '25rem' }" :closable="false">
@@ -90,10 +82,9 @@
           <div>{{this.test}}</div>
         </Dialog>
       </div>
-
-
       <div v-else>
-        <button class="flex w-8rem justify-content-center custom-button align-items-center bg-gray-900 text-white active:bg-primary-600 hover:bg-primary-800"
+        <button class="flex w-8rem justify-content-center custom-button align-items-center bg-black-alpha-30 border-round
+                 text-white hover:bg-primary-800"
                 @click="goNext">
           Вперед
         </button>
@@ -252,51 +243,18 @@ export default {
 </script>
 
 <style scoped>
-.quiz-container {
-  height: 94vh;
-  background-color: #2a3f4f;
-  color: #fff;
-  border-radius: 8px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Основной контейнер викторины */
-.question-container {
-  background-color: rgb(66, 115, 195);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.answer {
-  text-align: left;
-}
-
 .custom-button {
   height: 3rem;
-}
-
-input[type="radio"] {
-  margin-right: 1vh;
+  outline: none;
 }
 
 input[type="checkbox"] {
-  border-radius: 0;
-  background-color: transparent;
+  transform: scale(1.7);
+  border: 0;
 }
 
-input[type="checkbox"] {
-  margin-right: 10px;
-  width: 20px;
-  height: 20px;
-  border-radius: 0;
-  border: 2px solid #fff;
-  background-color: transparent;
+input[type='radio'] {
+  transform: scale(1.7);
 }
-
 
 </style>

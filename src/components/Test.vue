@@ -9,7 +9,8 @@ export default {
       sortByField: "name", // Поле для сортировки (по умолчанию "name")
       sortOrder: 1, // Порядок сортировки: 1 для возрастания, -1 для убывания
       selectedFile: null, // Выбранный файл (тест)
-      selectedFilter: null,
+      selectedFilter: "all",
+      selectedSort: "byNameASC",
       passed_tests: null
     };
   },
@@ -17,7 +18,6 @@ export default {
     Select
   ],
   computed: {
-    // Фильтруем файлы по имени
     filteredFiles() {
       if (this.files != null)
         return this.files
@@ -60,12 +60,28 @@ export default {
   },
   methods: {
     // Меняем поле и порядок сортировки
-    sortBy(field) {
-      if (this.sortByField === field) {
-        this.sortOrder *= -1; // Меняем порядок сортировки
-      } else {
-        this.sortByField = field; // Устанавливаем новое поле сортировки
-        this.sortOrder = 1; // По умолчанию сортировка по возрастанию
+    sortBy() {
+      switch (this.selectedSort) {
+        case "byNameASC": {
+          this.sortByField = "name";
+          this.sortOrder = 1;
+          break;
+        }
+        case "byNameDESC": {
+          this.sortByField = "name";
+          this.sortOrder = -1;
+          break;
+        }
+        case "byDateASC": {
+          this.sortByField = "date";
+          this.sortOrder = 1;
+          break;
+        }
+        case "byDateDESC": {
+          this.sortByField = "date";
+          this.sortOrder = -1;
+          break;
+        }
       }
     },
     // Обработчик для выбора теста
@@ -90,51 +106,50 @@ export default {
 </script>
 
 <template>
-  <div class="file-list w-full">
+  <div class="w-full">
     <!-- Поле для поиска -->
-    <input
-        type="text"
-        v-model="searchQuery"
-        placeholder="Поиск по имени..."
-        class="search-bar border-round p-2 mt-3 w-full"
-    />
-
-    <!-- Кнопки сортировки -->
-    <div class="sort-buttons">
-      <button @click="sortBy('name')" class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2 m-2 w-10rem">Сортировать по имени</button>
-      <button @click="sortBy('date')" class="text-white hover:bg-primary-800 active:bg-primary-600 pl-2 pr-2 m-2 w-10rem">Сортировать по дате</button>
+    <div class="w-full p-2">
+      <input type="text" v-model="searchQuery" placeholder="Поиск по имени..."
+             class="border-none p-2 w-full"/>
     </div>
 
-
-    <div class="filter-dropdown m-2">
-      <select id="test-filter" v-model="selectedFilter" class="filter-select w-full">
+    <div class="flex gap-2 p-2">
+    <!--   Фильтр пройденных тестов   -->
+      <select id="test-filter" v-model="selectedFilter" class="flex w-full m-0 border-0">
         <option value="all">Все тесты</option>
         <option value="passed">Пройденные тесты</option>
+      </select>
+
+      <!--   Сортировка тестов   -->
+      <select id="test-filter" v-model="selectedSort" class="flex w-full m-0" @change="sortBy()">
+        <option value="byNameASC">По названию (↑)</option>
+        <option value="byNameDESC">По названию (↓)</option>
+        <option value="byDateASC">По дате (↑)</option>
+        <option value="byDateDESC">По дате (↓)</option>
       </select>
     </div>
 
     <!-- Список файлов -->
-    <div class="file-items flex flex-column justify-content-center align-items-center border-round-xl m-2">
-      <div
-          v-for="file in filteredFiles"
-          :key="file.name"
-          class="p-1"
-          @click="selectTest(file)">
-
-        <i class="pi pi-file" /> <!-- Иконка файла -->
-        <div class="m-2">
+    <div class="flex flex-column w-full gap-2 justify-content-center align-items-center p-2">
+      <div v-for="file in filteredFiles" :key="file.name" class="flex flex-column w-full p-2 bg-black-alpha-20 border-round"
+           @click="selectTest(file)">
+        <!-- Иконка файла -->
+        <i class="pi pi-file" />
+        <div class="m-2"  >
           <span class="file-name">{{ file.name }}</span>
           <small class="file-info">({{ file.date }})</small>
         </div>
 
         <!-- Информация о выбранном тесте (отображается только если выбран тест) -->
-        <div v-if="selectedFile === file" class="p-1">
+        <div v-if="selectedFile === file" class="w-full">
+
           <p><strong>Процент правильных ответов:</strong> 0%</p>
-          <p class="mb-3"><strong>Количество попыток:</strong> {{ file.number_of_attempts }}</p>
-          <div>
+          <p><strong>Количество попыток:</strong> {{ file.number_of_attempts }}</p>
+
+          <div class="p-3">
             <RouterLink
                 :to="`/test/${file.id}`"
-                class="start-test-button border-round-lg text-white bg-gray-800 p-2 hover:bg-primary-800 active:bg-primary-600 m-1 h-3rem">
+                class="border-round-lg text-white bg-primary-800 px-4 py-2 active:bg-primary-600 h-3rem">
               Пройти
             </RouterLink>
           </div>
@@ -156,9 +171,6 @@ button{
   outline: none;
 }
 
-.file-items {
-  background-color: rgb(66, 115, 195);
-}
 select {
   background-color: #1d3557; /* Цвет фона, аналогичный кнопкам */
   color: white; /* Цвет текста */
@@ -166,16 +178,10 @@ select {
   border-radius: 4px; /* Закругленные углы */
   padding: 5px; /* Внутренний отступ */
   width: 10rem; /* Ширина аналогична кнопкам */
-  margin-top: 10px; /* Отступ сверху */
-}
-
-select:hover {
-  background-color: #457b9d; /* Цвет фона при наведении */
 }
 
 select:focus {
   outline: none;
-  border: 2px solid #a8dadc; /* Подсветка при фокусе */
+  border: 1px solid #a8dadc; /* Подсветка при фокусе */
 }
-
 </style>

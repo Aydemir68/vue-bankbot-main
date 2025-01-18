@@ -10,8 +10,7 @@
           class="bin-top"
           viewBox="0 0 39 7"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-      >
+          xmlns="http://www.w3.org/2000/svg">
         <line y1="5" x2="39" y2="5" stroke="white" stroke-width="4"></line>
         <line
             x1="12"
@@ -26,8 +25,7 @@
           class="bin-bottom"
           viewBox="0 0 33 39"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-      >
+          xmlns="http://www.w3.org/2000/svg">
         <mask id="path-1-inside-1_8_19" fill="white">
           <path
               d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z"
@@ -46,18 +44,20 @@
 
     <div ref="messagesContainer" class="flex flex-column h-full overflow-y-scroll mx-1">
       <div v-for="message in messages" :key="message.id">
-        <div class="bg-primary-500 p-2 border-round-lg text-left" :class="{'flex user-message my-2 max-w-18rem': message.isUser, 'flex bot-message max-w-18rem': !message.isUser,}">
-          {{ marked(message.text) }}
+        <div class="bg-black-alpha-30 p-2 border-round-bottom text-left"
+             :class="{'flex user-message my-2 max-w-18rem': message.isUser, 'flex bot-message max-w-18rem': !message.isUser,}">
+          {{ message.text }}
         </div>
       </div>
       <div id="generating" v-show="this.visibleGenMessage">
-        <img class="gif_size" src="../../public/innoit.gif"/>
+        <img class="gif_size" src="/innoit.gif"/>
       </div>
     </div>
-    <div class="input-container flex align-items-end p-3 h-5rem">
-      <input type="text" v-model="newMessage" @keyup.enter="sendMessage" class="input border-round border-none h-3rem w-20rem p-2" placeholder="Сообщение..."/>
+    <div class="flex w-full align-items-end p-2 h-5rem">
+      <input type="text" v-model="newMessage" @keyup.enter="sendMessage" class="input border-round border-none h-3rem w-full p-2" placeholder="Сообщение..."/>
       <button
-        v-bind:disabled="this.sendButtonEnabled" @click="sendMessage" class="ml-2 bg-primary h-3rem hover:bg-primary-800 border-none active:bg-primary-600">
+        v-bind:disabled="this.sendButtonEnabled" @click="sendMessage"
+        class="ml-2 bg-primary h-3rem hover:bg-primary-800 border-none active:bg-primary-600 outline-none">
         <i class="pi pi-send"></i>
       </button>
     </div>
@@ -250,7 +250,7 @@ mark {
   border-radius: 50%;
   box-shadow: 0 1rem 2.2rem rgba(0, 0, 0, 0.2);
 }
-/* From Uiverse.io by vinodjangid07 */
+
 .bin-button {
   position: fixed; /* Фиксированное положение кнопки */
   top: 10px; /* Отступ сверху */
@@ -272,6 +272,7 @@ mark {
 
 .bin-bottom {
   width: 0.9rem;
+  outline: none;
 }
 .bin-top {
   width: 1.1rem;

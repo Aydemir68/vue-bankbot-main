@@ -3,11 +3,7 @@
     <div class="user-profile flex flex-column border-round-2xl">
       <!-- Блок с фото профиля и кнопкой -->
       <div class="flex flex-column align-items-center">
-        <img class="profile-photo" :src="this.url" alt="Фото профиля" />
-        <!-- Кнопка редактирования профиля под фото -->
-        <div class="edit-profile">
-          <button @click="" class="text-white bg-primary-400 hover:bg-primary-800 active:bg-primary-600">Редактировать профиль</button>
-        </div>
+        <!--    Регистрация / Редактиврование пользователя    -->
         <Dialog v-model:visible="visible" :closable="false" modal header="Зарегистрироваться" class="flex flex-column" :style="{ width: '22rem' }">
           <span class="text-surface-500 dark:text-surface-400 block mb-2">Заполните информацию о себе.</span>
           <div class="flex items-center gap-4 mb-2">
@@ -31,8 +27,6 @@
             <Select v-model="user_update.region" :options="cities" optionLabel="name" placeholder="Выберите регион"
                     class="w-full md:w-50"/>
           </div>
-
-
           <div class="flex justify-content-end p-0 m-0 pt-2 gap-2">
             <Button type="button" class="text-white" label="Зарегистрироваться" @click="save"></Button>
           </div>
@@ -40,60 +34,48 @@
       </div>
 
       <!-- Информация о пользователе -->
-      <div class="user-info p-2">
-        <p class="m-0 mt-1"><strong>ФИО:</strong> {{ user.surname + ' ' + user.name + ' ' + user.patronymic }}</p>
-        <p class="m-0 mt-1"><strong>Возраст:</strong> {{ user.age }}</p>
-        <p class="m-0 mt-1"><strong>Регион:</strong> {{ user.region }}</p>
+      <div class="flex flex-column gap-1 w-full p-3">
+        <img class="flex profile-photo" :src="this.url" alt="Фото профиля" />
+        <Button class="mt-2 mt-btn">Редактировать профиль </Button>
+        <div class="flex font-semibold text-2xl">{{ user.surname + ' ' + user.name + ' ' + user.patronymic }}</div>
+        <div class="flex text-xl"><strong>Возраст:&nbsp;</strong> {{ user.age }}</div>
+        <div class="flex text-xl"><strong>Регион:&nbsp;</strong>{{ user.region }}</div>
       </div>
     </div>
 
-    <!-- Выпадающий список для выбора категории -->
-    <div class="pt-1">
-      <select v-model="selectedCategory" id="category" class="border-round bg-primary-100 h-2rem text-gray-800">
-        <option value="events">Запланированные мероприятия</option>
-        <option value="statistics">Статистика тестов</option>
-        <option value="topics">Темы для изучения</option>
-      </select>
-    </div>
+    <Accordion value="0" class="my-tab">
+      <AccordionPanel value="0" accordion>
+        <AccordionHeader class="outline-none text-xl">Запланированные мероприятия</AccordionHeader>
+        <AccordionContent>
+          <div class="m-0 text-left">
+              <p>1. Опрос по финансовой грамотности и потребительских настроений.</p>
+              <p>2. Финансовый навигатор. Входной опрос.</p>
+              <p>3. Встреча с командой.</p>
+              <p>4. Презентация продукта. 21.12.25</p>
+          </div>
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel value="1">
+        <AccordionHeader class="outline-none text-xl">Темы для изучения</AccordionHeader>
+        <AccordionContent>
+          <div class="m-0 text-left">
+            <p>1. Вклады и накопления.</p>
+            <p>2. Планирование расходов на новый год.</p>
+            <p>3. Подготовка детей к школе.</p>
+            <p>4. Акции и облигации.</p>
+          </div>
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel value="2">
+        <AccordionHeader class="outline-none text-xl">Статистика</AccordionHeader>
+        <AccordionContent>
+          <div class="m-0 text-left">
+              Статистики не найдено!
+          </div>
+        </AccordionContent>
+      </AccordionPanel>
+    </Accordion>
 
-    <!-- Контент в зависимости от выбранной категории -->
-    <div v-if="selectedCategory === 'events'" class="events border-round-xl m-3">
-      <h3 class="m-0 p-0 py-2">Запланированные мероприятия:</h3>
-      <div class="overflow-y-auto ul-height">
-        <ul>
-          <li>15.12.2024 - Вебинар по финансовой грамотности</li>
-          <li>20.12.2024 - Совещание с командой</li>
-          <li>25.12.2024 - Подведение итогов года</li>
-        </ul>
-      </div>
-    </div>
-
-    <div v-if="selectedCategory === 'statistics'" class="statistics border-round-xl m-2">
-      <h3 class="m-0 p-0 py-2">Ваша статистика прохождения тестов за все время:</h3>
-      <div class="overflow-y-auto ul-height">
-        <ul>
-          <li>Завершено тестов: 10</li>
-          <li>Средний балл: 85%</li>
-          <li>Ожидаемые результаты: 90%</li>
-        </ul>
-      </div>
-    </div>
-
-    <div v-if="selectedCategory === 'topics'" class="topics border-round-xl m-2">
-      <h3 class="m-0 p-0 py-2">Для изучения вам рекомедованы следующие темы:</h3>
-      <div class="overflow-y-auto ul-height">
-        <ul>
-          <li>1. Основы финансов</li>
-          <li>2. Экономика и анализ</li>
-          <li>3. Управление временем</li>
-          <li>4. Основы маркетинга</li>
-          <li>1. Основы финансов</li>
-          <li>2. Экономика и анализ</li>
-          <li>3. Управление временем</li>
-          <li>4. Основы маркетинга</li>
-        </ul>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -104,6 +86,10 @@ import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
 import Select from 'primevue/select';
 import Button from "primevue/button";
+import Accordion from 'primevue/accordion';
+import AccordionPanel from 'primevue/accordionpanel';
+import AccordionHeader from 'primevue/accordionheader';
+import AccordionContent from 'primevue/accordioncontent';
 
 export default {
   data() {
@@ -114,11 +100,11 @@ export default {
       url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s',
       user: {
         tg_id: 0,
-        surname: '',
-        name: '',
-        patronymic: '',
-        age: 0,
-        region: ''
+        surname: 'Иванов',
+        name: 'Иван',
+        patronymic: 'Иванович',
+        age: 33,
+        region: 'КБР'
       },
       user_update: {
         tg_id: 0,
@@ -144,7 +130,11 @@ export default {
     InputText,
     InputNumber,
     Select,
-    Button
+    Button,
+    Accordion,
+    AccordionPanel,
+    AccordionHeader,
+    AccordionContent,
   },
   methods: {
     save() {
@@ -180,7 +170,8 @@ export default {
         this.user.age = res.data.age;
         this.user.region = res.data.region;
       }).catch(err => {
-        this.visible = true;
+        //TODO:
+        this.visible = false;
       })
     },
 
@@ -192,27 +183,36 @@ export default {
 </script>
 
 <style scoped>
-.profile-photo {
-  border-radius: 50%;
-  scale: 70%;
+
+.my-tab {
+  --p-accordion-header-border-width: 0;
+  --p-accordion-panel-border-width: 0;
+  --p-accordion-header-active-hover-background: transparent;
+  --p-accordion-panel-border-color: transparent;
+  --p-accordion-header-background: transparent;
+  --p-accordion-header-hover-background: transparent;
+  --p-accordion-header-hover-color: white;
+  --p-accordion-header-color: white;
+  --p-accordion-header-active-color: #8cb3e3;
+  --p-accordion-header-active-background: transparent;
+  --p-accordion-content-background: transparent;
+  --p-accordion-content-color: white;
+  outline: none;
 }
 
 .user-profile {
   background-color: #2A3F4F;
 }
 
-button{
-  background-color: #2A3F4F;
+.profile-photo {
+  width: 100%;
+}
+
+.mt-btn {
+  --p-button-primary-background: #50b455;
+  --p-button-primary-hover-background: #50b455;
+  --p-button-primary-active-background: #3f8e44;
   outline: none;
-}
-
-.events, .statistics, .topics{
-  background-color: #2A3F4F;
-  height: 30%;
-}
-
-.ul-height {
-  height: 95%;
 }
 
 </style>

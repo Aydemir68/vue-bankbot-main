@@ -1,7 +1,7 @@
 // router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import Test from "../components/Test.vue";
-import Opros_vihod from "../components/Opros_vihod.vue";
+import Opros_vihod from "../components/Opros.vue";
 
 
 import News from "../components/News.vue";
