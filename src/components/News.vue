@@ -37,7 +37,6 @@ export default {
 <style scoped>
 
 .image{
-  height: 28vh;
   object-fit: contain;
 }
 

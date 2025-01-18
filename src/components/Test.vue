@@ -11,7 +11,7 @@ export default {
       selectedFile: null, // Выбранный файл (тест)
       selectedFilter: "all",
       selectedSort: "byNameASC",
-      passed_tests: null
+      passed_tests: []
     };
   },
   components: [
@@ -131,7 +131,7 @@ export default {
 
     <!-- Список файлов -->
     <div class="flex flex-column w-full gap-2 justify-content-center align-items-center p-2">
-      <div v-for="file in filteredFiles" :key="file.name" class="flex flex-column w-full p-2 bg-black-alpha-20 border-round"
+      <div v-for="file in filteredFiles" v-if="!(file in passed_tests)" :key="file.name" class="flex flex-column w-full p-2 bg-black-alpha-20 border-round"
            @click="selectTest(file)">
         <!-- Иконка файла -->
         <i class="pi pi-file" />

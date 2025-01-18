@@ -35,7 +35,7 @@
 
       <!-- Информация о пользователе -->
       <div class="flex flex-column gap-1 w-full p-3">
-        <img class="flex profile-photo" :src="this.url" alt="Фото профиля" />
+        <img class="flex profile-photo" :src="this.user_photo" alt="Фото профиля" />
         <Button class="mt-2 mt-btn">Редактировать профиль </Button>
         <div class="flex font-semibold text-2xl">{{ user.surname + ' ' + user.name + ' ' + user.patronymic }}</div>
         <div class="flex text-xl"><strong>Возраст:&nbsp;</strong> {{ user.age }}</div>
@@ -98,6 +98,7 @@ export default {
       username: null,
       visible: false,
       url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s',
+      user_photo: null,
       user: {
         tg_id: 0,
         surname: 'Иванов',
@@ -169,9 +170,10 @@ export default {
         this.user.patronymic = res.data.patronymic;
         this.user.age = res.data.age;
         this.user.region = res.data.region;
+        this.user_photo = tg.initDataUnsafe.user.id;
       }).catch(err => {
-        //TODO:
-        this.visible = false;
+        this.user_photo = this.url
+        this.visible = true;
       })
     },
 
