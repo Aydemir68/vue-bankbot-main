@@ -4,7 +4,9 @@ import instance from "./Api/instance.js";
 export default createStore({
   state: {
     news: null,
-    surveys: null,
+    passed_surveys: [],
+    surveys: [],
+    currentSurveyId: null,
   },
 
   getters: {
@@ -13,6 +15,12 @@ export default createStore({
     },
     GET_SURVEYS: state => {
       return state.surveys;
+    },
+    GET_PASSED_SURVEYS: state => {
+      return state.passed_surveys;
+    },
+    GET_CURRENT_SURVEY_ID: state => {
+      return state.currentSurveyId;
     }
   },
 
@@ -22,6 +30,12 @@ export default createStore({
     },
     SET_SURVEYS(state, payload) {
       state.surveys = payload;
+    },
+    SET_PASSED_SURVEYS(state, payload) {
+      state.passed_surveys = payload;
+    },
+    SET_CURRENT_SURVEY_ID(state, payload) {
+      state.currentSurveyId = payload;
     }
   },
 
@@ -35,6 +49,15 @@ export default createStore({
       instance.get('/surveys/all').then(response => {
         context.commit('SET_SURVEYS', response.data);
       })
+    },
+    getPassedSurveys: (context, surveys) => {
+      let tg = window.Telegram.WebApp;
+      instance.get('/surveys/passed_tests', {params: {init_data: tg.initData}}).then(res => {
+        context.commit('SET_PASSED_SURVEYS', res.data);
+      })
+    },
+    setCurrentSurveyId: (context, surveyId) => {
+      context.commit('SET_CURRENT_SURVEY_ID', surveyId);
     },
   }
 });

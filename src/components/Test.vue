@@ -11,12 +11,13 @@ export default {
       selectedFile: null, // Выбранный файл (тест)
       selectedFilter: "all",
       selectedSort: "byNameASC",
-      passed_tests: []
     };
   },
+
   components: [
     Select
   ],
+
   computed: {
     filteredFiles() {
       if (this.files != null)
@@ -47,17 +48,22 @@ export default {
         return this.passed_tests
       else return this.tests
     },
+    passed_tests() {
+      return this.$store.getters["GET_PASSED_SURVEYS"];
+    },
     tests() {
       return this.$store.getters["GET_SURVEYS"];
     },
-    passed_tests() {
-      return this.passed_tests
-    }
   },
+
   created() {
     this.id = this.$route.params.id;
     console.log('ID из маршрута:', this.id); // Убедитесь, что параметр id существует
+    if (this.$store.getters["GET_CURRENT_SURVEY_ID"] !== null) {
+      console.log('fafasf')
+    }
   },
+
   methods: {
     // Меняем поле и порядок сортировки
     sortBy() {
@@ -84,6 +90,7 @@ export default {
         }
       }
     },
+
     // Обработчик для выбора теста
     selectTest(file) {
       // Если выбран тот же тест, снимаем выделение
@@ -93,14 +100,14 @@ export default {
         this.selectedFile = file;
       }
     },
-
   },
+
   mounted() {
     this.$store.dispatch("getAllSurveys");
-    let tg = window.Telegram.WebApp;
-    instance.get('/surveys/passed_tests', {params: {init_data: tg.initData}}).then(res => {
-      this.passed_tests = res.data;
-    })
+    this.$store.dispatch("getPassedSurveys");
+    if (this.$store.getters["GET_CURRENT_SURVEY_ID"] !== null) {
+      this.$router.push({path: `/test/${this.$store.getters["GET_CURRENT_SURVEY_ID"]}`});
+    }
   }
 };
 </script>

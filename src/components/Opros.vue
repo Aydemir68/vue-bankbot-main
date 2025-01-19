@@ -131,6 +131,7 @@ export default {
   beforeMount() {
     this.id = this.$route.params.id; // Получаем ID из маршрута
     this.fetchQuestions(); // Загружаем вопросы через API
+    this.$store.dispatch("setCurrentSurveyId", this.id);
   },
   methods: {
     async fetchQuestions() {
@@ -162,6 +163,7 @@ export default {
     },
     closeDialog() {
       this.visibleComplete = false;
+      this.$store.dispatch("setCurrentSurveyId", null);
       this.$router.push('/test');
     },
     goNext() {
