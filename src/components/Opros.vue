@@ -38,15 +38,8 @@
       </div>
     </div>
 
-    <!-- Блок с результатами -->
     <div v-else class="results">
-      <h2>Тест завершен!</h2>
-      <p>Ваши ответы:</p>
-      <ul>
-        <li v-for="(answer, index) in selectedAnswers" :key="index">
-          {{ questions[index].question }}: {{ Array.isArray(answer) ? answer.join(', ') : answer }}
-        </li>
-      </ul>
+      <h2>Пожалуйста, подождите!</h2>
     </div>
 
     <!-- Кнопки управления -->

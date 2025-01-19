@@ -42,6 +42,13 @@
     </button>
 
     <div ref="messagesContainer" class="flex flex-column h-full overflow-y-scroll mx-1">
+      <div v-if="this.messages.length === 0" class="flex h-full w-full align-items-center justify-content-center">
+        <div class="bg-black-alpha-30 border-round w-full m-4 px-4 py-6">
+          <p><strong>Приветствую, дорогой пользователь!</strong></p>
+          <p>Это раздел, в котором вы можете получить ответы на различные вопросы по направлению финансовой грамотности. Для этого напишите ваш вопрос ниже</p>
+          <img class="bot_gif_size" src="/output-onlinegiftools.gif" alt="robot" />
+        </div>
+      </div>
       <div v-for="message in messages" :key="message.id">
         <div class="bg-black-alpha-30 p-2 border-round-bottom text-left"
              :class="{'flex user-message my-2 max-w-18rem': message.isUser, 'flex bot-message max-w-18rem': !message.isUser,}">
@@ -216,6 +223,11 @@ export default {
 .gif_size {
   width: 10%;
 }
+
+.bot_gif_size {
+  width: 50%;
+}
+
 
 mark {
   background-color: transparent;
