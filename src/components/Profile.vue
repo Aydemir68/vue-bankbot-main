@@ -173,7 +173,7 @@ export default {
         this.user_photo = tg.initDataUnsafe.user.photo_url;
       }).catch(err => {
         this.user_photo = this.url
-        this.visible = false;
+        this.visible = true;
       })
     },
 
