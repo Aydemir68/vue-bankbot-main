@@ -138,29 +138,37 @@ export default {
 
     <!-- Список файлов -->
     <div class="flex flex-column w-full gap-2 justify-content-center align-items-center p-2">
-      <div v-for="file in filteredFiles" v-if="!(file in passed_tests)" :key="file.name" class="flex flex-column w-full p-2 bg-black-alpha-20 border-round"
+      <div v-for="file in filteredFiles" :key="file.name" class="flex w-full"
            @click="selectTest(file)">
-        <!-- Иконка файла -->
-        <i class="pi pi-file" />
-        <div class="m-2"  >
-          <span class="file-name">{{ file.name }}</span>
-          <small class="file-info">({{ file.date }})</small>
-        </div>
 
-        <!-- Информация о выбранном тесте (отображается только если выбран тест) -->
-        <div v-if="selectedFile === file" class="w-full">
 
-          <p><strong>Процент правильных ответов:</strong> 0%</p>
-          <p><strong>Количество попыток:</strong> {{ file.number_of_attempts }}</p>
+        <div v-if="(!(passed_tests.some(item => item.id === file.id)) && this.selectedFilter === 'all') ||
+                   (passed_tests.some(item => item.id === file.id) && this.selectedFilter !== 'all')"
+             class="flex flex-column w-full p-2 bg-black-alpha-20 border-round">
+          <!-- Иконка файла -->
+          <i class="pi pi-file" />
+          <div class="m-2"  >
+            <span class="file-name">{{ file.name }}</span>
+            <small class="file-info">({{ file.date }})</small>
+          </div>
 
-          <div class="p-3">
-            <RouterLink
-                :to="`/test/${file.id}`"
-                class="border-round-lg text-white bg-primary-800 px-4 py-2 active:bg-primary-600 h-3rem">
-              Пройти
-            </RouterLink>
+          <!-- Информация о выбранном тесте (отображается только если выбран тест) -->
+          <div v-if="selectedFile === file" class="w-full">
+
+            <p><strong>Процент правильных ответов:</strong> 0%</p>
+            <p><strong>Количество попыток:</strong> {{ file.number_of_attempts }}</p>
+
+            <div class="p-3">
+              <RouterLink
+                  :to="`/test/${file.id}`"
+                  class="border-round-lg text-white bg-primary-800 px-4 py-2 active:bg-primary-600 h-3rem">
+                Пройти
+              </RouterLink>
+            </div>
           </div>
         </div>
+
+
       </div>
     </div>
   </div>
