@@ -110,6 +110,7 @@ export default {
       id: null,
       currentQuestionIndex: 0,
       selectedAnswers: [],
+      questions: [],
       test: null,
       visible: false,
       visibleConfirm: false,
@@ -131,6 +132,7 @@ export default {
   beforeMount() {
     this.id = this.$route.params.id; // Получаем ID из маршрута
     this.fetchQuestions(); // Загружаем вопросы через API
+    this.loadSession();
     this.$store.dispatch("setCurrentSurveyId", this.id);
   },
   methods: {
@@ -143,6 +145,24 @@ export default {
         console.error('Ошибка при загрузке данных:', error);
       };
     }, 
+    loadSession() {
+      const sessionData = sessionStorage.getItem(`survey-${this.id}`);
+      if (sessionData) {
+        const { currentQuestionIndex, selectedAnswers } = JSON.parse(sessionData);
+        this.currentQuestionIndex = currentQuestionIndex || 0;
+        this.selectedAnswers = selectedAnswers || [];
+      }
+    },
+    saveSession() {
+      const sessionData = {
+        currentQuestionIndex: this.currentQuestionIndex,
+        selectedAnswers: this.selectedAnswers,
+      };
+      sessionStorage.setItem(`survey-${this.id}`, JSON.stringify(sessionData));
+    },
+    clearSession() {
+      sessionStorage.removeItem(`survey-${this.id}`);
+    },
     openDialog() {
       this.visible = true;
       this.sendMessage();
@@ -153,6 +173,9 @@ export default {
       this.visibleComplete = true;
       setTimeout(this.closeDialog, 3000);
       try {
+        this.clearSession();
+        this.visibleConfirm = false;
+        this.visibleComplete = true;
         const response = await axios.post(`https://finlit-test.ru/surveys/save_result`, null,
             {params: {init_data: tg.initData, survey_id: this.id}}).then(res => {});
         this.loading = false; // Устанавливаем состояние загрузки в false
@@ -173,12 +196,14 @@ export default {
         console.log("Тест завершен!");
       }
       this.responseMessage = "";
+      this.saveSession();
     },
     goBack() {
       if (this.currentQuestionIndex > 0) {
         this.currentQuestionIndex--;
       }
       this.responseMessage = "";
+      this.saveSession();
     },
     async sendMessage() {
       if (this.responseMessage.trim()) {
