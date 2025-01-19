@@ -41,7 +41,6 @@
       </svg>
     </button>
 
-
     <div ref="messagesContainer" class="flex flex-column h-full overflow-y-scroll mx-1">
       <div v-for="message in messages" :key="message.id">
         <div class="bg-black-alpha-30 p-2 border-round-bottom text-left"
@@ -68,6 +67,11 @@
 import axios from "axios";
 import {marked} from "marked";
 import {chatExists, chatGenerate, getAnswer} from "../chat_api.js";
+
+// Глобальная переменная для хранения сессии
+const sessionStorage = {
+  messages: [],
+};
 
 export default {
   data() {
@@ -159,10 +163,10 @@ export default {
       }
     },
     saveSession() {
-      localStorage.setItem("chatSession", JSON.stringify(this.messages));
+      sessionStorage.messages = [...this.messages];
     },
     loadSession() {
-      const savedMessages = JSON.parse(localStorage.getItem("chatSession"));
+      const savedMessages = sessionStorage.messages;
       if (savedMessages && Array.isArray(savedMessages)) {
         this.messages = savedMessages;
         this.messageId = this.messages.length
@@ -181,7 +185,7 @@ export default {
       setTimeout (() => {
         this.messages = [];
         this.messageId = 0;
-        localStorage.removeItem("chatSession");
+        sessionStorage.messages = [];
         this.scrollToBottom();
       }, 1200);
     },
