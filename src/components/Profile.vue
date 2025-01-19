@@ -37,15 +37,15 @@
       <div class="flex flex-column gap-1 w-full p-3">
         <img class="flex profile-photo" :src="this.user_photo" alt="Фото профиля" />
         <Button class="mt-2 mt-btn">Редактировать профиль </Button>
-        <div class="flex font-semibold text-2xl">{{ user.surname + ' ' + user.name + ' ' + user.patronymic }}</div>
-        <div class="flex text-xl"><strong>Возраст:&nbsp;</strong> {{ user.age }}</div>
-        <div class="flex text-xl"><strong>Регион:&nbsp;</strong>{{ user.region }}</div>
+        <div class="flex font-semibold text-xl">{{ user.surname + ' ' + user.name + ' ' + user.patronymic }}</div>
+        <div class="flex text-lg"><strong>Возраст:&nbsp;</strong> {{ user.age }}</div>
+        <div class="flex text-lg"><strong>Регион:&nbsp;</strong>{{ user.region }}</div>
       </div>
     </div>
 
     <Accordion value="0" class="my-tab">
       <AccordionPanel value="0" accordion>
-        <AccordionHeader class="outline-none text-xl">Запланированные мероприятия</AccordionHeader>
+        <AccordionHeader class="outline-none text-lg text-left">Запланированные мероприятия</AccordionHeader>
         <AccordionContent>
           <div class="m-0 text-left">
               <p>1. Опрос по финансовой грамотности и потребительских настроений.</p>
@@ -56,7 +56,7 @@
         </AccordionContent>
       </AccordionPanel>
       <AccordionPanel value="1">
-        <AccordionHeader class="outline-none text-xl">Темы для изучения</AccordionHeader>
+        <AccordionHeader class="outline-none text-lg text-left">Темы для изучения</AccordionHeader>
         <AccordionContent>
           <div class="m-0 text-left">
             <p>1. Вклады и накопления.</p>
@@ -67,7 +67,7 @@
         </AccordionContent>
       </AccordionPanel>
       <AccordionPanel value="2">
-        <AccordionHeader class="outline-none text-xl">Статистика</AccordionHeader>
+        <AccordionHeader class="outline-none text-lg text-left">Статистика</AccordionHeader>
         <AccordionContent>
           <div class="m-0 text-left">
               Статистики не найдено!
@@ -170,10 +170,10 @@ export default {
         this.user.patronymic = res.data.patronymic;
         this.user.age = res.data.age;
         this.user.region = res.data.region;
-        this.user_photo = tg.initDataUnsafe.user.id;
+        this.user_photo = tg.initDataUnsafe.user.photo_url;
       }).catch(err => {
         this.user_photo = this.url
-        this.visible = true;
+        this.visible = false;
       })
     },
 
