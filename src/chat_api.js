@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = "http://81.94.159.227:1203";
+const BASE_URL = "https://finlit-test.store";
 
 // Проверка наличия чата
 export async function chatExists(chatName, kbId) {

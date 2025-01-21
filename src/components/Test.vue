@@ -165,12 +165,12 @@ export default {
                 {{ passed_tests.some(item => item.id === file.id) ? 'Пройти заново' : 'Пройти' }}
               </RouterLink>
             </div>
-          </div>
         </div>
 
 
       </div>
     </div>
+  </div>
   </div>
 </template>
 
