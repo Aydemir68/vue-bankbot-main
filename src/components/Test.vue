@@ -162,7 +162,7 @@ export default {
               <RouterLink
                   :to="`/test/${file.id}`"
                   class="border-round-lg text-white bg-primary-800 px-4 py-2 active:bg-primary-600 h-3rem">
-                Пройти
+                {{ passed_tests.some(item => item.id === file.id) ? 'Пройти заново' : 'Пройти' }}
               </RouterLink>
             </div>
           </div>
