@@ -55,7 +55,7 @@
           {{ message.text }}
         </div>
       </div>
-      <div id="generating" v-show="this.visibleGenMessage">
+      <div id="generating" v-show="this.visibleGenMessage" class="p-2">
         <img class="gif_size" src="/innoit.gif"/>
       </div>
     </div>
@@ -99,6 +99,7 @@ export default {
   methods: {
     marked,
     async sendMessage() {
+      this.visibleGenMessage = true;
       if (this.newMessage.trim()) {
         // Сохраняем сообщение пользователя
         this.messages.push({
@@ -221,7 +222,7 @@ export default {
 }
 
 .gif_size {
-  width: 10%;
+  width: 20%;
 }
 
 .bot_gif_size {
