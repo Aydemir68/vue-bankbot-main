@@ -1,5 +1,14 @@
 <template>
   <div class="flex flex-column h-full w-full p-2">
+    <div class="relative" v-if="currentQuestionIndex > 0">
+        Вопрос {{ currentQuestionIndex }} из {{ questions.length }}
+    <button
+        class="exit-button"
+        @click="exit">
+      Выход
+    </button>
+  </div>
+
     <!-- Основной блок викторины -->
     <div v-if="currentQuestionIndex < questions.length" class="border-round-xl h-full w-full p-1 overflow-y-scroll">
       <div class="header w-full border-round-xl bg-black-alpha-30 p-3 text-gray-300 text-lg font-semibold text-center">
@@ -108,7 +117,6 @@ export default {
       visible: false,
       visibleConfirm: false,
       visibleComplete: false,
-      questions: [],// Подключаем вопросы из JSON
       link: '/test',
       responseMessage: ""
     };
@@ -181,6 +189,11 @@ export default {
       this.visibleComplete = false;
       this.$store.dispatch("setCurrentSurveyId", null);
       this.$router.push('/test');
+    },
+    exit() {
+      Set.currentSurveyId = null;
+      this.clearSession();
+      this.$router.push('/test'); // Переход на страницу теста
     },
     goNext() {
       if (this.currentQuestionIndex < this.questions.length - 1) {
@@ -275,6 +288,26 @@ input[type="checkbox"] {
 
 input[type='radio'] {
   transform: scale(1.7);
+}
+.relative {
+  position: relative;
+  padding-top: 15px; /* Space for the exit button */
+}
+.exit-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.exit-button:hover {
+  background-color: #ff0000;
 }
 
 </style>
