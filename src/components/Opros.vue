@@ -296,7 +296,7 @@ input[type='radio'] {
   position: absolute;
   height: 2.4rem;
   top: 0.2rem;
-  right: 1rem;
+  right: 0.4rem;
   background-color: rgb(46, 76, 124);
   outline: none;
   color: white;
