@@ -3,7 +3,7 @@
     <div class="relative" v-if="currentQuestionIndex > 0">
         Вопрос {{ currentQuestionIndex }} из {{ questions.length }}
     <button
-        class="exit-button"
+        class="exit-button pi pi-sign-out hover:bg-primary-800"
         @click="exit">
       Выход
     </button>
@@ -191,8 +191,7 @@ export default {
       this.$router.push('/test');
     },
     exit() {
-      Set.currentSurveyId = null;
-      this.clearSession();
+      this.$store.dispatch("setCurrentSurveyId", null);
       this.$router.push('/test'); // Переход на страницу теста
     },
     goNext() {
@@ -291,19 +290,21 @@ input[type='radio'] {
 }
 .relative {
   position: relative;
-  padding-top: 15px; /* Space for the exit button */
+  padding-top: 1.2rem /* Space for the exit button */
 }
 .exit-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #ff4d4d;
+  height: 2.4rem;
+  top: 0.2rem;
+  right: 1rem;
+  background-color: rgb(46, 76, 124);
+  outline: none;
   color: white;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.3rem;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.8rem;
 }
 
 .exit-button:hover {
