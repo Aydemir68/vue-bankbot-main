@@ -42,7 +42,9 @@
         <div class="flex text-lg"><strong>Регион:&nbsp;</strong>{{ user.region }}</div>
       </div>
     </div>
-
+    <div>
+      <button @click="qr_code_scan">Сканировать для регистрации</button>
+    </div>
     <Accordion value="0" class="my-tab">
       <AccordionPanel value="0" accordion>
         <AccordionHeader class="outline-none text-lg text-left">Запланированные мероприятия</AccordionHeader>
@@ -94,6 +96,8 @@ import AccordionContent from 'primevue/accordioncontent';
 export default {
   data() {
     return {
+      mediaStream: null, // Для хранения потока медиа
+      isCameraActive: false, // Флаг состояния камеры
       test: "",
       username: null,
       visible: false,
@@ -176,7 +180,9 @@ export default {
         this.visible = true;
       })
     },
-
+    qr_code_scan: function() {
+      this.$router.push('qr_code');
+    }
   },
   beforeMount() {
     this.post_User_data()
