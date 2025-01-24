@@ -43,7 +43,7 @@
       </div>
     </div>
     <div>
-      <button @click="qr_code_scan">Сканировать для регистрации</button>
+      <button @click="qr_code_scan" class="bg-white">Сканировать для регистрации</button>
     </div>
     <Accordion value="0" class="my-tab">
       <AccordionPanel value="0" accordion>

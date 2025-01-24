@@ -116,10 +116,11 @@ export default {
         this.scrollToBottom();
 
         try {
-          const chat_id = await chatExists(tg.initDataUnsafe.user.id, kb_id);
+          const chat_id = await chatExists(tg.initDataUnsafe.user.id.toString(), kb_id);
           if (chat_id) {
             await chatGenerate(chat_id, userMessage);
             const answer = await getAnswer(chat_id);
+
             if (answer) {
               this.messages.push({
                 id: this.messageId++,
