@@ -2,12 +2,15 @@
   <div class="flex flex-column h-full w-full p-2">
     <div class="relative" v-if="currentQuestionIndex > 0">
         Вопрос {{ currentQuestionIndex }} из {{ questions.length }}
+    </div>
+    <div class="relative mt-4" v-else>
+    </div>
+
     <button
-        class="exit-button pi pi-sign-out hover:bg-primary-800"
+        class="exit-button pi pi-sign-out hover:bg-primary-800 mt-2 mr-2"
         @click="exit">
       Выход
     </button>
-  </div>
 
     <!-- Основной блок викторины -->
     <div v-if="currentQuestionIndex < questions.length" class="border-round-xl h-full w-full p-1 overflow-y-scroll">
