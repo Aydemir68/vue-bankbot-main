@@ -7,7 +7,13 @@
         <img :src="host + news.image_url" :alt="news.title"
              class="image border-round-2xl align-content-center align-items-center justify-content-center w-full" />
         <p class="py-2 text-left">{{ news.description }}</p>
-        <button v-if="news.is_event === false" class="text-white hover:bg-primary-800 active:bg-primary-600">Запланировать</button>
+        <Button tag="button" v-if="news.is_event === false && news.test_url === null"  class="text-white hover:bg-primary-800 active:bg-primary-600">Запланировать</Button>
+        <Button tag="button" v-if="news.test_url != null && news.is_event === false"
+
+            @click="$router.push(`${news.test_url}`)"
+            class="text-white hover:bg-primary-800 active:bg-primary-600">
+          Пройти тест
+        </Button>
       </div>
     </div>
   </div>
@@ -44,5 +50,6 @@ button {
   background-color: rgb(46, 76, 124);
   outline: none;
 }
+
 
 </style>
