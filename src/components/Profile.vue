@@ -4,8 +4,9 @@
       <!-- Блок с фото профиля и кнопкой -->
       <div class="flex flex-column align-items-center">
         <!--    Регистрация / Редактиврование пользователя    -->
-        <Dialog v-model:visible="visible" :closable="false" modal header="Регистрация" class="flex flex-column bg-gray-200" :style="{ width: '22rem' }">
-          <span class="flex text-surface-500 dark:text-surface-400 block mb-2">Заполните информацию о себе.</span>
+        <Dialog v-model:visible="visible" :closable="false" modal header="Информация пользователя" class="flex flex-column bg-gray-200" :style="{ width: '22rem' }">
+          <span v-if="!this.edit_mode" class="flex text-lg text-surface-500 dark:text-surface-400 block mb-2">Заполните информацию о себе.</span>
+          <span v-if="this.edit_mode" class="flex text-lg text-surface-500 dark:text-surface-400 block mb-2">Отредактируйте данные о себе</span>
 
           <div class="flex flex-column gap-1">
             <IftaLabel class="flex w-full">
@@ -50,7 +51,10 @@
           </div>
 
           <div class="flex justify-content-end p-0 m-0 pt-2 gap-2">
-            <Button type="button" class="text-white" label="Зарегистрироваться" @click="save"></Button>
+            <Button v-if="!this.edit_mode" type="button" class="flex text-white" label="Зарегистрироваться" @click="save"></Button>
+
+            <Button v-if="this.edit_mode" type="button" class="flex text-white" label="Отмена" @click="edit_close"></Button>
+            <Button v-if="this.edit_mode" type="button" class="flex text-white" label="Сохранить" @click="edit_close"></Button>
           </div>
 
         </Dialog>
@@ -59,7 +63,7 @@
       <!-- Информация о пользователе -->
       <div class="flex flex-column gap-1 w-full p-3">
         <img class="flex profile-photo" :src="this.user_photo" alt="Фото профиля" />
-        <Button class="mt-2 mt-btn">Редактировать профиль </Button>
+        <Button @click="edit" class="mt-2 mt-btn">Редактировать профиль </Button>
         <div class="flex font-semibold text-xl text-left">{{ user.surname + ' ' + user.name + ' ' + user.patronymic }}</div>
         <div class="flex text-lg text-left"><strong>Возраст:&nbsp;</strong> {{ user.age }}</div>
         <div class="flex text-lg text-left"><strong>Регион:&nbsp;</strong>{{ user.region }}</div>
@@ -121,6 +125,7 @@ import AccordionContent from 'primevue/accordioncontent';
 export default {
   data() {
     return {
+      edit_mode: false,
       mediaStream: null, // Для хранения потока медиа
       isCameraActive: false, // Флаг состояния камеры
       test: "",
@@ -239,7 +244,7 @@ export default {
         { name: 'Среднее специальное (колледж, училище)', code: 'ss' },
         { name: 'Неполное высшее', code: 'nv' },
         { name: 'Высшее, в том числе бакалавриат/магистратура', code: 'v' },
-        { name: 'Учебная степень', code: 'ych' }
+        { name: 'Ученая степень', code: 'ych' }
       ]
     };
   },
@@ -256,6 +261,16 @@ export default {
     AccordionContent,
   },
   methods: {
+    edit() {
+      this.edit_mode = true;
+      this.visible = true;
+      this.user_update = this.user;
+    },
+    edit_close() {
+      this.user_update = null;
+      this.edit_mode = false;
+      this.visible = false;
+    },
     save() {
       let tg = window.Telegram.WebApp;
 
