@@ -12,7 +12,7 @@ import QrCode from "../components/qr-code.vue";
 
 
 const routes = [
-    { path: '', component: News},
+    { path: '', component: Profile},
     { path: '/news', component: News},
     { path: '/chat', component: Chat},
     { path: '/test/', component: Test },

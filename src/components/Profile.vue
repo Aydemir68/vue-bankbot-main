@@ -20,8 +20,8 @@
             </IftaLabel>
 
             <IftaLabel class="flex w-full">
-              <InputText id="patronymic" class="flex w-full"  placeholder="Имя" autocomplete="off" v-model="user_update.patronymic"/>
-              <label>Отчество</label>
+              <InputText id="patronymic" class="flex w-full"  placeholder="Отчество (необязательно)" autocomplete="off" v-model="user_update.patronymic"/>
+              <label>Отчество (необязательно)</label>
             </IftaLabel>
 
             <IftaLabel class="flex w-full">
@@ -306,6 +306,7 @@ export default {
         this.user.region = res.data.region;
         this.user.education = res.data.education;
         this.user_photo = tg.initDataUnsafe.user.photo_url;
+        this.$router.push('/user');
       }).catch(err => {
         this.user_photo = this.url
         this.visible = true;
