@@ -18,6 +18,11 @@
     <div class="controls">
       <button @click="capturePhoto" class="capture-button"></button>
     </div>
+
+    <!-- Кастомное уведомление -->
+    <div v-if="showNotification" class="notification">
+      <p>Вы успешно зарегистрированы!</p>
+    </div>
   </div>
 </template>
 
@@ -30,6 +35,8 @@ export default {
       mediaStream: null,
       error: null,
       scanning: true,
+      showNotification: false,
+      allowedLinks: ["https://vessels-response-plugins-lot.trycloudflare.com/news"], // Разрешённые ссылки
     };
   },
   mounted() {
@@ -62,19 +69,33 @@ export default {
       const ctx = canvas.getContext("2d");
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
+
       const scan = () => {
         if (!this.scanning) return;
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const qrCode = jsQR(imageData.data, imageData.width, imageData.height);
+
         if (qrCode) {
           this.scanning = false;
-          alert(`QR-код найден: ${qrCode.data}`);
-          window.location.href = qrCode.data; // Открываем ссылку
+
+          if (this.allowedLinks.includes(qrCode.data)) {
+            // Если QR-код разрешён, показываем уведомление
+            this.showNotification = true;
+            setTimeout(() => {
+              this.showNotification = false;
+              window.location.href = qrCode.data;
+            }, 2000);
+          } else {
+            alert("Этот QR-код не поддерживается.");
+            this.scanning = true; // Разрешаем повторное сканирование
+            requestAnimationFrame(scan);
+          }
         } else {
           requestAnimationFrame(scan);
         }
       };
+
       requestAnimationFrame(scan);
     },
     capturePhoto() {
@@ -82,7 +103,7 @@ export default {
     },
     closeScanner() {
       this.stopCamera();
-      this.$router.push('/user');
+      this.$router.push("/user");
     },
     stopCamera() {
       if (this.mediaStream) {
@@ -96,6 +117,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 /* Общий контейнер */
 .camera-container {
@@ -204,5 +226,26 @@ video {
 
 .hidden {
   display: none;
+}
+
+.notification {
+  position: fixed;
+  bottom: 16rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4CAF50;
+  color: white;
+  padding: 1.2rem 1.8rem;
+  border-radius: 10px;
+  font-size: 16px;
+  box-shadow: 0 1.5rem 1.9rem rgba(0, 0, 0, 0.1);
+  animation: fadeInOut 4даs ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
 }
 </style>
