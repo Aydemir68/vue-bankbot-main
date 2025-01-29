@@ -67,11 +67,11 @@
         <div class="flex font-semibold text-xl text-left">{{ user.surname + ' ' + user.name + ' ' + user.patronymic }}</div>
         <div class="flex text-lg text-left"><strong>Возраст:&nbsp;</strong> {{ user.age }}</div>
         <div class="flex text-lg text-left"><strong>Регион:&nbsp;</strong>{{ user.region }}</div>
-        <div class="flex text-lg text-left"><strong>Образование:&nbsp;</strong>{{ user.education }}</div>
+        <div class="flex text-lg text-left w-full"><strong>Образование:&nbsp;</strong>{{ user.education }}</div>
       </div>
     </div>
-    <div>
-      <button @click="qr_code_scan" class="bg-white">Сканировать для регистрации</button>
+    <div class="flex flex-column w-full p-3">
+      <Button @click="qr_code_scan" icon="pi pi-qrcode" class="bg-white text-gray-900 w-full">Сканировать для регистрации</Button>
     </div>
     <Accordion value="0" class="my-tab">
       <AccordionPanel value="0" accordion>
