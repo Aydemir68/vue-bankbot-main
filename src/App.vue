@@ -5,6 +5,7 @@ import Test from "./components/Test.vue";
 import News from "./components/News.vue";
 import Chat from "./components/Chat.vue";
 import Toast from 'primevue/toast';
+import instance from "./Api/instance.js";
 export default {
   components: {
     Menu,
@@ -42,11 +43,22 @@ export default {
     };
   },
   methods: {
-  updateTab(newTab) {
-    console.log("Смена вкладки на:", newTab); // Отладка
-    this.activeTab = newTab;
+    updateTab(newTab) {
+      console.log("Смена вкладки на:", newTab); // Отладка
+      this.activeTab = newTab;
+    },
+    checkRegistrationStatus() {
+      let tg = window.Telegram.WebApp;
+      instance.get('/auth/login', {params: {init_data: tg.initData}}).then(res => {
+        this.$router.push('news');
+      }).catch(err => {
+        this.$router.push('user');
+      });
+    },
   },
-},
+  mounted() {
+    this.checkRegistrationStatus();
+  }
 };
 </script>
 

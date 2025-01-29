@@ -312,8 +312,6 @@ export default {
         this.user.region = res.data.region;
         this.user.education = res.data.education;
         this.user_photo = tg.initDataUnsafe.user.photo_url;
-        this.$router.push('news');
-
       }).catch(err => {
         this.user_photo = this.url
         this.visible = true;
