@@ -264,10 +264,16 @@ export default {
     edit() {
       this.edit_mode = true;
       this.visible = true;
-      this.user_update = this.user;
+      this.user_update.surname = this.user.surname;
+      this.user_update.name = this.user.name;
+      this.user_update.patronymic = this.user.patronymic;
+      this.user_update.age = this.user.age;
     },
     edit_close() {
-      this.user_update = null;
+      this.user_update.surname = "";
+      this.user_update.name = "";
+      this.user_update.patronymic = "";
+      this.user_update.age = 0;
       this.edit_mode = false;
       this.visible = false;
     },
@@ -306,7 +312,8 @@ export default {
         this.user.region = res.data.region;
         this.user.education = res.data.education;
         this.user_photo = tg.initDataUnsafe.user.photo_url;
-        this.$router.push('/user');
+        this.$router.push('news');
+
       }).catch(err => {
         this.user_photo = this.url
         this.visible = true;
