@@ -64,10 +64,7 @@
         Назад
       </button>
 
-      <Button icon="pi pi-microchip-ai" severity="info" rounded class="m-1 bg-primary-400" @click="openDialog"/>
-      <Dialog v-model:visible="visible" modal header="Помощь Интеллектуального Ассистента" :style="{ width: '25rem' }">
-        <span class="text-surface-500 dark:text-surface-400 block mb-8">{{responseMessage}}</span>
-      </Dialog>
+      <Button icon="pi pi-microchip-ai" severity="info" rounded class="m-1 bg-primary-400" @click="openChat"/>
 
       <div v-if="currentQuestionIndex === questions.length - 1">
         <Button @click="this.visibleConfirm = true" class="flex w-8rem justify-content-center custom-button
@@ -196,6 +193,9 @@ export default {
     exit() {
       this.$store.dispatch("setCurrentSurveyId", null);
       this.$router.push('/test'); // Переход на страницу теста
+    },
+    openChat() {
+      this.$router.push('/chat');
     },
     goNext() {
       if (this.currentQuestionIndex < this.questions.length - 1) {
