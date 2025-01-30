@@ -7,7 +7,7 @@
         <Dialog v-model:visible="visible" :closable="false" modal header="Информация пользователя" class="flex flex-column bg-gray-200" :style="{ width: '22rem' }">
           <span v-if="!this.edit_mode" class="flex text-lg text-surface-500 dark:text-surface-400 block mb-2">Заполните информацию о себе.</span>
           <span v-if="this.edit_mode" class="flex text-lg text-surface-500 dark:text-surface-400 block mb-2">Отредактируйте данные о себе</span>
-
+          <p v-if="isHighlighted" class="flex p-1 mb-1 bg-red-500 text-white border-round">Пожалуйста, заполните обязательные поля!</p>
           <div class="flex flex-column gap-1">
             <IftaLabel class="flex w-full">
               <InputText id="surname" class="flex w-full" placeholder="Фамилия" autocomplete="off" v-model="user_update.surname" />
@@ -30,7 +30,7 @@
             </IftaLabel>
 
             <IftaLabel class="flex w-full">
-              <Select v-model="user_update.region" :options="cities" optionLabel="name" placeholder="Выберите регион"
+              <Select v-model="user_update.region" id="regionID" :options="cities" optionLabel="name" placeholder="Выберите регион"
                       filter class="w-full" :overlay-style="{
                         maxWidth: '100vw',
                         width: '0',
@@ -40,7 +40,7 @@
             </IftaLabel>
 
             <IftaLabel class="flex w-full">
-              <Select v-model="user_update.education" :options="education_levels" optionLabel="name" placeholder="Уровень образования"
+              <Select v-model="user_update.education" id="educationID" :options="education_levels" optionLabel="name" placeholder="Уровень образования"
                       filter class="w-full" :overlay-style="{
                         maxWidth: '100vw',
                         width: '0',
@@ -54,7 +54,7 @@
             <Button v-if="!this.edit_mode" type="button" class="flex text-white" label="Зарегистрироваться" @click="save"></Button>
 
             <Button v-if="this.edit_mode" type="button" class="flex text-white" label="Отмена" @click="edit_close"></Button>
-            <Button v-if="this.edit_mode" type="button" class="flex text-white" label="Сохранить" @click="edit_close"></Button>
+            <Button v-if="this.edit_mode" type="button" class="flex text-white" label="Сохранить" @click="edit_save"></Button>
           </div>
 
         </Dialog>
@@ -125,6 +125,7 @@ import AccordionContent from 'primevue/accordioncontent';
 export default {
   data() {
     return {
+      isHighlighted: false,
       edit_mode: false,
       mediaStream: null, // Для хранения потока медиа
       isCameraActive: false, // Флаг состояния камеры
@@ -151,7 +152,6 @@ export default {
         region: '',
         education: '',
       },
-      selectedCity: null,
       cities: [
         { name: 'Республика Адыгея', code: 'AD' },
         { name: 'Республика Алтай', code: 'AL' },
@@ -261,6 +261,7 @@ export default {
     AccordionContent,
   },
   methods: {
+
     edit() {
       this.edit_mode = true;
       this.visible = true;
@@ -268,6 +269,35 @@ export default {
       this.user_update.name = this.user.name;
       this.user_update.patronymic = this.user.patronymic;
       this.user_update.age = this.user.age;
+    },
+    edit_save() {
+      let tg = window.Telegram.WebApp;
+
+      if (this.user_update.surname === "" || this.user_update.name === "" ||
+          this.user_update.age === 0 || this.user_update.region === "" || this.user_update.education === "") {
+        this.isHighlighted = true;
+      } else {
+        this.isHighlighted = false;
+      }
+
+      instance.put('/auth/update', {
+        initData: tg.initData,
+        surname: this.user_update.surname,
+        name: this.user_update.name,
+        patronymic: this.user_update.patronymic,
+        age: this.user_update.age,
+        region: this.user_update.region['name'],
+        education: this.user_update.education['name']
+      }, {headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }).then((res) => {
+        this.visible = false;
+        this.post_User_data();
+      }).catch((err) => {
+        console.log(err);
+      })
     },
     edit_close() {
       this.user_update.surname = "";
