@@ -218,7 +218,6 @@ export default {
 <style scoped>
 
 * {
-  -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 

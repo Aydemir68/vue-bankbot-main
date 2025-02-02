@@ -64,10 +64,22 @@
       <div class="flex flex-column gap-1 w-full p-3">
         <img class="flex profile-photo" :src="this.user_photo" alt="Фото профиля" />
         <Button @click="edit" class="mt-2 mt-btn">Редактировать профиль </Button>
-        <div class="flex font-semibold text-xl text-left">{{ user.surname + ' ' + user.name + ' ' + user.patronymic }}</div>
-        <div class="flex text-lg text-left"><strong>Возраст:&nbsp;</strong> {{ user.age }}</div>
-        <div class="flex text-lg text-left"><strong>Регион:&nbsp;</strong>{{ user.region }}</div>
-        <div class="flex text-lg text-left w-full"><strong>Образование:&nbsp;</strong>{{ user.education }}</div>
+        <div class="flex font-semibold text-xl text-left gap-2">
+          <i class="flex align-items-center pi pi-user"></i>
+          <p class="flex">{{ user.surname + ' ' + user.name + ' ' + user.patronymic }}</p>
+        </div>
+        <div class="flex text-lg text-left gap-2">
+          <i class="flex align-items-center pi pi-calendar"></i>
+          <p class="flex"><strong>Возраст:&nbsp;</strong> {{ user.age }}</p>
+        </div>
+        <div class="flex text-lg text-left gap-2">
+          <i class="flex align-items-center pi pi-map-marker"></i>
+          <p class="flex"><strong>Регион:&nbsp;</strong>{{ user.region }}</p>
+        </div>
+        <div class="flex text-lg text-left w-full gap-2">
+          <i class="flex align-items-center pi pi-graduation-cap"></i>
+          <div class="flex"><p><strong>Образование:&nbsp;</strong>{{ user.education }}</p></div>
+        </div>
       </div>
     </div>
     <div class="flex flex-column w-full p-3">
