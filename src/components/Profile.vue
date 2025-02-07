@@ -87,24 +87,22 @@
     </div>
     <Accordion value="0" class="my-tab">
       <AccordionPanel value="0" accordion>
-        <AccordionHeader class="outline-none text-lg text-left">Запланированные мероприятия</AccordionHeader>
+        <AccordionHeader class="outline-none text-lg text-left">Совещания</AccordionHeader>
         <AccordionContent>
-          <div class="m-0 text-left">
-              <p>1. Опрос по финансовой грамотности и потребительских настроений.</p>
-              <p>2. Финансовый навигатор. Входной опрос.</p>
-              <p>3. Встреча с командой.</p>
-              <p>4. Презентация продукта. 21.12.25</p>
+          <div class="flex m-0 text-left pr-2">
+            <p class="flex flex-1">1. Тестовое совещание по приложению Telegram Pollsync</p>
+            <div class="flex flex-column align-items-center justify-content-center">
+              <i class="pi pi-eye" style="font-size: 1.3rem"></i>
+              <div>0</div>
+            </div>
           </div>
         </AccordionContent>
       </AccordionPanel>
       <AccordionPanel value="1">
-        <AccordionHeader class="outline-none text-lg text-left">Темы для изучения</AccordionHeader>
+        <AccordionHeader class="outline-none text-lg text-left">Рекомендации</AccordionHeader>
         <AccordionContent>
           <div class="m-0 text-left">
-            <p>1. Вклады и накопления.</p>
-            <p>2. Планирование расходов на новый год.</p>
-            <p>3. Подготовка детей к школе.</p>
-            <p>4. Акции и облигации.</p>
+            <p>Рекомендации будут направлены по итогам прохождения опросов.</p>
           </div>
         </AccordionContent>
       </AccordionPanel>
@@ -112,7 +110,7 @@
         <AccordionHeader class="outline-none text-lg text-left">Статистика</AccordionHeader>
         <AccordionContent>
           <div class="m-0 text-left">
-              Статистики не найдено!
+            Пройденных тестов: 0
           </div>
         </AccordionContent>
       </AccordionPanel>

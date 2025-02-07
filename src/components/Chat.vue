@@ -196,6 +196,7 @@ export default {
         this.messageId = 0;
         sessionStorage.messages = [];
         this.scrollToBottom();
+        this.visibleGenMessage = false;
       }, 1200);
     },
   },
