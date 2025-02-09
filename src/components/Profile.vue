@@ -89,11 +89,11 @@
       <AccordionPanel value="0" accordion>
         <AccordionHeader class="outline-none text-lg text-left">Совещания</AccordionHeader>
         <AccordionContent>
-          <div class="flex m-0 text-left pr-2">
-            <p class="flex flex-1">1. Тестовое совещание по приложению Telegram Pollsync</p>
+          <div v-for="(event, index) in allEvents" class="flex m-0 text-left pr-2">
+            <p class="flex flex-1">{{event.title}}</p>
             <div class="flex flex-column align-items-center justify-content-center">
               <i class="pi pi-eye" style="font-size: 1.3rem"></i>
-              <div>0</div>
+              <div>{{event.number_of_participants}}</div>
             </div>
           </div>
         </AccordionContent>
@@ -271,7 +271,6 @@ export default {
     AccordionContent,
   },
   methods: {
-
     edit() {
       this.edit_mode = true;
       this.visible = true;
@@ -360,6 +359,14 @@ export default {
     qr_code_scan: function() {
       this.$router.push('qr_code');
     }
+  },
+  computed: {
+    allEvents() {
+      return this.$store.getters["GET_EVENTS"];
+    }
+  },
+  mounted() {
+    this.$store.dispatch("getAllEvents");
   },
   beforeMount() {
     this.post_User_data()

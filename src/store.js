@@ -6,6 +6,7 @@ export default createStore({
     news: null,
     passed_surveys: [],
     surveys: [],
+    events: null,
     currentSurveyId: null,
   },
 
@@ -21,12 +22,18 @@ export default createStore({
     },
     GET_CURRENT_SURVEY_ID: state => {
       return state.currentSurveyId;
+    },
+    GET_EVENTS: state => {
+      return state.events;
     }
   },
 
   mutations: {
     SET_NEWS(state, payload) {
       state.news = payload;
+    },
+    SET_EVENTS(state, payload) {
+      state.events = payload;
     },
     SET_SURVEYS(state, payload) {
       state.surveys = payload;
@@ -43,6 +50,11 @@ export default createStore({
     getAllNews: (context) => {
       instance.get('/news/all').then(response => {
         context.commit('SET_NEWS', response.data);
+      })
+    },
+    getAllEvents: (context) => {
+      instance.get('/events/all').then(response => {
+        context.commit('SET_EVENTS', response.data);
       })
     },
     getAllSurveys: (context) => {

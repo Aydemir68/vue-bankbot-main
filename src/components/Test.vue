@@ -60,7 +60,7 @@ export default {
     this.id = this.$route.params.id;
     console.log('ID из маршрута:', this.id); // Убедитесь, что параметр id существует
     if (this.$store.getters["GET_CURRENT_SURVEY_ID"] !== null) {
-      console.log('fafasf')
+      console.log('current survey ID:', this.id);
     }
   },
 
@@ -137,17 +137,17 @@ export default {
     </div>
 
     <!-- Список файлов -->
-    <div class="flex flex-column w-full gap-2 justify-content-center align-items-center p-2">
+    <div class="flex flex-column w-full justify-content-center align-items-center p-2">
       <div v-for="file in filteredFiles" :key="file.name" class="flex w-full"
            @click="selectTest(file)">
 
 
         <div v-if="(!(passed_tests.some(item => item.id === file.id)) && this.selectedFilter === 'all') ||
                    (passed_tests.some(item => item.id === file.id) && this.selectedFilter !== 'all')"
-             class="flex flex-column w-full p-2 bg-black-alpha-20 border-round">
+             class="flex flex-column w-full p-2 bg-black-alpha-20 border-round mb-1">
           <!-- Иконка файла -->
           <i class="pi pi-file" />
-          <div class="m-2"  >
+          <div>
             <span class="file-name">{{ file.name }}</span>
             <small class="file-info">({{ file.date }})</small>
           </div>

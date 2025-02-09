@@ -21,8 +21,7 @@
 
     <!-- Уведомление об успешном сканировании -->
     <div v-if="showNotification" class="notification success">
-      <p>Вы успешно зарегистрированы!</p>
-
+      <p>{{ this.successMessage }}</p>
     </div>
 
     <!-- Уведомление об ошибке -->
@@ -35,6 +34,7 @@
 
 <script>
 import jsQR from "jsqr";
+import instance from "../Api/instance.js";
 
 export default {
   data() {
@@ -43,7 +43,7 @@ export default {
       scanning: true,
       showNotification: false,
       showErrorNotification: false,
-      allowedLinks: ["https://pollsync.ru"], // Разрешённые ссылки
+      successMessage: "",
     };
   },
   mounted() {
@@ -86,13 +86,29 @@ export default {
         if (qrCode) {
           this.scanning = false;
 
-          if (this.allowedLinks.includes(qrCode.data)) {
+          let error = false;
+          let parsed_test;
+          try {
+            parsed_test = JSON.parse(qrCode.data);
+            console.log(parsed_test['id'], ' ', parsed_test['number_of_participants']);
+          } catch (e) {
+            error = true;
+          }
+
+          if (!error) {
+            let tg = window.Telegram.WebApp;
+            instance.put('/events/registration', null, {params: {init_data: tg.initData,
+                event_id: parsed_test['id']}}).then(response => {
+                  this.successMessage = `Спасибо! Вы успешно зарегистрировались на совещание "${parsed_test['title']}"!`;
+            }).catch(error => {
+              this.successMessage = `Вы уже зарегистрированы на данное совещание "${parsed_test['title']}!"`;
+            })
             // Показываем уведомление и закрываем камеру
             this.showNotification = true;
             setTimeout(() => {
-              this.showNotification = false;
               this.closeScanner();
-            }, 2000);
+              this.showNotification = false;
+            }, 4000);
           } else {
             // QR-код не поддерживается
             this.showErrorNotification = true;
@@ -100,7 +116,7 @@ export default {
               this.showErrorNotification = false;
               this.scanning = true; // Разрешаем повторное сканирование
               requestAnimationFrame(scan);
-            }, 2000);
+            }, 3000);
           }
         } else {
           requestAnimationFrame(scan);
