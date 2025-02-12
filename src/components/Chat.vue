@@ -111,7 +111,7 @@ export default {
 
         const userMessage = this.newMessage;
         this.newMessage = "";
-        const kb_id = "d5db2804-5075-4b18-9978-ec0f7d1fcbc2";
+        const kb_id = "201e9a1e-eb77-4923-943e-c87c9dea5033";
         const tg = window.Telegram.WebApp;
         this.scrollToBottom();
 
